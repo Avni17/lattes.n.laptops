@@ -132,7 +132,7 @@ section { padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 5vw, 4rem); }
   align-items: center;
   min-height: calc(100vh - 60px);
 }
-.hero__photo { position: relative; max-width: 380px; justify-self: center; width: 100%; }
+.hero__photo { position: relative; max-width: 500px; justify-self: center; width: 100%; }
 .charm { position: absolute; color: var(--pink); filter: drop-shadow(0 3px 4px rgba(0,0,0,.4)); }
 .charm--key   { width: 54px; top: -18px; right: -22px; transform: rotate(18deg); }
 .charm--heart { width: 44px; bottom: 6px; left: -22px; transform: rotate(-12deg); animation: float 4s ease-in-out infinite; }
@@ -450,3 +450,8 @@ html, body { overflow-x: clip; max-width: 100%; }
 .brands li.logo:hover { background: var(--pink); }
 .brands li.logo--dark:hover { background: var(--brown-2); }
 .brands li { display: flex; align-items: center; justify-content: center; min-height: 76px; }
+
+/* Services photos */
+.services__tiles img.ph { width: 100%; height: auto; object-fit: cover; object-position: center 25%; display: block; background: var(--paper); }
+
+.hero__img { width: 100%; height: auto; aspect-ratio: 1153 / 941; object-fit: cover; display: block; }
