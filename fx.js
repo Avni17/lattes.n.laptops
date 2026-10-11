@@ -880,7 +880,7 @@
     };
     let saved = null;
     try { saved = localStorage.getItem(KEY); } catch (e) { /* storage blocked */ }
-    set(saved !== '0', false); // Espresso is the default; only an explicit switch to latte is remembered as off
+    set(saved === '1', false); // Latte (light) is the default; Espresso only if the visitor chose it
     btn.addEventListener('click', () => set(!root.classList.contains('fx-espresso'), true));
     navLinks.append(btn);
   }

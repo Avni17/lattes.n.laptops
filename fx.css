@@ -799,8 +799,19 @@ html.fx .hero__photo img { -webkit-user-drag: none; }
 
 /* Donut on touch screens: spins the selected slice to the top, legend pills, pager dots */
 .fx-donut-touch .donut__svg { transition: rotate .6s cubic-bezier(.3,1.3,.5,1); touch-action: pan-y; }
-.fx-donut-touch figcaption span { border-radius: 999px; transition: background .25s, box-shadow .25s, opacity .2s; }
-.fx-donut-touch figcaption span.fx-on { background: rgba(242,184,192,.4); box-shadow: 0 0 0 4px rgba(242,184,192,.4); }
+/* Legend as a tidy row of equal pills that never wrap mid-label */
+.fx-donut-touch figcaption {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: .45rem; width: 100%;
+}
+.fx-donut-touch figcaption span {
+  display: inline-flex; align-items: center; white-space: nowrap; line-height: 1;
+  font-size: .72rem; font-weight: 400 !important; padding: .4rem .7rem;
+  border: 1px solid rgba(59,42,41,.22); border-radius: 999px;
+  transition: background .25s, border-color .25s, opacity .2s;
+}
+.fx-donut-touch figcaption span i { flex: none; margin-right: .4rem; }
+.fx-donut-touch figcaption span.fx-on { background: var(--pink); border-color: var(--pink); color: var(--brown); }
+html.fx-espresso .fx-donut-touch figcaption span { border-color: rgba(242,184,192,.3); }
 .fx-donut-dots { display: flex; justify-content: center; gap: 8px; }
 .fx-donut-dots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(59,42,41,.25); transition: width .3s, background .3s; }
 .fx-donut-dots i.fx-on { width: 20px; border-radius: 999px; background: var(--brown-2); }
