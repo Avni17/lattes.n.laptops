@@ -226,29 +226,6 @@
       '<path d="M4 17C60 5 118 25 178 12S270 6 296 13" pathLength="1"/></svg>');
   }
 
-  /* ---------- 5. Typewriter tagline ---------- */
-  const tag = $('.hero__tag');
-  if (tag && !reduceMotion) {
-    const text = tag.textContent.trim();
-    tag.classList.add('fx-type');
-    tag.textContent = '';
-    const ghost = make('span', 'fx-type__ghost');
-    ghost.textContent = text; // keeps the layout and is what screen readers read
-    const live = make('span', 'fx-type__live');
-    live.setAttribute('aria-hidden', 'true');
-    const typed = document.createTextNode('');
-    const caret = make('span', 'fx-type__caret');
-    live.append(typed, caret);
-    tag.append(ghost, live);
-    const type = (i = 0) => {
-      typed.data = text.slice(0, i);
-      if (i >= text.length) { tag.classList.add('fx-type--done'); return; }
-      const ch = text[i];
-      setTimeout(() => type(i + 1), /[:,.]/.test(ch) ? 260 : rand(18, 42));
-    };
-    onReveal(heroText, () => introDone.then(() => setTimeout(type, 1700)));
-  }
-
   /* ---------- "CREATIVE PORTFOLIO": letters stamp in one by one (CSS reads --i) ---------- */
   const h1 = $('.hero h1');
   if (h1 && !reduceMotion) {
@@ -275,7 +252,7 @@
       { filter: 'grayscale(1) sepia(.5) brightness(1.4) contrast(.55) blur(1.5px)' },
       { filter: 'grayscale(.4) sepia(.6) brightness(1.15) contrast(.85) blur(.4px)', offset: 0.5 },
       { filter: 'none' },
-    ], { duration: 2800, easing: 'ease-in-out' });
+    ], { duration: 1400, easing: 'ease-in-out' });
     dev.pause();
     introDone.then(() => dev.play());
   }
@@ -519,16 +496,12 @@
       const r = svg.getBoundingClientRect();
       tip.style.left = (r.left - d.left + r.width / 2).toFixed(1) + 'px';
       tip.style.top = (r.top - d.top + r.height / 2).toFixed(1) + 'px';
-      // clientWidth ignores rotation (the spun wheel's bounding box is wider than the chart itself)
       tip.style.setProperty('--fx-hole', ((svg.clientWidth || r.width) * 0.54).toFixed(0) + 'px');
     };
     let active = -1; // -1 = idle: the label shows the largest group, no slice pulled out
     let sticky = false; // a tap keeps the selection until tapping again or elsewhere
     const touch = window.matchMedia('(pointer: coarse)').matches;
-    let stopCycle = () => {};
     const buzz = () => { if (navigator.vibrate) navigator.vibrate(8); };
-    let dots = null;
-    let lastRot = 0;
     const focus = (i) => {
       segs.forEach((s, j) => {
         const on = j === i;
@@ -546,17 +519,6 @@
       }
       centreTip();
       active = i;
-      if (touch) {
-        // Spin the wheel so the selected slice sits at the top (shortest way round)
-        const k = i >= 0 ? i : 0;
-        const mid = (+segs[k].dataset.offset + +segs[k].dataset.pct / 2) * 3.6;
-        let rot = -mid;
-        while (rot - lastRot > 180) rot -= 360;
-        while (rot - lastRot < -180) rot += 360;
-        lastRot = rot;
-        svg.style.rotate = rot.toFixed(1) + 'deg';
-        if (dots) $$('i', dots).forEach((d, j) => d.classList.toggle('fx-on', j === k));
-      }
     };
     onReveal(donut, () => setTimeout(() => { focus(-1); tip.classList.add('show'); }, reduceMotion ? 0 : 900));
     [segs, keys].forEach((list) => list.forEach((n, i) => {
@@ -565,7 +527,6 @@
       n.addEventListener('click', (e) => {
         if (e.pointerType === 'mouse') return;
         e.stopPropagation();
-        stopCycle();
         buzz();
         if (sticky && active === i) { sticky = false; focus(-1); } else { sticky = true; focus(i); }
       });
@@ -577,40 +538,6 @@
 
     if (touch) {
       donut.classList.add('fx-donut-touch');
-      dots = make('div', 'fx-donut-dots', segs.map(() => '<i></i>').join(''));
-      dots.setAttribute('aria-hidden', 'true');
-      donut.append(dots);
-      const step = (dir) => {
-        const cur = active >= 0 ? active : 0;
-        sticky = true;
-        focus((cur + dir + segs.length) % segs.length);
-      };
-      // Auto-tour: cycles through the countries while the chart is on screen, until the visitor touches it
-      let cycle = null;
-      let toured = false;
-      let inView = false;
-      stopCycle = () => { toured = true; clearInterval(cycle); cycle = null; };
-      if (!reduceMotion) {
-        new IntersectionObserver(([e]) => {
-          inView = e.isIntersecting;
-          if (inView && !cycle && !toured) {
-            cycle = setInterval(() => {
-              if (!document.hidden) focus(((active >= 0 ? active : 0) + 1) % segs.length);
-            }, 2200);
-          } else if (!inView && cycle) { clearInterval(cycle); cycle = null; }
-        }, { threshold: 0.5 }).observe(donut);
-      }
-      // Swipe the chart left/right to step through the slices
-      let sx = null;
-      let sy = 0;
-      svg.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
-      svg.addEventListener('touchend', (e) => {
-        if (sx == null) return;
-        const dx = e.changedTouches[0].clientX - sx;
-        const dy = e.changedTouches[0].clientY - sy;
-        sx = null;
-        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { stopCycle(); buzz(); step(dx < 0 ? 1 : -1); }
-      }, { passive: true });
     }
   }
 

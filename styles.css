@@ -455,3 +455,7 @@ html, body { overflow-x: clip; max-width: 100%; }
 .services__tiles img.ph { width: 100%; height: auto; object-fit: cover; object-position: center 25%; display: block; background: var(--paper); }
 
 .hero__img { width: 100%; height: auto; aspect-ratio: 1153 / 941; object-fit: cover; display: block; }
+
+/* About photos: img/about/image1-3.jpg cover the placeholder; if a file is missing the "Photo" placeholder shows */
+.about__strip .ph { position: relative; overflow: hidden; }
+.about__strip .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }

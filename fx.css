@@ -76,16 +76,6 @@ html.fx .audience h2.script::after {
   html.fx-ready h2.script.reveal.in::after, html.fx-ready .reveal.in h2.script::after { animation: fx-flourish .7s ease-out 1.6s forwards; }
 }
 
-/* ---------- 5. Typewriter tagline ---------- */
-.fx-type { position: relative; }
-.fx-type__ghost { color: transparent; }
-.fx-type__live { position: absolute; inset: 0; }
-.fx-type__caret {
-  display: inline-block; width: .5em; height: 1.05em; margin-left: 2px; vertical-align: text-bottom;
-  background: var(--pink); animation: fx-blink 1s steps(1) infinite;
-}
-@keyframes fx-blink { 50% { opacity: 0; } }
-
 /* ---------- Hero: polaroid tilt, charms, petals ---------- */
 html.fx .hero .polaroid.fx-tilt {
   position: relative;
@@ -415,6 +405,7 @@ html.fx-intro-lock, html.fx-intro-lock body { overflow: hidden; }
 }
 @keyframes fx-screen { from { background-color: #120b0a; box-shadow: none; } }
 .fx-intro--play .fx-intro__screen { animation: fx-screen .32s ease-out .88s backwards; }
+@keyframes fx-blink { 50% { opacity: 0; } }
 .fx-intro__caret { display: inline-block; width: 8px; height: 16px; margin-left: 2px; background: var(--pink); animation: fx-blink .8s steps(1) infinite; }
 .fx-intro__base {
   position: relative; height: 12px; margin-top: -1px;
@@ -774,8 +765,7 @@ html.fx .hero__photo, html.fx .hero__photo * {
 }
 html.fx .hero__photo img { -webkit-user-drag: none; }
 
-/* Donut on touch screens: spins the selected slice to the top, legend pills, pager dots */
-.fx-donut-touch .donut__svg { transition: rotate .6s cubic-bezier(.3,1.3,.5,1); touch-action: pan-y; }
+/* Donut on touch screens: legend pills */
 /* Legend as a tidy row of equal pills that never wrap mid-label */
 .fx-donut-touch figcaption {
   display: flex; flex-wrap: wrap; justify-content: center; gap: .45rem; width: 100%;
@@ -789,6 +779,3 @@ html.fx .hero__photo img { -webkit-user-drag: none; }
 .fx-donut-touch figcaption span i { flex: none; margin-right: .4rem; }
 .fx-donut-touch figcaption span.fx-on { background: var(--pink); border-color: var(--pink); color: var(--brown); }
 html.fx-espresso .fx-donut-touch figcaption span { border-color: rgba(242,184,192,.3); }
-.fx-donut-dots { display: flex; justify-content: center; gap: 8px; }
-.fx-donut-dots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(59,42,41,.25); transition: width .3s, background .3s; }
-.fx-donut-dots i.fx-on { width: 20px; border-radius: 999px; background: var(--brown-2); }
