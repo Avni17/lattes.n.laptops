@@ -280,7 +280,7 @@
     introDone.then(() => dev.play());
   }
 
-  /* ---------- Hero: polaroid tilt + glare, lily parallax, falling petals ---------- */
+  /* ---------- Hero: polaroid tilt, lily parallax, falling petals ---------- */
   const hero = $('.hero');
   const heroPolaroid = $('.hero .polaroid');
   if (hero && heroPolaroid && !reduceMotion) {
@@ -295,8 +295,6 @@
       raf = requestAnimationFrame(() => {
         heroPolaroid.style.setProperty('--fx-rx', (-ny * 8).toFixed(2) + 'deg');
         heroPolaroid.style.setProperty('--fx-ry', (nx * 10).toFixed(2) + 'deg');
-        heroPolaroid.style.setProperty('--fx-gx', (50 + nx * 45).toFixed(1) + '%');
-        heroPolaroid.style.setProperty('--fx-gy', (40 + ny * 45).toFixed(1) + '%');
         lilies.forEach(({ el, depth }) => { el.style.translate = `${(nx * depth).toFixed(1)}px ${(ny * depth).toFixed(1)}px`; });
       });
     };

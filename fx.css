@@ -86,7 +86,7 @@ html.fx .audience h2.script::after {
 }
 @keyframes fx-blink { 50% { opacity: 0; } }
 
-/* ---------- Hero: polaroid tilt + glare, charms, petals ---------- */
+/* ---------- Hero: polaroid tilt, charms, petals ---------- */
 html.fx .hero .polaroid.fx-tilt {
   position: relative;
   transform: perspective(900px) rotateX(var(--fx-rx, 0deg)) rotateY(var(--fx-ry, 0deg)) rotate(-4deg);
@@ -95,12 +95,6 @@ html.fx .hero .polaroid.fx-tilt {
 html.fx .hero .polaroid.fx-tilt:hover {
   transform: perspective(900px) rotateX(var(--fx-rx, 0deg)) rotateY(var(--fx-ry, 0deg)) rotate(0) scale(1.02);
 }
-html.fx .hero .polaroid.fx-tilt::after {
-  content: ""; position: absolute; inset: 10px 10px 34px; pointer-events: none;
-  background: radial-gradient(circle at var(--fx-gx, 50%) var(--fx-gy, 40%), rgba(255,255,255,.4), transparent 55%);
-  opacity: 0; transition: opacity .3s;
-}
-html.fx .hero:hover .polaroid.fx-tilt::after { opacity: 1; }
 html.fx .hero .charm { cursor: pointer; }
 html.fx .charm--key { transform-origin: 30% 30%; }
 html.fx .charm--heart { transform-origin: 50% 10%; }
