@@ -706,15 +706,18 @@
     });
   }
 
-  /* ---------- Contact form: envelope + wax seal on send, shake when invalid ---------- */
+  /* ---------- Contact form: shake when invalid, envelope + wax seal once the email is actually sent ---------- */
   // script.js registers its submit handler first, so validation (aria-invalid) is already set here
   if (form) {
     form.addEventListener('submit', () => {
       if (reduceMotion) return;
       if (form.querySelector('[aria-invalid="true"]')) {
         form.animate({ translate: ['0', '-10px', '9px', '-6px', '4px', '0'] }, { duration: 420, easing: 'ease-out' });
-        return;
       }
+    });
+    // script.js fires this after Web3Forms confirms delivery
+    form.addEventListener('form:sent', () => {
+      if (reduceMotion) return;
       if (form.classList.contains('fx-sending')) return;
       const env = make('div', 'fx-env', `
         <div class="fx-env__back"></div>

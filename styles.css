@@ -459,3 +459,9 @@ html, body { overflow-x: clip; max-width: 100%; }
 /* About photos: img/about/image1-3.JPG cover the placeholder; if a file is missing the "Photo" placeholder shows */
 .about__strip .ph { position: relative; overflow: hidden; }
 .about__strip .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Contact form: hidden spam trap, "email me directly" link, sending state */
+.form__trap { display: none; }
+.form__alt { margin: -.4rem 0 0; font-size: .8rem; text-align: center; opacity: .75; }
+.form__alt a, .form__status a { color: var(--pink); text-decoration: underline; }
+.form button:disabled { opacity: .7; cursor: progress; transform: none; }

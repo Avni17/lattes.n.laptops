@@ -59,13 +59,17 @@
 
   document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
-  // Contact form: validates, then opens the visitor's email client
-  const CONTACT_EMAIL = 'lattes.n.laptops@gmail.com'; // [EDIT]
+  // Contact form: validates, then sends the inquiry straight to the inbox via Web3Forms
+  const CONTACT_EMAIL = 'lattes.n.laptops@gmail.com'; // [EDIT] used for the "email me directly" fallback
+  const WEB3FORMS_KEY = '5d74dabe-eda0-417d-bb8f-64e61b681c7a'; // [EDIT] Web3Forms access key (only sends to her inbox, safe to be public)
   const form = document.getElementById('contact-form');
   const status = form.querySelector('.form__status');
+  const submitBtn = form.querySelector('button[type="submit"]');
+  let sending = false;
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (sending) return;
     let valid = true;
     form.querySelectorAll('[required]').forEach((field) => {
       const ok = field.type === 'email'
@@ -81,8 +85,46 @@
     const data = new FormData(form);
     const subject = `Collaboration inquiry from ${data.get('name')}${data.get('brand') ? ' (' + data.get('brand') + ')' : ''}`;
     const body = `${data.get('message')}\n\n${data.get('name')}\n${data.get('email')}`;
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    status.textContent = 'Opening your email app...';
+    const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    sending = true;
+    submitBtn.disabled = true;
+    const label = submitBtn.textContent;
+    submitBtn.textContent = 'Brewing...';
+    status.textContent = '';
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject,
+          from_name: 'Lattes.n.laptops website',
+          name: data.get('name'),
+          email: data.get('email'), // Web3Forms sets this as reply-to, so "Reply" goes to the brand
+          brand: data.get('brand') || '-',
+          message: data.get('message'),
+          botcheck: data.get('botcheck') ? true : '', // honeypot: bots tick it, Web3Forms rejects them
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || !json.success) throw new Error(json.message || 'Send failed');
+      form.reset();
+      form.querySelectorAll('[aria-invalid]').forEach((f) => f.removeAttribute('aria-invalid'));
+      status.textContent = "Sent! I'll get back within 24–48h ☕";
+      form.dispatchEvent(new CustomEvent('form:sent'));
+    } catch (err) {
+      status.innerHTML = '';
+      status.append("Couldn't send right now. ");
+      const a = document.createElement('a');
+      a.href = mailto;
+      a.textContent = 'Email me directly instead';
+      status.append(a);
+    } finally {
+      sending = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = label;
+    }
   });
 
   // Featured videos: silent looping preview while in view, tap = full video with sound
