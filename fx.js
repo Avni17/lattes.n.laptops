@@ -958,10 +958,10 @@
     $$('.fx-rail__charm', rail).forEach((btn, i) => { items[i].btn = btn; });
 
     const maxScroll = () => Math.max(root.scrollHeight - window.innerHeight, 1);
-    const layout = () => items.forEach((it) => {
+    const layout = () => { rail.style.setProperty('--fx-nav-h', navHeight() + 'px'); items.forEach((it) => {
       it.t = it.sel === '.hero' ? 0 : clamp((it.sec.offsetTop - navHeight()) / maxScroll(), 0, 1);
       it.btn.style.setProperty('--t', (it.t * 100).toFixed(2) + '%');
-    });
+    }); };
     let active = null;
     const update = () => {
       const p = clamp(window.scrollY / maxScroll(), 0, 1);
