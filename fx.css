@@ -234,8 +234,8 @@ html.fx .quotes.in blockquote { animation: fx-note .8s cubic-bezier(.2,.8,.3,1.1
 @keyframes fx-print-out { from { translate: 0 -101%; } to { translate: 0 0; } }
 @media (prefers-reduced-motion: no-preference) {
   .fx-print:not(.fx-printing) .fx-receipt { translate: 0 -101%; }
-  .fx-print.fx-printing .fx-receipt { animation: fx-print-out 1.4s steps(20) both; }
-  .fx-order.fx-printing .fx-receipt { animation: fx-print-out .9s steps(12) both; }
+  .fx-print.fx-printing .fx-receipt { animation: fx-print-out 1.12s steps(18) both; }
+  .fx-order.fx-printing .fx-receipt { animation: fx-print-out .72s steps(10) both; }
 }
 
 /* ---------- 2. Brew your brief ---------- */
