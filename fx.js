@@ -85,7 +85,7 @@
     requestAnimationFrame(tick);
   };
 
-  /* ---------- Intro: latte pours, laptop opens, dive into the screen (~2.7s, every page load) ---------- */
+  /* ---------- Intro: latte pours, laptop opens, dive into the screen (~2.2s, every page load) ---------- */
   // Skipped only for visitors who prefer reduced motion.
   const introDone = (() => {
     const ready = () => root.classList.add('fx-ready');
@@ -149,22 +149,22 @@
         root.classList.remove('fx-intro-lock');
         ready();
         resolve();
-        setTimeout(() => intro.remove(), fast ? 250 : 500);
+        setTimeout(() => intro.remove(), fast ? 250 : 400);
       };
       // Typing on the laptop screen
       const word = 'lattes.n.laptops';
-      [...word].forEach((_, i) => at(1200 + i * 28, () => { typed.textContent = word.slice(0, i + 1); }));
+      [...word].forEach((_, i) => at(960 + i * 22, () => { typed.textContent = word.slice(0, i + 1); }));
       // Dive into the screen until it covers the viewport (its background matches the hero)
-      at(1750, () => {
+      at(1400, () => {
         const s = screen.getBoundingClientRect();
         const box = scene.getBoundingClientRect();
         const k = parseFloat(fitBox.style.scale) || 1;
         scene.style.transformOrigin = `${((s.left + s.width / 2 - box.left) / k).toFixed(1)}px ${((s.top + s.height / 2 - box.top) / k).toFixed(1)}px`;
         const zoom = Math.max(window.innerWidth / s.width, window.innerHeight / s.height) * 1.25;
         scene.animate([{ transform: 'scale(1)' }, { transform: `scale(${zoom.toFixed(2)})` }],
-          { duration: 700, easing: 'cubic-bezier(.7,0,.84,0)', fill: 'forwards' });
+          { duration: 560, easing: 'cubic-bezier(.7,0,.84,0)', fill: 'forwards' });
       });
-      at(2250, () => finish(false));
+      at(1800, () => finish(false));
       $('.fx-intro__skip', intro).addEventListener('click', (e) => { e.stopPropagation(); finish(true); });
       intro.addEventListener('click', () => finish(true));
       window.addEventListener('keydown', (e) => { if (e.key === 'Escape') finish(true); });
@@ -307,12 +307,36 @@
              clamp((e.clientY - (r.top + r.height / 2)) / (r.height * 0.8), -1, 1));
       });
       hero.addEventListener('pointerleave', () => tilt(0, 0));
-    } else if ('DeviceOrientationEvent' in window && typeof DeviceOrientationEvent.requestPermission !== 'function') {
-      // Phones: tilt with the device (Android; iOS needs a permission prompt, so it's skipped there)
-      window.addEventListener('deviceorientation', (e) => {
-        if (e.gamma == null || window.scrollY > hero.offsetHeight) return;
-        tilt(clamp(e.gamma / 30, -1, 1), clamp((e.beta - 45) / 30, -1, 1));
-      }, { passive: true });
+    } else {
+      // Phones, 1) finger: tilt follows your finger on the photo (always works, doesn't block scrolling)
+      const frame = heroPolaroid;
+      const fromTouch = (t) => {
+        const r = frame.getBoundingClientRect();
+        tilt(clamp((t.clientX - (r.left + r.width / 2)) / (r.width / 2), -1, 1),
+             clamp((t.clientY - (r.top + r.height / 2)) / (r.height / 2), -1, 1));
+      };
+      frame.addEventListener('touchstart', (e) => fromTouch(e.touches[0]), { passive: true });
+      frame.addEventListener('touchmove', (e) => fromTouch(e.touches[0]), { passive: true });
+      frame.addEventListener('touchend', () => tilt(0, 0), { passive: true });
+      frame.addEventListener('touchcancel', () => tilt(0, 0), { passive: true });
+
+      // Phones, 2) motion: tilt with the device where the browser allows it without asking
+      // (Android on https). iPhones require a permission popup, so they just use finger tilt.
+      let base = null;
+      let sx = 0;
+      let sy = 0;
+      const onTilt = (e) => {
+        if (e.gamma == null || e.beta == null || window.scrollY > hero.offsetHeight) return;
+        if (!base) base = { g: e.gamma, b: e.beta }; // however the phone is held at first counts as "flat"
+        sx += (clamp((e.gamma - base.g) / 25, -1, 1) - sx) * 0.25; // smooth out sensor jitter
+        sy += (clamp((e.beta - base.b) / 25, -1, 1) - sy) * 0.25;
+        tilt(sx, sy);
+      };
+      const listen = () => window.addEventListener('deviceorientation', onTilt, { passive: true });
+      if (window.isSecureContext && 'DeviceOrientationEvent' in window
+          && typeof DeviceOrientationEvent.requestPermission !== 'function') listen();
+      // Re-centre after rotating the phone
+      window.addEventListener('orientationchange', () => { base = null; });
     }
 
     // Occasional lily petal drifting down the hero
@@ -348,36 +372,19 @@
     c.addEventListener('pointerenter', () => swing(c));
     c.addEventListener('click', () => swing(c));
   });
-  // The like: a big heart grows from the photo to fill ~2/3 of the screen, with a full-screen burst
+  // The like: a soft pink flash and a full-screen burst of lilies
   const LIKED = 'fx-liked';
   let liked = false;
   try { liked = localStorage.getItem(LIKED) === '1'; } catch (e) { /* storage blocked */ }
   const likePhoto = () => {
     liked = true;
     try { localStorage.setItem(LIKED, '1'); } catch (e) { /* storage blocked */ }
-    if (reduceMotion || !heroPolaroid) return;
-    const r = heroPolaroid.getBoundingClientRect();
-    const cx = window.innerWidth / 2;
-    const cy = window.innerHeight / 2;
-    const dx = (r.left + r.width / 2 - cx).toFixed(0);
-    const dy = (r.top + r.height / 2 - cy).toFixed(0);
+    if (reduceMotion) return;
     const flash = make('span', 'fx-like-flash');
-    const big = make('span', 'fx-big-heart', `
-      <svg viewBox="0 0 24 24">
-        <defs><linearGradient id="fx-like-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbd3d9"/><stop offset="1" stop-color="#e7a1ad"/></linearGradient></defs>
-        <path d="M12 21s-8-5.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.5-8 11-8 11z" fill="url(#fx-like-g)" stroke="#fff" stroke-width=".8"/>
-        <path d="M8 8.2a2.4 2.4 0 0 1 2.6-1.4" fill="none" stroke="#fff" stroke-width=".9" stroke-linecap="round" opacity=".8"/>
-      </svg>`);
-    [flash, big].forEach((n) => { n.setAttribute('aria-hidden', 'true'); document.body.append(n); });
+    flash.setAttribute('aria-hidden', 'true');
+    document.body.append(flash);
     flash.animate([{ opacity: 0 }, { opacity: 1, offset: 0.3 }, { opacity: 0 }], { duration: 1100, easing: 'ease-out' }).onfinish = () => flash.remove();
-    big.animate([
-      { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(.08)`, opacity: 0 },
-      { transform: 'translate(-50%, -50%) scale(1.08)', opacity: 1, offset: 0.35 },
-      { transform: 'translate(-50%, -50%) scale(.95)', opacity: 1, offset: 0.5 },
-      { transform: 'translate(-50%, -50%) scale(1)', opacity: 1, offset: 0.78 },
-      { transform: 'translate(-50%, -58%) scale(1.06)', opacity: 0 },
-    ], { duration: 1500, easing: 'ease-out' }).onfinish = () => big.remove();
-    setTimeout(() => burst(cx, cy, { hearts: 34, lilies: 12, spread: Math.max(window.innerWidth, window.innerHeight) * 0.55, size: 1.8 }), 380);
+    burst(window.innerWidth / 2, window.innerHeight / 2, { hearts: 0, lilies: 24, spread: Math.max(window.innerWidth, window.innerHeight) * 0.55, size: 1.8 });
   };
 
   // Discoverability: the heart "taps itself" twice (double heartbeat + two ripples) every few seconds
@@ -566,10 +573,16 @@
       const r = svg.getBoundingClientRect();
       tip.style.left = (r.left - d.left + r.width / 2).toFixed(1) + 'px';
       tip.style.top = (r.top - d.top + r.height / 2).toFixed(1) + 'px';
-      tip.style.setProperty('--fx-hole', (r.width * 0.54).toFixed(0) + 'px');
+      // clientWidth ignores rotation (the spun wheel's bounding box is wider than the chart itself)
+      tip.style.setProperty('--fx-hole', ((svg.clientWidth || r.width) * 0.54).toFixed(0) + 'px');
     };
     let active = -1; // -1 = idle: the label shows the largest group, no slice pulled out
     let sticky = false; // a tap keeps the selection until tapping again or elsewhere
+    const touch = window.matchMedia('(pointer: coarse)').matches;
+    let stopCycle = () => {};
+    const buzz = () => { if (navigator.vibrate) navigator.vibrate(8); };
+    let dots = null;
+    let lastRot = 0;
     const focus = (i) => {
       segs.forEach((s, j) => {
         const on = j === i;
@@ -587,6 +600,17 @@
       }
       centreTip();
       active = i;
+      if (touch) {
+        // Spin the wheel so the selected slice sits at the top (shortest way round)
+        const k = i >= 0 ? i : 0;
+        const mid = (+segs[k].dataset.offset + +segs[k].dataset.pct / 2) * 3.6;
+        let rot = -mid;
+        while (rot - lastRot > 180) rot -= 360;
+        while (rot - lastRot < -180) rot += 360;
+        lastRot = rot;
+        svg.style.rotate = rot.toFixed(1) + 'deg';
+        if (dots) $$('i', dots).forEach((d, j) => d.classList.toggle('fx-on', j === k));
+      }
     };
     onReveal(donut, () => setTimeout(() => { focus(-1); tip.classList.add('show'); }, reduceMotion ? 0 : 900));
     [segs, keys].forEach((list) => list.forEach((n, i) => {
@@ -595,6 +619,8 @@
       n.addEventListener('click', (e) => {
         if (e.pointerType === 'mouse') return;
         e.stopPropagation();
+        stopCycle();
+        buzz();
         if (sticky && active === i) { sticky = false; focus(-1); } else { sticky = true; focus(i); }
       });
     }));
@@ -602,6 +628,44 @@
       if (sticky && !donut.contains(e.target)) { sticky = false; focus(-1); }
     });
     window.addEventListener('resize', centreTip);
+
+    if (touch) {
+      donut.classList.add('fx-donut-touch');
+      dots = make('div', 'fx-donut-dots', segs.map(() => '<i></i>').join(''));
+      dots.setAttribute('aria-hidden', 'true');
+      donut.append(dots);
+      const step = (dir) => {
+        const cur = active >= 0 ? active : 0;
+        sticky = true;
+        focus((cur + dir + segs.length) % segs.length);
+      };
+      // Auto-tour: cycles through the countries while the chart is on screen, until the visitor touches it
+      let cycle = null;
+      let toured = false;
+      let inView = false;
+      stopCycle = () => { toured = true; clearInterval(cycle); cycle = null; };
+      if (!reduceMotion) {
+        new IntersectionObserver(([e]) => {
+          inView = e.isIntersecting;
+          if (inView && !cycle && !toured) {
+            cycle = setInterval(() => {
+              if (!document.hidden) focus(((active >= 0 ? active : 0) + 1) % segs.length);
+            }, 2200);
+          } else if (!inView && cycle) { clearInterval(cycle); cycle = null; }
+        }, { threshold: 0.5 }).observe(donut);
+      }
+      // Swipe the chart left/right to step through the slices
+      let sx = null;
+      let sy = 0;
+      svg.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+      svg.addEventListener('touchend', (e) => {
+        if (sx == null) return;
+        const dx = e.changedTouches[0].clientX - sx;
+        const dy = e.changedTouches[0].clientY - sy;
+        sx = null;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { stopCycle(); buzz(); step(dx < 0 ? 1 : -1); }
+      }, { passive: true });
+    }
   }
 
   /* ---------- Lace trim stitches in when each lace edge scrolls into view ---------- */
@@ -816,7 +880,7 @@
     };
     let saved = null;
     try { saved = localStorage.getItem(KEY); } catch (e) { /* storage blocked */ }
-    set(saved === '1', false);
+    set(saved !== '0', false); // Espresso is the default; only an explicit switch to latte is remembered as off
     btn.addEventListener('click', () => set(!root.classList.contains('fx-espresso'), true));
     navLinks.append(btn);
   }
