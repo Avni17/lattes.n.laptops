@@ -81,15 +81,16 @@
     requestAnimationFrame(tick);
   };
 
-  /* ---------- Intro: latte pours, laptop opens, dive into the screen (~2s, once per session) ---------- */
-  // Add ?intro to the URL to replay it. Skipped for reduced motion, deep links (#section) and repeat visits.
+  /* ---------- Intro: latte pours, laptop opens, dive into the screen (~2.7s, every page load) ---------- */
+  // Skipped only for visitors who prefer reduced motion.
   const introDone = (() => {
     const ready = () => root.classList.add('fx-ready');
-    let seen = false;
-    try { seen = sessionStorage.getItem('fx-intro') === '1'; } catch (e) { /* storage blocked */ }
-    const force = new URLSearchParams(window.location.search).has('intro');
-    if (!force && (reduceMotion || seen || window.location.hash)) { ready(); return Promise.resolve(); }
-    try { sessionStorage.setItem('fx-intro', '1'); } catch (e) { /* storage blocked */ }
+    if (reduceMotion) { ready(); return Promise.resolve(); }
+    // Start at the top so the intro lands on the hero (unless the URL points at a section)
+    if (!window.location.hash) {
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      window.scrollTo(0, 0);
+    }
 
     const intro = make('div', 'fx-intro', `
       <div class="fx-intro__fit"><div class="fx-intro__scene" aria-hidden="true">
@@ -144,24 +145,22 @@
         root.classList.remove('fx-intro-lock');
         ready();
         resolve();
-        setTimeout(() => intro.remove(), fast ? 250 : 400);
+        setTimeout(() => intro.remove(), fast ? 250 : 500);
       };
       // Typing on the laptop screen
       const word = 'lattes.n.laptops';
-      at(900, () => {
-        [...word].forEach((_, i) => at(900 + i * 20, () => { typed.textContent = word.slice(0, i + 1); }));
-      });
+      [...word].forEach((_, i) => at(1200 + i * 28, () => { typed.textContent = word.slice(0, i + 1); }));
       // Dive into the screen until it covers the viewport (its background matches the hero)
-      at(1300, () => {
+      at(1750, () => {
         const s = screen.getBoundingClientRect();
         const box = scene.getBoundingClientRect();
         const k = parseFloat(fitBox.style.scale) || 1;
         scene.style.transformOrigin = `${((s.left + s.width / 2 - box.left) / k).toFixed(1)}px ${((s.top + s.height / 2 - box.top) / k).toFixed(1)}px`;
         const zoom = Math.max(window.innerWidth / s.width, window.innerHeight / s.height) * 1.25;
         scene.animate([{ transform: 'scale(1)' }, { transform: `scale(${zoom.toFixed(2)})` }],
-          { duration: 550, easing: 'cubic-bezier(.7,0,.84,0)', fill: 'forwards' });
+          { duration: 700, easing: 'cubic-bezier(.7,0,.84,0)', fill: 'forwards' });
       });
-      at(1700, () => finish(false));
+      at(2250, () => finish(false));
       $('.fx-intro__skip', intro).addEventListener('click', (e) => { e.stopPropagation(); finish(true); });
       intro.addEventListener('click', () => finish(true));
       window.addEventListener('keydown', (e) => { if (e.key === 'Escape') finish(true); });
@@ -806,5 +805,286 @@
       requestAnimationFrame(follow);
     };
     follow();
+  }
+
+  /* ---------- Navbar: milk-foam blob under the current section's link (desktop) ---------- */
+  const nav = $('.nav');
+  const navHeight = () => (nav ? nav.offsetHeight : 0);
+  if (navLinks) {
+    const targets = $$('a[href^="#"]', navLinks)
+      .map((a) => ({ a, sec: document.getElementById(a.getAttribute('href').slice(1)) }))
+      .filter((t) => t.sec);
+    const blob = make('span', 'fx-foam-blob', '<i></i><i></i><i></i>');
+    blob.setAttribute('aria-hidden', 'true');
+    navLinks.append(blob);
+    let current = null; // link for the section in view
+    let shown = null; // link the blob is under right now (current, or the hovered one)
+    let lastLeft = null;
+
+    const place = (a, force) => {
+      if (!desktop.matches) return;
+      if (a === shown && !force) return;
+      shown = a;
+      if (!a) { blob.classList.remove('on'); return; }
+      const box = navLinks.getBoundingClientRect();
+      const r = a.getBoundingClientRect();
+      const w = r.width * (a.classList.contains('nav__cta') ? 0.6 : 0.8);
+      const left = r.left - box.left + (r.width - w) / 2;
+      const right = box.right - r.right + (r.width - w) / 2;
+      const appearing = !blob.classList.contains('on') || force;
+      // Leading edge moves first and the trailing edge catches up, so it stretches like liquid
+      const goingRight = lastLeft != null && left > lastLeft;
+      blob.style.setProperty('--dl', appearing ? '0s' : goingRight ? '.12s' : '0s');
+      blob.style.setProperty('--dr', appearing ? '0s' : goingRight ? '0s' : '.12s');
+      if (appearing) blob.classList.add('fx-snap');
+      blob.style.setProperty('--l', left.toFixed(1) + 'px');
+      blob.style.setProperty('--r', right.toFixed(1) + 'px');
+      if (appearing) { void blob.offsetWidth; blob.classList.remove('fx-snap'); }
+      lastLeft = left;
+      blob.classList.add('on');
+      if (!reduceMotion && !appearing) {
+        blob.classList.remove('fx-squish');
+        void blob.offsetWidth;
+        blob.classList.add('fx-squish');
+      }
+    };
+
+    const pickSection = () => {
+      const y = window.scrollY + window.innerHeight * 0.35;
+      const atBottom = window.scrollY + window.innerHeight >= root.scrollHeight - 4;
+      let found = null;
+      [...targets].sort((x, z) => x.sec.offsetTop - z.sec.offsetTop).forEach((t) => {
+        if (t.sec.offsetTop - navHeight() <= y) found = t.a;
+      });
+      if (atBottom && targets.length) found = targets.find((t) => t.sec.id === 'collaborate')?.a || found;
+      if (found !== current) {
+        targets.forEach((t) => {
+          t.a.classList.toggle('fx-active', t.a === found);
+          if (t.a === found) t.a.setAttribute('aria-current', 'location'); else t.a.removeAttribute('aria-current');
+        });
+        current = found;
+      }
+      if (!navLinks.matches(':hover')) place(current);
+    };
+    let navTicking = false;
+    window.addEventListener('scroll', () => {
+      if (!navTicking) { navTicking = true; requestAnimationFrame(() => { navTicking = false; pickSection(); }); }
+    }, { passive: true });
+    window.addEventListener('resize', () => { place(shown, true); pickSection(); });
+    // Hover preview: the foam follows the pointer, then flows back to the current section
+    targets.forEach((t) => t.a.addEventListener('pointerenter', () => place(t.a)));
+    navLinks.addEventListener('pointerleave', () => place(current));
+    pickSection();
+  }
+
+  /* ---------- Phones: charm-bracelet scroll indicator (drag the heart, tap a charm to jump) ---------- */
+  if (window.matchMedia('(pointer: coarse)').matches) {
+    const svg = (inner) => `<svg viewBox="0 0 24 24" fill="currentColor">${inner}</svg>`;
+    const CHARMS = [
+      { sel: '.hero', label: 'Top', icon: svg('<path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17" fill="none" stroke="currentColor" stroke-width="2"/>') },
+      { sel: '#about', label: 'About', icon: svg('<path d="M12 21s-8-5.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.5-8 11-8 11z"/>') },
+      { sel: '#services', label: 'Services', icon: '<img src="img/lily.png" alt="">' },
+      { sel: '#work', label: 'My Work', icon: svg('<path d="M8 5v14l11-7z"/>') },
+      { sel: '#testimonials', label: 'Testimonials', icon: svg('<path d="M5 18h4l2-4V7H5v7h3zm9 0h4l2-4V7h-6v7h3z"/>') },
+      { sel: '#collaborate', label: 'Collaborate', icon: svg('<circle cx="8" cy="8" r="4.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M11.5 11.5l9 9M17 17l2.5-2.5M14.5 14.5l2.5-2.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>') },
+    ];
+    const items = CHARMS.map((c) => ({ ...c, sec: $(c.sel) })).filter((c) => c.sec);
+    // Visual shortcut only: the nav menu remains the accessible way to move between sections
+    const rail = make('div', 'fx-rail', `
+      <span class="fx-rail__thread"></span><span class="fx-rail__fill"></span>
+      ${items.map((it) => `<button type="button" class="fx-rail__charm" tabindex="-1">${it.icon}</button>`).join('')}
+      <span class="fx-rail__label"></span>
+      <span class="fx-rail__bead"><svg viewBox="0 0 24 24"><defs><linearGradient id="fx-bead" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6e2c8"/><stop offset="1" stop-color="#a36f4f"/></linearGradient></defs><path d="M12 21s-8-5.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.5-8 11-8 11z" fill="url(#fx-bead)" stroke="#fdf6e8" stroke-width="1.6"/></svg></span>`);
+    rail.setAttribute('aria-hidden', 'true');
+    document.body.append(rail);
+    const bead = $('.fx-rail__bead', rail);
+    const label = $('.fx-rail__label', rail);
+    $$('.fx-rail__charm', rail).forEach((btn, i) => { items[i].btn = btn; });
+
+    const maxScroll = () => Math.max(root.scrollHeight - window.innerHeight, 1);
+    const layout = () => items.forEach((it) => {
+      it.t = it.sel === '.hero' ? 0 : clamp((it.sec.offsetTop - navHeight()) / maxScroll(), 0, 1);
+      it.btn.style.setProperty('--t', (it.t * 100).toFixed(2) + '%');
+    });
+    let active = null;
+    const update = () => {
+      const p = clamp(window.scrollY / maxScroll(), 0, 1);
+      rail.style.setProperty('--p', (p * 100).toFixed(2) + '%');
+      let now = items[0];
+      items.forEach((it) => { if (it.t <= p + 0.01) now = it; });
+      if (now !== active) {
+        items.forEach((it) => it.btn.classList.toggle('fx-on', it === now));
+        if (active && !reduceMotion) now.btn.animate({ rotate: ['0deg', '25deg', '-18deg', '10deg', '0deg'] }, { duration: 700, easing: 'ease-out' });
+        active = now;
+        label.textContent = now.label;
+      }
+    };
+    let hideTimer;
+    let dragging = false;
+    const show = () => {
+      if (root.classList.contains('fx-intro-lock')) return;
+      rail.classList.add('show');
+      clearTimeout(hideTimer);
+      if (!dragging) hideTimer = setTimeout(() => rail.classList.remove('show', 'fx-labeling'), 1500);
+    };
+    let railTicking = false;
+    window.addEventListener('scroll', () => {
+      if (!railTicking) { railTicking = true; requestAnimationFrame(() => { railTicking = false; update(); show(); }); }
+    }, { passive: true });
+    window.addEventListener('resize', () => { layout(); update(); });
+    new ResizeObserver(() => { layout(); update(); }).observe(document.body);
+
+    // Drag the heart bead to scrub through the page
+    bead.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      bead.setPointerCapture(e.pointerId);
+      rail.classList.add('fx-dragging', 'fx-labeling');
+      show();
+      e.preventDefault();
+    });
+    bead.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const r = rail.getBoundingClientRect();
+      const p = clamp((e.clientY - r.top) / r.height, 0, 1);
+      window.scrollTo({ top: p * maxScroll(), behavior: 'instant' });
+    });
+    const release = () => {
+      if (!dragging) return;
+      dragging = false;
+      rail.classList.remove('fx-dragging');
+      show();
+    };
+    bead.addEventListener('pointerup', release);
+    bead.addEventListener('pointercancel', release);
+
+    // Tap a charm to jump to its section
+    items.forEach((it) => it.btn.addEventListener('click', () => {
+      rail.classList.add('fx-labeling');
+      if (it.sel === '.hero') window.scrollTo({ top: 0, behavior: behavior() });
+      else it.sec.scrollIntoView({ behavior: behavior() });
+      show();
+    }));
+
+    layout();
+    update();
+  }
+
+  /* ---------- Phones: café menu board replaces the dropdown menu ---------- */
+  // The original dropdown stays in the HTML; on phones the toggle opens this board instead.
+  const navToggle = $('.nav__toggle');
+  const mobile = window.matchMedia('(max-width: 720px)');
+  if (navToggle && navLinks) {
+    navToggle.insertAdjacentHTML('beforeend',
+      '<svg class="fx-toggle-cup" viewBox="0 0 40 40" aria-hidden="true">' +
+      '<g class="fx-toggle-cup__steam" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16 12c-2-3 2-4 0-7"/><path d="M22 12c-2-3 2-4 0-7"/></g>' +
+      '<path d="M9 15h20v7a8 8 0 0 1-8 8h-4a8 8 0 0 1-8-8z" fill="none" stroke="currentColor" stroke-width="2.2"/>' +
+      '<path d="M29 18h2a3 3 0 0 1 0 6h-2" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>');
+
+    const links = $$('a[href^="#"]', navLinks).filter((a) => !a.classList.contains('nav__cta'));
+    const cta = $('.nav__cta', navLinks);
+    const insta = $('.hero__social a[href*="instagram"]');
+    const board = make('div', 'fx-board', `
+      <img class="fx-board__lily fx-board__lily--l" src="img/lily.png" alt="" aria-hidden="true">
+      <img class="fx-board__lily fx-board__lily--r" src="img/lily.png" alt="" aria-hidden="true">
+      <button type="button" class="fx-board__close" aria-label="Close menu">&#10005;</button>
+      <p class="fx-board__title" aria-hidden="true">Avni's Menu</p>
+      <ol class="fx-board__list">
+        ${links.map((a, i) => `<li style="--i:${i}"><a href="${esc(a.getAttribute('href'))}"><span class="fx-board__name">${esc(a.textContent.trim())}</span><i aria-hidden="true"></i><b aria-hidden="true">0${i + 1}</b></a></li>`).join('')}
+      </ol>
+      ${cta ? `<a class="fx-board__special" href="${esc(cta.getAttribute('href'))}"><small>&#9733; Today's special</small><span>Let's collaborate &#9749;</span></a>` : ''}
+      <div class="fx-board__foot">
+        <button type="button" class="fx-board__theme" aria-pressed="false"></button>
+        ${insta ? `<a class="fx-board__insta" href="${esc(insta.href)}" target="_blank" rel="noopener">@lattes.n.laptops &middot; Instagram</a>` : ''}
+      </div>`);
+    board.id = 'fx-board';
+    board.hidden = true;
+    board.setAttribute('role', 'dialog');
+    board.setAttribute('aria-modal', 'true');
+    board.setAttribute('aria-label', 'Menu');
+    document.body.append(board);
+
+    const themeBtn = $('.fx-theme', navLinks);
+    const boardTheme = $('.fx-board__theme', board);
+    const syncTheme = () => {
+      const on = root.classList.contains('fx-espresso');
+      boardTheme.innerHTML = on ? '&#9728; Latte mode' : '&#9790; Espresso mode';
+      boardTheme.setAttribute('aria-pressed', String(on));
+    };
+    if (themeBtn) boardTheme.addEventListener('click', () => { themeBtn.click(); syncTheme(); });
+    else boardTheme.remove();
+
+    const setToggle = (open) => {
+      navToggle.setAttribute('aria-expanded', String(open));
+      navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Toggle menu');
+      navToggle.classList.toggle('fx-cup-mode', open);
+    };
+    const openBoard = () => {
+      board.style.setProperty('--fx-nav-h', navHeight() + 'px');
+      board.hidden = false;
+      board.scrollTop = 0;
+      board.classList.remove('fx-closing');
+      void board.offsetWidth;
+      board.classList.add('fx-open');
+      root.classList.add('fx-board-lock');
+      setToggle(true);
+      const cur = $('a.fx-active', navLinks);
+      $$('a[href^="#"]', board).forEach((a) => a.classList.toggle('fx-active', !!cur && a.getAttribute('href') === cur.getAttribute('href')));
+      syncTheme();
+      setTimeout(() => { const first = $('.fx-board__list a', board); if (first) first.focus({ preventScroll: true }); }, reduceMotion ? 0 : 400);
+    };
+    const closeBoard = (then) => {
+      if (board.hidden || board.classList.contains('fx-closing')) return;
+      board.classList.remove('fx-open');
+      board.classList.add('fx-closing');
+      root.classList.remove('fx-board-lock');
+      setToggle(false);
+      const done = () => {
+        board.hidden = true;
+        board.classList.remove('fx-closing');
+        if (typeof then === 'function') then(); else navToggle.focus({ preventScroll: true });
+      };
+      if (reduceMotion) done(); else setTimeout(done, 350);
+    };
+
+    // Capture phase on window runs before script.js's own toggle handler, so it never opens the dropdown on phones
+    window.addEventListener('click', (e) => {
+      if (!mobile.matches || !e.target.closest || !e.target.closest('.nav__toggle')) return;
+      e.stopPropagation();
+      e.preventDefault();
+      if (board.hidden) openBoard(); else closeBoard();
+    }, true);
+    navToggle.setAttribute('aria-controls', 'fx-board');
+
+    $('.fx-board__close', board).addEventListener('click', () => closeBoard());
+    $$('a[href^="#"]', board).forEach((a) => a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.getElementById(a.getAttribute('href').slice(1));
+      a.classList.add('fx-tapped');
+      setTimeout(() => closeBoard(() => {
+        a.classList.remove('fx-tapped');
+        if (target) target.scrollIntoView({ behavior: behavior() });
+      }), reduceMotion ? 0 : 280);
+    }));
+
+    // Keyboard: Esc closes, Tab stays inside the board
+    board.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { closeBoard(); return; }
+      if (e.key !== 'Tab') return;
+      const f = $$('a, button', board).filter((n) => n.offsetParent !== null);
+      if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    });
+
+    // Swipe the board up to close (when it isn't scrollable itself)
+    let swipeY = null;
+    board.addEventListener('touchstart', (e) => {
+      swipeY = board.scrollHeight <= board.clientHeight + 2 ? e.touches[0].clientY : null;
+    }, { passive: true });
+    board.addEventListener('touchmove', (e) => {
+      if (swipeY != null && swipeY - e.touches[0].clientY > 70) { swipeY = null; closeBoard(); }
+    }, { passive: true });
+
+    mobile.addEventListener('change', () => { if (!mobile.matches) closeBoard(); });
   }
 })();
