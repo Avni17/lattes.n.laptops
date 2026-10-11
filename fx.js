@@ -43,7 +43,7 @@
   const stagger = (selector) => $$(selector).forEach((n, i) => n.style.setProperty('--i', i));
 
   // Hearts + lilies flying out from a point (viewport coordinates)
-  const burst = (x, y, { hearts = 14, lilies = 4 } = {}) => {
+  const burst = (x, y, { hearts = 14, lilies = 4, spread = 0, size = 1 } = {}) => {
     if (reduceMotion) return;
     const fly = (isLily) => {
       const p = isLily ? make('img', 'fx-burst fx-burst--lily') : make('span', 'fx-burst fx-burst--heart', '&#9829;');
@@ -51,16 +51,20 @@
       p.setAttribute('aria-hidden', 'true');
       p.style.left = x + 'px';
       p.style.top = y + 'px';
+      if (size !== 1) {
+        const k = size * rand(0.7, 1.4);
+        if (isLily) p.style.width = (44 * k).toFixed(0) + 'px'; else p.style.fontSize = (1.2 * k).toFixed(2) + 'rem';
+      }
       document.body.append(p);
       const a = rand(0, Math.PI * 2);
-      const d = rand(70, isLily ? 190 : 150);
+      const d = spread ? rand(0.35, 1) * spread : rand(70, isLily ? 190 : 150);
       const dx = Math.cos(a) * d;
       const dy = Math.sin(a) * d - 40;
       p.animate([
         { transform: 'translate(-50%, -50%) scale(.3) rotate(0deg)', opacity: 1 },
         { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(1) rotate(${rand(-160, 160)}deg)`, opacity: 1, offset: 0.6 },
         { transform: `translate(calc(-50% + ${dx * 1.15}px), calc(-50% + ${dy + 90}px)) scale(.8) rotate(${rand(-220, 220)}deg)`, opacity: 0 },
-      ], { duration: rand(1100, 1600), easing: 'cubic-bezier(.2,.7,.3,1)' }).onfinish = () => p.remove();
+      ], { duration: spread ? rand(1500, 2200) : rand(1100, 1600), easing: 'cubic-bezier(.2,.7,.3,1)' }).onfinish = () => p.remove();
     };
     for (let i = 0; i < hearts; i++) fly(false);
     for (let i = 0; i < lilies; i++) fly(true);
@@ -264,39 +268,16 @@
     h1.classList.add('fx-split');
   }
 
-  /* ---------- Hero photo develops like an instant photo; shake it to speed up ---------- */
+  /* ---------- Hero photo develops like an instant photo after the intro ---------- */
   const heroImg = $('.hero__img');
   if (heroImg && !reduceMotion) {
-    const frame = heroImg.closest('.polaroid');
-    const hint = make('span', 'fx-develop-hint', 'shake me &#9825;');
-    hint.setAttribute('aria-hidden', 'true');
-    frame.append(hint);
     const dev = heroImg.animate([
       { filter: 'grayscale(1) sepia(.5) brightness(1.4) contrast(.55) blur(1.5px)' },
       { filter: 'grayscale(.4) sepia(.6) brightness(1.15) contrast(.85) blur(.4px)', offset: 0.5 },
       { filter: 'none' },
     ], { duration: 2800, easing: 'ease-in-out' });
     dev.pause();
-    const speedUp = () => {
-      if (dev.playState !== 'running' || dev.playbackRate > 1) return;
-      dev.updatePlaybackRate(4);
-      frame.animate({ rotate: ['0deg', '-3deg', '3deg', '-2deg', '0deg'] }, { duration: 400 });
-    };
-    dev.onfinish = () => hint.classList.add('fx-gone');
-    introDone.then(() => { dev.play(); hint.classList.add('fx-show'); });
-    let lastX = null;
-    let lastT = 0;
-    frame.addEventListener('pointermove', (e) => {
-      const now = performance.now();
-      if (lastX != null && Math.abs(e.clientX - lastX) / Math.max(now - lastT, 1) > 1.5) speedUp();
-      lastX = e.clientX;
-      lastT = now;
-    });
-    frame.addEventListener('click', speedUp);
-    window.addEventListener('devicemotion', (e) => {
-      const a = e.acceleration;
-      if (a && Math.hypot(a.x || 0, a.y || 0, a.z || 0) > 14) speedUp();
-    }, { passive: true });
+    introDone.then(() => dev.play());
   }
 
   /* ---------- Hero: polaroid tilt + glare, lily parallax, falling petals ---------- */
@@ -358,7 +339,7 @@
     setTimeout(petal, 1500);
   }
 
-  /* ---------- Charms: keychain swing; heart x5 = easter egg ---------- */
+  /* ---------- Charms: keychain swing; double-tap the heart (or the photo) = Instagram-style like ---------- */
   const swing = (c) => {
     if (reduceMotion) return;
     c.animate({ rotate: ['0deg', '22deg', '-16deg', '10deg', '-5deg', '0deg'] }, { duration: 1000, easing: 'ease-out' });
@@ -367,21 +348,75 @@
     c.addEventListener('pointerenter', () => swing(c));
     c.addEventListener('click', () => swing(c));
   });
+  // The like: a big heart grows from the photo to fill ~2/3 of the screen, with a full-screen burst
+  const LIKED = 'fx-liked';
+  let liked = false;
+  try { liked = localStorage.getItem(LIKED) === '1'; } catch (e) { /* storage blocked */ }
+  const likePhoto = () => {
+    liked = true;
+    try { localStorage.setItem(LIKED, '1'); } catch (e) { /* storage blocked */ }
+    if (reduceMotion || !heroPolaroid) return;
+    const r = heroPolaroid.getBoundingClientRect();
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    const dx = (r.left + r.width / 2 - cx).toFixed(0);
+    const dy = (r.top + r.height / 2 - cy).toFixed(0);
+    const flash = make('span', 'fx-like-flash');
+    const big = make('span', 'fx-big-heart', `
+      <svg viewBox="0 0 24 24">
+        <defs><linearGradient id="fx-like-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbd3d9"/><stop offset="1" stop-color="#e7a1ad"/></linearGradient></defs>
+        <path d="M12 21s-8-5.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.5-8 11-8 11z" fill="url(#fx-like-g)" stroke="#fff" stroke-width=".8"/>
+        <path d="M8 8.2a2.4 2.4 0 0 1 2.6-1.4" fill="none" stroke="#fff" stroke-width=".9" stroke-linecap="round" opacity=".8"/>
+      </svg>`);
+    [flash, big].forEach((n) => { n.setAttribute('aria-hidden', 'true'); document.body.append(n); });
+    flash.animate([{ opacity: 0 }, { opacity: 1, offset: 0.3 }, { opacity: 0 }], { duration: 1100, easing: 'ease-out' }).onfinish = () => flash.remove();
+    big.animate([
+      { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(.08)`, opacity: 0 },
+      { transform: 'translate(-50%, -50%) scale(1.08)', opacity: 1, offset: 0.35 },
+      { transform: 'translate(-50%, -50%) scale(.95)', opacity: 1, offset: 0.5 },
+      { transform: 'translate(-50%, -50%) scale(1)', opacity: 1, offset: 0.78 },
+      { transform: 'translate(-50%, -58%) scale(1.06)', opacity: 0 },
+    ], { duration: 1500, easing: 'ease-out' }).onfinish = () => big.remove();
+    setTimeout(() => burst(cx, cy, { hearts: 34, lilies: 12, spread: Math.max(window.innerWidth, window.innerHeight) * 0.55, size: 1.8 }), 380);
+  };
+
+  // Discoverability: the heart "taps itself" twice (double heartbeat + two ripples) every few seconds
   const heart = $('.charm--heart');
-  if (heart) {
-    let clicks = 0;
-    let timer;
-    heart.addEventListener('click', () => {
-      clicks += 1;
-      clearTimeout(timer);
-      timer = setTimeout(() => { clicks = 0; }, 2500);
-      if (clicks >= 5) {
-        clicks = 0;
-        const r = heart.getBoundingClientRect();
-        burst(r.left + r.width / 2, r.top + r.height / 2, { hearts: 22, lilies: 6 });
-      }
+  const tapHint = make('span', 'fx-tap-hint', '<i></i><i></i>');
+  tapHint.setAttribute('aria-hidden', 'true');
+  if (heart) heart.after(tapHint);
+  const doubleBeat = (beats = 2) => {
+    if (reduceMotion || !heart) return;
+    const frames = [{ scale: '1' }];
+    for (let b = 0; b < beats; b++) frames.push({ scale: '1.3' }, { scale: '1' });
+    heart.animate(frames, { duration: beats * 260, easing: 'ease-out' });
+    tapHint.classList.remove('fx-tapping', 'fx-tapping--once');
+    void tapHint.offsetWidth;
+    tapHint.classList.add(beats > 1 ? 'fx-tapping' : 'fx-tapping--once');
+  };
+  if (heart && hero && !reduceMotion) {
+    let heroInView = true;
+    new IntersectionObserver(([e]) => { heroInView = e.isIntersecting; }).observe(hero);
+    introDone.then(() => {
+      const loop = () => {
+        if (liked) return;
+        if (heroInView && !document.hidden) doubleBeat(2);
+        setTimeout(loop, 5000);
+      };
+      setTimeout(loop, 4500);
     });
   }
+
+  const onDoubleTap = (el, fn, onFirst) => {
+    let last = 0;
+    el.addEventListener('click', () => {
+      const now = performance.now();
+      if (now - last < 450) { last = 0; fn(); } else { last = now; if (onFirst) onFirst(); }
+    });
+  };
+  // First tap on the heart gives a single beat, as if waiting for the second tap
+  if (heart) onDoubleTap(heart, likePhoto, () => doubleBeat(1));
+  if (heroPolaroid) onDoubleTap(heroPolaroid, likePhoto);
 
   /* ---------- About polaroids: drop in, draggable (mouse/pen), tap = jiggle ---------- */
   const strip = $('.about__strip');
@@ -516,7 +551,7 @@
     });
   }
 
-  /* ---------- Donut chart: hover a slice or legend item ---------- */
+  /* ---------- Donut chart: label in the hollow; hover (mouse) or tap (touch) a slice or legend item ---------- */
   const donut = $('.donut');
   if (donut) {
     const svg = $('.donut__svg', donut);
@@ -525,27 +560,48 @@
     const tip = make('div', 'fx-tip');
     tip.setAttribute('aria-hidden', 'true');
     donut.append(tip);
-    const focus = (i, on) => {
-      const s = segs[i];
-      if (!s) return;
-      const a = ((+s.dataset.offset + +s.dataset.pct / 2) / 100) * Math.PI * 2;
-      s.style.transform = on ? `translate(${(Math.cos(a) * 1.6).toFixed(2)}px, ${(Math.sin(a) * 1.6).toFixed(2)}px)` : '';
-      s.classList.toggle('fx-on', on);
-      if (keys[i]) keys[i].classList.toggle('fx-on', on);
-      donut.classList.toggle('fx-has-on', on);
-      if (on && keys[i]) {
-        const label = keys[i].textContent.trim();
+    // SVG elements have no offsetLeft/offsetTop, so measure with rects to centre the label in the hole
+    const centreTip = () => {
+      const d = donut.getBoundingClientRect();
+      const r = svg.getBoundingClientRect();
+      tip.style.left = (r.left - d.left + r.width / 2).toFixed(1) + 'px';
+      tip.style.top = (r.top - d.top + r.height / 2).toFixed(1) + 'px';
+      tip.style.setProperty('--fx-hole', (r.width * 0.54).toFixed(0) + 'px');
+    };
+    let active = -1; // -1 = idle: the label shows the largest group, no slice pulled out
+    let sticky = false; // a tap keeps the selection until tapping again or elsewhere
+    const focus = (i) => {
+      segs.forEach((s, j) => {
+        const on = j === i;
+        const a = ((+s.dataset.offset + +s.dataset.pct / 2) / 100) * Math.PI * 2;
+        s.style.transform = on ? `translate(${(Math.cos(a) * 1.2).toFixed(2)}px, ${(Math.sin(a) * 1.2).toFixed(2)}px)` : '';
+        s.classList.toggle('fx-on', on);
+        if (keys[j]) keys[j].classList.toggle('fx-on', on);
+      });
+      donut.classList.toggle('fx-has-on', i >= 0);
+      const key = keys[i >= 0 ? i : 0];
+      if (key) {
+        const label = key.textContent.trim();
         const cut = label.lastIndexOf(' ');
         tip.innerHTML = `<b>${esc(label.slice(cut + 1))}</b><span>${esc(label.slice(0, cut))}</span>`;
-        tip.style.left = (svg.offsetLeft + svg.offsetWidth / 2) + 'px';
-        tip.style.top = (svg.offsetTop + svg.offsetHeight / 2) + 'px';
       }
-      tip.classList.toggle('show', on);
+      centreTip();
+      active = i;
     };
+    onReveal(donut, () => setTimeout(() => { focus(-1); tip.classList.add('show'); }, reduceMotion ? 0 : 900));
     [segs, keys].forEach((list) => list.forEach((n, i) => {
-      n.addEventListener('pointerenter', () => focus(i, true));
-      n.addEventListener('pointerleave', () => focus(i, false));
+      n.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse' && !sticky) focus(i); });
+      n.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && !sticky) focus(-1); });
+      n.addEventListener('click', (e) => {
+        if (e.pointerType === 'mouse') return;
+        e.stopPropagation();
+        if (sticky && active === i) { sticky = false; focus(-1); } else { sticky = true; focus(i); }
+      });
     }));
+    document.addEventListener('click', (e) => {
+      if (sticky && !donut.contains(e.target)) { sticky = false; focus(-1); }
+    });
+    window.addEventListener('resize', centreTip);
   }
 
   /* ---------- Lace trim stitches in when each lace edge scrolls into view ---------- */
