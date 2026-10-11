@@ -766,31 +766,14 @@ html.fx-espresso .fx-board { color: #fdf6e8; }
 @media (min-width: 721px) { .fx-board { display: none; } }
 
 /* =====================================================================
-   Hero heart charm + Instagram-style double-tap like
+   Hero heart charm
    ===================================================================== */
-html.fx .hero .charm, html.fx .hero .polaroid { touch-action: manipulation; } /* no double-tap zoom */
 @media (min-width: 721px) {
   /* On desktop the bottom-left lily covered the heart; move it to the free top-left corner of the photo */
   html.fx .charm--heart { top: -14px; bottom: auto; left: -20px; z-index: 3; }
 }
-.fx-like-flash {
-  position: fixed; inset: 0; z-index: 9995; pointer-events: none; opacity: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(242,184,192,.45), rgba(242,184,192,.12) 45%, transparent 70%);
-}
 
-/* Tap hint: two ripples from the heart charm (a visual "tap tap"), sitting exactly over the heart */
-.fx-tap-hint { position: absolute; width: 44px; height: 44px; bottom: 6px; left: -22px; pointer-events: none; z-index: 2; }
-@media (min-width: 721px) { .fx-tap-hint { top: -14px; bottom: auto; left: -20px; z-index: 4; } }
-.fx-tap-hint i {
-  position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--pink);
-  box-shadow: 0 0 8px rgba(242,184,192,.6); opacity: 0;
-}
-@keyframes fx-ripple { from { opacity: .9; scale: .5; } to { opacity: 0; scale: 2; } }
-.fx-tap-hint.fx-tapping i { animation: fx-ripple .7s ease-out; }
-.fx-tap-hint.fx-tapping i + i { animation-delay: .26s; }
-.fx-tap-hint.fx-tapping--once i:first-child { animation: fx-ripple .7s ease-out; }
-
-/* Double-click/tap to like shouldn't select (blue-highlight) or drag the photo */
+/* Clicking the photo shouldn't select (blue-highlight) or drag it */
 html.fx .hero__photo, html.fx .hero__photo * {
   -webkit-user-select: none; user-select: none;
   -webkit-tap-highlight-color: transparent;

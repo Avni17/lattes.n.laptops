@@ -363,7 +363,7 @@
     setTimeout(petal, 1500);
   }
 
-  /* ---------- Charms: keychain swing; double-tap the heart (or the photo) = Instagram-style like ---------- */
+  /* ---------- Charms: keychain swing ---------- */
   const swing = (c) => {
     if (reduceMotion) return;
     c.animate({ rotate: ['0deg', '22deg', '-16deg', '10deg', '-5deg', '0deg'] }, { duration: 1000, easing: 'ease-out' });
@@ -372,58 +372,6 @@
     c.addEventListener('pointerenter', () => swing(c));
     c.addEventListener('click', () => swing(c));
   });
-  // The like: a soft pink flash and a full-screen burst of lilies
-  const LIKED = 'fx-liked';
-  let liked = false;
-  try { liked = localStorage.getItem(LIKED) === '1'; } catch (e) { /* storage blocked */ }
-  const likePhoto = () => {
-    liked = true;
-    try { localStorage.setItem(LIKED, '1'); } catch (e) { /* storage blocked */ }
-    if (reduceMotion) return;
-    const flash = make('span', 'fx-like-flash');
-    flash.setAttribute('aria-hidden', 'true');
-    document.body.append(flash);
-    flash.animate([{ opacity: 0 }, { opacity: 1, offset: 0.3 }, { opacity: 0 }], { duration: 1100, easing: 'ease-out' }).onfinish = () => flash.remove();
-    burst(window.innerWidth / 2, window.innerHeight / 2, { hearts: 0, lilies: 24, spread: Math.max(window.innerWidth, window.innerHeight) * 0.55, size: 1.8 });
-  };
-
-  // Discoverability: the heart "taps itself" twice (double heartbeat + two ripples) every few seconds
-  const heart = $('.charm--heart');
-  const tapHint = make('span', 'fx-tap-hint', '<i></i><i></i>');
-  tapHint.setAttribute('aria-hidden', 'true');
-  if (heart) heart.after(tapHint);
-  const doubleBeat = (beats = 2) => {
-    if (reduceMotion || !heart) return;
-    const frames = [{ scale: '1' }];
-    for (let b = 0; b < beats; b++) frames.push({ scale: '1.3' }, { scale: '1' });
-    heart.animate(frames, { duration: beats * 260, easing: 'ease-out' });
-    tapHint.classList.remove('fx-tapping', 'fx-tapping--once');
-    void tapHint.offsetWidth;
-    tapHint.classList.add(beats > 1 ? 'fx-tapping' : 'fx-tapping--once');
-  };
-  if (heart && hero && !reduceMotion) {
-    let heroInView = true;
-    new IntersectionObserver(([e]) => { heroInView = e.isIntersecting; }).observe(hero);
-    introDone.then(() => {
-      const loop = () => {
-        if (liked) return;
-        if (heroInView && !document.hidden) doubleBeat(2);
-        setTimeout(loop, 5000);
-      };
-      setTimeout(loop, 4500);
-    });
-  }
-
-  const onDoubleTap = (el, fn, onFirst) => {
-    let last = 0;
-    el.addEventListener('click', () => {
-      const now = performance.now();
-      if (now - last < 450) { last = 0; fn(); } else { last = now; if (onFirst) onFirst(); }
-    });
-  };
-  // First tap on the heart gives a single beat, as if waiting for the second tap
-  if (heart) onDoubleTap(heart, likePhoto, () => doubleBeat(1));
-  if (heroPolaroid) onDoubleTap(heroPolaroid, likePhoto);
 
   /* ---------- About polaroids: drop in, draggable (mouse/pen), tap = jiggle ---------- */
   const strip = $('.about__strip');
