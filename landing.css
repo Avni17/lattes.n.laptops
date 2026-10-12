@@ -453,3 +453,8 @@ body.lp {
   .lp-cold.lp-ready .lp-card--work { animation-delay: .3s; }
 }
 @keyframes lp-card-in { from { opacity: 0; translate: 0 46px; scale: .96; } }
+
+/* Gradient (shimmer) text only paints inside its box: room for the "p" tail in "Laptop?" and the script name */
+.lp-q__laptop { padding-bottom: .16em; margin-bottom: -.16em; }
+.lp-swash { bottom: -.12em; }
+.lp-name { padding-bottom: .12em; margin-bottom: .08rem; }

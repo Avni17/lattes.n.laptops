@@ -525,3 +525,6 @@ html.fx-espresso .sp-special__label { background-color: #4a2f2c; }
   .sp-ticket__off { font-size: 1.45rem; }
   .sp-name { font-size: 1.22rem; }
 }
+
+/* Gradient (shimmer) text only paints inside its box: give the script tails of "y" and "p" room */
+.sp-hero__title { line-height: 1.15; padding: 0 .12em .22em; margin: .1rem 0 .4rem; }
