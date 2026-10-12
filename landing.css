@@ -38,7 +38,7 @@ body.lp {
 .lp-name { margin: .1rem 0 .2rem; font-size: clamp(3.2rem, 7vw, 5rem); line-height: 1.05; color: var(--pink); }
 .lp-q { margin: 0; font-size: clamp(1.5rem, 3.6vw, 2.5rem); line-height: 1.2; }
 .lp-q em { font-style: normal; font-size: 1.35em; color: var(--cream); margin: 0 .15em; vertical-align: -.08em; }
-.lp-sub { margin: .3rem 0 0; font-size: .85rem; opacity: .75; }
+.lp-sub { margin: .5rem 0 0; font-size: clamp(.95rem, 1.5vw, 1.25rem); letter-spacing: .08em; opacity: .85; }
 
 .lp-cards {
   display: grid; grid-template-columns: repeat(2, minmax(0, 390px)); gap: clamp(1.5rem, 4.5vw, 4rem);
@@ -174,7 +174,7 @@ body.lp {
 .lp-card--work.is-awake .lp-screen { box-shadow: inset 0 0 44px rgba(242,184,192,.45); }
 
 /* ---------- Card copy ---------- */
-.lp-copy { position: relative; }
+.lp-copy { position: relative; min-width: 0; } /* lets the one-line meta shrink (with …) instead of widening the card */
 .lp-for { margin: 0; font-family: var(--script); font-size: 1.7rem; line-height: 1; color: #d98a98; }
 .lp-card--work .lp-for { color: var(--brown-2); }
 .lp-title { margin: .25rem 0 .45rem; font-family: var(--serif); text-transform: uppercase; letter-spacing: .04em; font-size: clamp(1.7rem, 2.8vw, 2.3rem); color: var(--brown-2); }
@@ -245,9 +245,10 @@ html.lp-intro .lp-cup, html.lp-intro .lp-laptop, html.lp-intro .lp-snap, html.lp
   .lp-main { justify-content: flex-start; padding-top: 2rem; }
   .lp-name { font-size: 3.1rem; }
   .lp-q { font-size: 1.45rem; }
-  .lp-cards { grid-template-columns: 1fr; width: 100%; max-width: 460px; gap: 2.2rem; margin-top: 1.8rem; }
-  .lp-card { display: grid; grid-template-columns: 40% 1fr; gap: .9rem; align-items: center; padding: 1.3rem 1.1rem 1.3rem .9rem; }
-  .lp-card--work { grid-template-columns: 1fr 40%; padding: 1.3rem .9rem 1.3rem 1.1rem; }
+  .lp-cards { grid-template-columns: minmax(0, 1fr); width: 100%; max-width: 460px; gap: 2.2rem; margin-top: 1.8rem; }
+  .lp-sub { font-size: .9rem; }
+  .lp-card { display: grid; grid-template-columns: 40% minmax(0, 1fr); gap: .9rem; align-items: center; padding: 1.3rem 1.1rem 1.3rem .9rem; min-width: 0; }
+  .lp-card--work { grid-template-columns: minmax(0, 1fr) 40%; padding: 1.3rem .9rem 1.3rem 1.1rem; }
   .lp-card--work .lp-art { order: 2; }
   .lp-art { height: 150px; margin: 0; }
   .lp-cup { width: 92px; height: 92px; }
@@ -394,3 +395,61 @@ body.lp {
   .lp-ribbon--a { bottom: 6%; }
   .lp-ribbon--b { bottom: 2%; }
 }
+
+/* Small phones: keep both cards fully on screen (tilt and sticky notes included) */
+@media (max-width: 760px) {
+  .lp-main { padding-left: 1rem; padding-right: 1rem; }
+  .lp-card { --rot: -1.2deg; }
+  .lp-card--work { --rot: 1.2deg; }
+  .lp-note { max-width: min(150px, 45vw); }
+  .lp-cta { white-space: nowrap; }
+}
+@media (max-width: 380px) {
+  .lp-card, .lp-card--work { grid-template-columns: 36% minmax(0, 1fr); gap: .6rem; padding: 1.1rem .8rem; }
+  .lp-card--work { grid-template-columns: minmax(0, 1fr) 36%; }
+  .lp-title { font-size: 1.2rem; }
+  .lp-desc { font-size: .72rem; }
+  .lp-cta { padding: .5rem .8rem; font-size: .62rem; letter-spacing: .1em; }
+  .lp-cup { width: 80px; height: 80px; }
+  .lp-snap { width: 46px; left: -23px; }
+}
+
+/* Pills never break onto two lines */
+.lp-cta, .lp-handle { white-space: nowrap; }
+
+/* =====================================================================
+   Premium touches: 3D layers on hover, magnetic button, cursor bubble, card entrance
+   ===================================================================== */
+@media (hover: hover) and (pointer: fine) {
+  /* Hover lifts the art, note and tape off the card at different depths (parallax with the tilt) */
+  .lp-card:hover { transform-style: preserve-3d; }
+  .lp-card .lp-art, .lp-card .lp-copy { transition: transform .5s cubic-bezier(.3,1.3,.5,1); }
+  .lp-card:hover .lp-art { transform: translateZ(46px); }
+  .lp-card:hover .lp-copy { transform: translateZ(20px); }
+  .lp-card:hover .lp-note { transform: translateZ(64px); }
+  .lp-card:hover .lp-tape { transform: translateZ(34px); }
+  .lp-cta { translate: var(--cx, 0px) var(--cy, 0px); transition: background .25s, color .25s, translate .35s cubic-bezier(.3,1.5,.5,1), box-shadow .25s; }
+
+  .lp-pointer {
+    position: fixed; left: 0; top: 0; z-index: 60; pointer-events: none;
+    display: grid; place-items: center; min-width: 12px; height: 12px; margin: 14px 0 0 14px; border-radius: 999px;
+    background: linear-gradient(180deg, #ffd6de, #f2a7b5); box-shadow: 0 0 16px rgba(247,180,193,.7);
+    opacity: 0; transition: opacity .25s, min-width .35s cubic-bezier(.3,1.4,.5,1), height .35s cubic-bezier(.3,1.4,.5,1), padding .35s;
+  }
+  .lp-pointer.is-live { opacity: .9; }
+  .lp-pointer span {
+    max-width: 0; overflow: hidden; white-space: nowrap; opacity: 0;
+    font: 700 .66rem var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #3b2a29;
+    transition: max-width .4s cubic-bezier(.3,1.2,.5,1), opacity .2s;
+  }
+  .lp-pointer.is-on { height: 30px; padding: 0 .9rem; opacity: 1; box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 8px 22px rgba(234,143,162,.5); }
+  .lp-pointer.is-on span { max-width: 220px; opacity: 1; }
+}
+@media (hover: none), (pointer: coarse) { .lp-pointer { display: none; } }
+
+/* No intro (coming back, or reduced intro): cards rise in one after the other */
+@media (prefers-reduced-motion: no-preference) {
+  .lp-cold.lp-ready .lp-card { animation: lp-card-in .8s cubic-bezier(.2,.8,.3,1.15) .15s backwards; }
+  .lp-cold.lp-ready .lp-card--work { animation-delay: .3s; }
+}
+@keyframes lp-card-in { from { opacity: 0; translate: 0 46px; scale: .96; } }

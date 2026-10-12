@@ -174,8 +174,10 @@
     <div class="sp-actions">
       ${p.soldOut ? '<span class="sp-buy is-off" aria-disabled="true">Sold out</span>'
     : `<a class="sp-buy" href="${esc(p.link || '#')}" target="_blank" rel="noopener sponsored">Shop now <b aria-hidden="true">&#8599;</b></a>`}
-      ${p.reel ? `<a class="sp-mini" href="${esc(p.reel)}" target="_blank" rel="noopener" aria-label="Watch my reel about ${esc(p.name)}">&#9654; Reel</a>` : ''}
-      <button type="button" class="sp-mini" data-share="${p.slug}" aria-label="Share ${esc(p.name)}">Share</button>
+      ${p.reel ? `<a class="sp-mini" href="${esc(p.reel)}" target="_blank" rel="noopener" aria-label="Watch my reel about ${esc(p.name)}"><span aria-hidden="true">&#9654;</span> Reel</a>` : ''}
+      <button type="button" class="sp-mini sp-mini--icon" data-share="${p.slug}" aria-label="Share ${esc(p.name)}" title="Share">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
     </div>`;
   const card = (p, i) => `
     <article class="sp-card${p.soldOut ? ' is-soldout' : ''}" id="p-${p.slug}" data-slug="${p.slug}"
@@ -243,6 +245,15 @@
     const sec = $('#coupons');
     sec.hidden = !list.length;
     $('.sp-nav-coupons').hidden = !list.length;
+    const more = $('.sp-tickets-more', sec);
+    if (more) more.remove();
+    $('.sp-tickets', sec).classList.toggle('is-collapsed', list.length > 3);
+    if (list.length > 3) {
+      const b = make('button', 'sp-tickets-more', `Show all ${list.length} coupons <b aria-hidden="true">&darr;</b>`);
+      b.type = 'button';
+      b.addEventListener('click', () => { $('.sp-tickets', sec).classList.remove('is-collapsed'); b.remove(); });
+      sec.append(b);
+    }
     $('.sp-tickets', sec).innerHTML = list.map((p, i) => `
       <button type="button" class="sp-ticket${p.coupon.urgent ? ' is-urgent' : ''}" data-code="${esc(p.coupon.code)}" data-goto="${p.slug}"
         style="--i:${i};--tape:${p.cat.tape}" aria-label="Copy coupon ${esc(p.coupon.code)} for ${esc(p.brand || p.name)}">
@@ -293,7 +304,9 @@
     });
     if (active) {
       foam.style.left = active.offsetLeft + 'px';
+      foam.style.top = active.offsetTop + 'px';
       foam.style.width = active.offsetWidth + 'px';
+      foam.style.height = active.offsetHeight + 'px';
       if (!reduceMotion) foam.animate({ scale: ['1 1', '1.08 .8', '1 1'] }, { duration: 420, easing: 'ease-out' });
       const tl = tabs.scrollLeft;
       if (active.offsetLeft < tl || active.offsetLeft + active.offsetWidth > tl + tabs.clientWidth) {
@@ -350,6 +363,17 @@
   hint.hidden = true;
   hint.setAttribute('aria-live', 'polite');
   $('.sp-search').after(hint);
+  const clear = make('button', 'sp-search__clear', '&times;');
+  clear.type = 'button';
+  clear.setAttribute('aria-label', 'Clear search');
+  clear.hidden = true;
+  $('.sp-search').append(clear);
+  clear.addEventListener('click', () => {
+    searchInput.value = '';
+    searchInput.dispatchEvent(new Event('input'));
+    searchInput.focus();
+  });
+  searchInput.addEventListener('input', () => { clear.hidden = !searchInput.value; });
   const toResults = () => $('#picks').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
   let qTimer;
   searchInput.addEventListener('input', () => {
@@ -404,6 +428,21 @@
     toast(`Today you're getting: <b>${esc(p.name)}</b> &#9749;`);
     setTimeout(() => spotlight(p.slug), 250);
   });
+
+  // Desktop: cards tilt toward the mouse
+  if (!reduceMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    grid.addEventListener('pointermove', (e) => {
+      const c = e.target.closest('.sp-card');
+      if (!c) return;
+      const r = c.getBoundingClientRect();
+      c.style.setProperty('--ry', (((e.clientX - r.left) / r.width - 0.5) * 8).toFixed(2) + 'deg');
+      c.style.setProperty('--rx', (-((e.clientY - r.top) / r.height - 0.5) * 6).toFixed(2) + 'deg');
+    });
+    grid.addEventListener('pointerout', (e) => {
+      const c = e.target.closest('.sp-card');
+      if (c && !c.contains(e.relatedTarget)) { c.style.removeProperty('--ry'); c.style.removeProperty('--rx'); }
+    });
+  }
 
   /* ---------- Clicks anywhere: copy coupon, save, share ---------- */
   document.addEventListener('click', async (e) => {

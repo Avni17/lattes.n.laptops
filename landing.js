@@ -32,7 +32,11 @@
   const playIntro = !reduceMotion && (!fromInside || (nav && nav.type === 'reload'));
 
   const introDone = (() => {
-    if (!playIntro) { ready(); return Promise.resolve(); }
+    if (!playIntro) {
+      if (!reduceMotion) root.classList.add('lp-cold'); // no intro: the cards rise in instead
+      ready();
+      return Promise.resolve();
+    }
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
     root.classList.add('lp-intro');
@@ -255,11 +259,38 @@
         const ny = (e.clientY - r.top) / r.height - 0.5;
         card.style.setProperty('--ry', (nx * 10).toFixed(2) + 'deg');
         card.style.setProperty('--rx', (-ny * 8).toFixed(2) + 'deg');
+        // The button leans toward the mouse a little
+        card.style.setProperty('--cx', (nx * 12).toFixed(1) + 'px');
+        card.style.setProperty('--cy', (ny * 8).toFixed(1) + 'px');
       });
       card.addEventListener('pointerleave', () => {
-        card.style.removeProperty('--ry');
-        card.style.removeProperty('--rx');
+        ['--ry', '--rx', '--cx', '--cy'].forEach((v) => card.style.removeProperty(v));
       });
+    });
+
+    // Cursor bubble: a pink dot that follows the mouse and opens into a label over a card
+    const bubble = make('div', 'lp-pointer', '<span></span>');
+    bubble.setAttribute('aria-hidden', 'true');
+    document.body.append(bubble);
+    const label = $('span', bubble);
+    let px = -100, py = -100, bx = -100, by = -100, raf = 0;
+    const follow = () => {
+      bx += (px - bx) * 0.22;
+      by += (py - by) * 0.22;
+      bubble.style.transform = `translate(${bx.toFixed(1)}px, ${by.toFixed(1)}px)`;
+      raf = Math.abs(px - bx) + Math.abs(py - by) > 0.3 ? requestAnimationFrame(follow) : 0;
+    };
+    window.addEventListener('pointermove', (e) => {
+      px = e.clientX;
+      py = e.clientY;
+      if (bx < -50) { bx = px; by = py; }
+      bubble.classList.add('is-live');
+      if (!raf) raf = requestAnimationFrame(follow);
+    }, { passive: true });
+    document.addEventListener('pointerleave', () => bubble.classList.remove('is-live'));
+    cards.forEach((card) => {
+      card.addEventListener('pointerenter', () => { label.textContent = card.dataset.label || ''; bubble.classList.add('is-on'); });
+      card.addEventListener('pointerleave', () => bubble.classList.remove('is-on'));
     });
   } else if (!reduceMotion) {
     // Touch: the cards take turns showing their hover state so it's clear they're alive
