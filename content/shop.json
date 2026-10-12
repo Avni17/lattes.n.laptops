@@ -9,7 +9,7 @@
   },
   "categories": [
     {
-      "name": "Skincare",
+      "name": "Skincares",
       "emoji": "🧴",
       "blurb": "The routine that got me the 'what's your skincare?' DMs.",
       "products": [
@@ -21,7 +21,12 @@
           "mrp": 650,
           "link": "https://www.lotusherbals.com/",
           "note": "My 2-step glow on lazy mornings. The gel creme sinks in, no stickiness.",
-          "coupon": { "code": "AVNIGLOW", "discount": "15% off", "expires": "2026-10-15", "terms": "On orders above ₹399" },
+          "coupon": {
+            "code": "AVNIGLOW",
+            "discount": "15% off",
+            "expires": "2026-10-15",
+            "terms": "On orders above ₹399"
+          },
           "badge": "fav",
           "featured": true,
           "reel": "https://www.instagram.com/reel/Dd1JlD7KV6T/",
@@ -36,7 +41,12 @@
           "mrp": 0,
           "link": "https://beminimalist.co/",
           "note": "Two drops at night. My pores have honestly never looked smaller.",
-          "coupon": { "code": "", "discount": "", "expires": "", "terms": "" },
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
           "badge": "bestseller",
           "featured": false,
           "reel": "",
@@ -51,7 +61,12 @@
           "mrp": 549,
           "link": "https://thedermaco.com/",
           "note": "No white cast, no grease, sits perfectly under makeup.",
-          "coupon": { "code": "AVNI10", "discount": "10% off", "expires": "2026-10-31", "terms": "" },
+          "coupon": {
+            "code": "AVNI10",
+            "discount": "10% off",
+            "expires": "2026-10-31",
+            "terms": ""
+          },
           "badge": "none",
           "featured": false,
           "reel": "",
@@ -73,7 +88,12 @@
           "mrp": 399,
           "link": "https://www.myntra.com/",
           "note": "One swipe on lips, two dabs on cheeks. That's the whole look.",
-          "coupon": { "code": "AVNI20", "discount": "20% off", "expires": "", "terms": "First order only" },
+          "coupon": {
+            "code": "AVNI20",
+            "discount": "20% off",
+            "expires": "",
+            "terms": "First order only"
+          },
           "badge": "new",
           "featured": false,
           "reel": "",
@@ -88,7 +108,12 @@
           "mrp": 0,
           "link": "https://www.myntra.com/",
           "note": "Laminated brows for under ₹300. Holds all day.",
-          "coupon": { "code": "OLDCODE", "discount": "₹50 off", "expires": "2026-10-01", "terms": "" },
+          "coupon": {
+            "code": "OLDCODE",
+            "discount": "₹50 off",
+            "expires": "2026-10-01",
+            "terms": ""
+          },
           "badge": "none",
           "featured": false,
           "reel": "",
@@ -110,7 +135,12 @@
           "mrp": 3999,
           "link": "https://www.wishlink.com/",
           "note": "My whole Navratri look under ₹2500. Every piece is linked here.",
-          "coupon": { "code": "", "discount": "", "expires": "", "terms": "" },
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
           "badge": "fav",
           "featured": false,
           "reel": "https://www.instagram.com/reel/DeEVNDdIEDq/",
@@ -125,7 +155,12 @@
           "mrp": 0,
           "link": "https://www.westside.com/",
           "note": "Jeans, skirts, over a slip dress. The most-worn thing in my wardrobe.",
-          "coupon": { "code": "", "discount": "", "expires": "", "terms": "" },
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
           "badge": "sold-out",
           "featured": false,
           "reel": "",
@@ -147,7 +182,12 @@
           "mrp": 1499,
           "link": "https://www.myntra.com/",
           "note": "Blazer on, it's a meeting. Blazer off, it's brunch.",
-          "coupon": { "code": "LACEAVNI", "discount": "Flat ₹200 off", "expires": "2026-11-15", "terms": "" },
+          "coupon": {
+            "code": "LACEAVNI",
+            "discount": "Flat ₹200 off",
+            "expires": "2026-11-15",
+            "terms": ""
+          },
           "badge": "new",
           "featured": false,
           "reel": "https://www.instagram.com/reel/DdoRzj2hnwi/",
@@ -169,7 +209,12 @@
           "mrp": 499,
           "link": "https://www.myntra.com/",
           "note": "Instant 'put together' hair in 10 seconds.",
-          "coupon": { "code": "", "discount": "", "expires": "", "terms": "" },
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
           "badge": "none",
           "featured": false,
           "reel": "",
