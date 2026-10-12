@@ -60,9 +60,10 @@
   document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
   // Contact form: validates, then sends the inquiry straight to the inbox via Web3Forms
-  const CONTACT_EMAIL = 'lattes.n.laptops@gmail.com'; // [EDIT] used for the "email me directly" fallback
   const WEB3FORMS_KEY = '5d74dabe-eda0-417d-bb8f-64e61b681c7a'; // [EDIT] Web3Forms access key (only sends to her inbox, safe to be public)
   const form = document.getElementById('contact-form');
+  // Fallback "email me directly" address: set from content/portfolio.json by work/portfolio.js
+  const CONTACT_EMAIL = form.dataset.email || 'lattes.n.laptops@gmail.com';
   const status = form.querySelector('.form__status');
   const submitBtn = form.querySelector('button[type="submit"]');
   let sending = false;

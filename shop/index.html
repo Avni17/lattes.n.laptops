@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shop my picks | Avni Arora | Lattes.n.laptops</title>
+  <meta name="description" content="Products Avni Arora (Lattes.n.laptops) actually uses and loves: skincare, makeup, fashion and office wear, with her coupon codes.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Courier+Prime:wght@400;700&family=Mrs+Saint+Delafield&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="icon" href="../img/favicon.svg" type="image/svg+xml">
+  <meta property="og:title" content="Shop my picks | Avni Arora">
+  <meta property="og:description" content="Things I actually use, love & re-buy, with my coupon codes.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../fx.css">
+  <link rel="stylesheet" href="shop.css">
+</head>
+<body class="sp">
+  <!-- Everything on this page comes from content/shop.json, which Avni edits at /admin. -->
+
+  <header class="nav" id="top">
+    <a href="../" class="nav__logo script">Avni Arora</a>
+    <button class="nav__toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span>
+    </button>
+    <nav class="nav__links" id="nav-links">
+      <a href="#picks">Picks</a>
+      <a href="#coupons" class="sp-nav-coupons">Coupons</a>
+      <a href="#picks" data-saved-link>Saved <span class="sp-count" data-saved-count>0</span></a>
+      <a href="../work/" class="nav__cta">Work with me</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="sp-hero lace-edge">
+      <img class="lily sp-lily sp-lily--a" src="../img/lily.png" alt="" aria-hidden="true">
+      <img class="lily sp-lily sp-lily--b" src="../img/lily.png" alt="" aria-hidden="true">
+      <div class="sp-hero__text">
+        <p class="eyebrow">Avni's shelf &middot; tried, tested, loved</p>
+        <h1 class="script sp-hero__title" data-page="title">Shop my picks</h1>
+        <p class="sp-hero__sub" data-page="subtitle">Things I actually use, love &amp; re-buy.</p>
+        <ul class="sp-hero__stats" aria-label="Shop at a glance">
+          <li><b data-stat="picks">0</b><span>picks</span></li>
+          <li><b data-stat="coupons">0</b><span>live coupons</span></li>
+          <li><b data-stat="cats">0</b><span>categories</span></li>
+        </ul>
+        <label class="sp-search">
+          <span class="sp-search__icon" aria-hidden="true">&#9749;</span>
+          <input type="search" placeholder="Search my picks... try &quot;serum&quot;" aria-label="Search products" autocomplete="off">
+          <kbd aria-hidden="true">/</kbd>
+        </label>
+      </div>
+      <div class="sp-hero__art">
+        <div class="polaroid sp-hero__polaroid">
+          <img class="sp-hero__avatar" src="../img/hero.jpg" alt="Avni Arora" data-page="avatar">
+          <p class="script sp-hero__caption">my current faves &darr;</p>
+        </div>
+        <div class="sp-hero__note" data-page="note">Hi loves! Everything here is something I've personally tried.</div>
+      </div>
+    </section>
+
+    <!-- TODAY'S SPECIAL -->
+    <section class="sp-special" id="special" hidden>
+      <div class="sp-special__inner"></div>
+    </section>
+
+    <!-- COUPON COUNTER -->
+    <section class="sp-coupons pink-dots" id="coupons" hidden>
+      <h2 class="script">The coupon counter</h2>
+      <p class="section__sub">Tap a ticket to copy the code. Paste it at checkout ♡</p>
+      <div class="sp-tickets" role="list"></div>
+    </section>
+
+    <!-- THE MENU -->
+    <section class="sp-menu" id="picks">
+      <h2 class="script">The menu</h2>
+      <p class="section__sub sp-blurb" aria-live="polite">Everything on my shelf right now.</p>
+      <div class="sp-bar">
+        <div class="sp-tabs" role="tablist" aria-label="Categories"><span class="sp-tabs__foam" aria-hidden="true"></span></div>
+        <div class="sp-tools">
+          <button type="button" class="sp-surprise">&#9749; Surprise me</button>
+          <label class="sp-sort">Sort
+            <select aria-label="Sort products">
+              <option value="avni">Avni's order</option>
+              <option value="new">Newest</option>
+              <option value="low">Price: low to high</option>
+              <option value="high">Price: high to low</option>
+              <option value="deal">Biggest discount</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <p class="sp-results" aria-live="polite"></p>
+      <div class="sp-grid"></div>
+      <div class="sp-empty" hidden>
+        <p class="script">Nothing brewing here yet</p>
+        <p class="sp-empty__text">Try another category, or clear the search.</p>
+      </div>
+    </section>
+
+    <aside class="sp-disclosure">
+      <p data-page="disclosure">Some links are affiliate links: I may earn a small commission at no extra cost to you.</p>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <p class="script">Avni Arora</p>
+    <p>&copy; <span id="year"></span> &middot; Lattes.n.laptops &middot; <a href="mailto:lattes.n.laptops@gmail.com">lattes.n.laptops@gmail.com</a></p>
+    <p class="footer__links"><a href="../work/">Brands: work with me</a> &middot; <a href="../">Home</a></p>
+  </footer>
+
+  <div class="sp-toast" role="status" aria-live="polite"></div>
+  <script src="shop.js"></script>
+</body>
+</html>

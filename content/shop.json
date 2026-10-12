@@ -1,0 +1,182 @@
+{
+  "page": {
+    "title": "Shop my picks",
+    "subtitle": "Things I actually use, love & re-buy. Tried on real skin, real budgets, real Bangalore humidity.",
+    "note": "Hi loves! Everything here is something I've personally tried. If it's on this shelf, I'd buy it again. Use my codes, they're the best deals I could get for you ♡",
+    "avatar": "/img/hero.jpg",
+    "landing_note": "new picks this week ✨",
+    "disclosure": "Some links are affiliate links: I may earn a small commission at no extra cost to you. I only share things I genuinely use."
+  },
+  "categories": [
+    {
+      "name": "Skincare",
+      "emoji": "🧴",
+      "blurb": "The routine that got me the 'what's your skincare?' DMs.",
+      "products": [
+        {
+          "name": "WhiteGlow 2-step: facial foam + gel creme",
+          "brand": "Lotus Herbals",
+          "image": "/img/covers/reel4.jpg",
+          "price": 499,
+          "mrp": 650,
+          "link": "https://www.lotusherbals.com/",
+          "note": "My 2-step glow on lazy mornings. The gel creme sinks in, no stickiness.",
+          "coupon": { "code": "AVNIGLOW", "discount": "15% off", "expires": "2026-10-15", "terms": "On orders above ₹399" },
+          "badge": "fav",
+          "featured": true,
+          "reel": "https://www.instagram.com/reel/Dd1JlD7KV6T/",
+          "added": "2026-10-08",
+          "hidden": false
+        },
+        {
+          "name": "10% Niacinamide face serum",
+          "brand": "Minimalist",
+          "image": "",
+          "price": 599,
+          "mrp": 0,
+          "link": "https://beminimalist.co/",
+          "note": "Two drops at night. My pores have honestly never looked smaller.",
+          "coupon": { "code": "", "discount": "", "expires": "", "terms": "" },
+          "badge": "bestseller",
+          "featured": false,
+          "reel": "",
+          "added": "2026-09-10",
+          "hidden": false
+        },
+        {
+          "name": "Sunscreen aqua gel SPF 50",
+          "brand": "The Derma Co",
+          "image": "",
+          "price": 449,
+          "mrp": 549,
+          "link": "https://thedermaco.com/",
+          "note": "No white cast, no grease, sits perfectly under makeup.",
+          "coupon": { "code": "AVNI10", "discount": "10% off", "expires": "2026-10-31", "terms": "" },
+          "badge": "none",
+          "featured": false,
+          "reel": "",
+          "added": "2026-10-02",
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "name": "Makeup",
+      "emoji": "💄",
+      "blurb": "5-minute face, office to coffee date.",
+      "products": [
+        {
+          "name": "Lip & cheek tint, shade Rosewood",
+          "brand": "Savana",
+          "image": "",
+          "price": 349,
+          "mrp": 399,
+          "link": "https://www.myntra.com/",
+          "note": "One swipe on lips, two dabs on cheeks. That's the whole look.",
+          "coupon": { "code": "AVNI20", "discount": "20% off", "expires": "", "terms": "First order only" },
+          "badge": "new",
+          "featured": false,
+          "reel": "",
+          "added": "2026-10-10",
+          "hidden": false
+        },
+        {
+          "name": "Brow gel, clear",
+          "brand": "Myntra Beauty",
+          "image": "",
+          "price": 299,
+          "mrp": 0,
+          "link": "https://www.myntra.com/",
+          "note": "Laminated brows for under ₹300. Holds all day.",
+          "coupon": { "code": "OLDCODE", "discount": "₹50 off", "expires": "2026-10-01", "terms": "" },
+          "badge": "none",
+          "featured": false,
+          "reel": "",
+          "added": "2026-08-20",
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "name": "Fashion",
+      "emoji": "👗",
+      "blurb": "Real-life outfits I actually re-wear.",
+      "products": [
+        {
+          "name": "Mirror-work lehenga set (self-assembled look)",
+          "brand": "Wishlink finds",
+          "image": "/img/covers/reel1.jpg",
+          "price": 2499,
+          "mrp": 3999,
+          "link": "https://www.wishlink.com/",
+          "note": "My whole Navratri look under ₹2500. Every piece is linked here.",
+          "coupon": { "code": "", "discount": "", "expires": "", "terms": "" },
+          "badge": "fav",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DeEVNDdIEDq/",
+          "added": "2026-09-28",
+          "hidden": false
+        },
+        {
+          "name": "Oversized linen shirt, ivory",
+          "brand": "Westside",
+          "image": "",
+          "price": 1299,
+          "mrp": 0,
+          "link": "https://www.westside.com/",
+          "note": "Jeans, skirts, over a slip dress. The most-worn thing in my wardrobe.",
+          "coupon": { "code": "", "discount": "", "expires": "", "terms": "" },
+          "badge": "sold-out",
+          "featured": false,
+          "reel": "",
+          "added": "2026-07-14",
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "name": "Office wear",
+      "emoji": "💼",
+      "blurb": "Corporate-chic, without the corporate price.",
+      "products": [
+        {
+          "name": "Lace trim top, 3 ways to style",
+          "brand": "Atelier Rebel",
+          "image": "/img/covers/reel6.jpg",
+          "price": 899,
+          "mrp": 1499,
+          "link": "https://www.myntra.com/",
+          "note": "Blazer on, it's a meeting. Blazer off, it's brunch.",
+          "coupon": { "code": "LACEAVNI", "discount": "Flat ₹200 off", "expires": "2026-11-15", "terms": "" },
+          "badge": "new",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DdoRzj2hnwi/",
+          "added": "2026-10-06",
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "name": "Under ₹499",
+      "emoji": "💸",
+      "blurb": "Small price, big 'where is that from?'",
+      "products": [
+        {
+          "name": "Pearl claw clip set",
+          "brand": "Myntra",
+          "image": "",
+          "price": 249,
+          "mrp": 499,
+          "link": "https://www.myntra.com/",
+          "note": "Instant 'put together' hair in 10 seconds.",
+          "coupon": { "code": "", "discount": "", "expires": "", "terms": "" },
+          "badge": "none",
+          "featured": false,
+          "reel": "",
+          "added": "2026-10-11",
+          "hidden": false
+        }
+      ]
+    }
+  ]
+}

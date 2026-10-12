@@ -1,8 +1,10 @@
-/* fx.js: interactive layer (animations, micro-interactions, easter eggs, Brew your brief).
-   Purely additive: it builds on top of index.html, styles.css and script.js without changing them.
-   Remove the <script src="fx.js"> and <link href="fx.css"> lines to switch everything off. */
+/* fx.js: interactive layer for the portfolio (work/), animations, micro-interactions, easter eggs, Brew your brief.
+   Purely additive: it builds on top of work/index.html, styles.css and script.js without changing them.
+   The latte + laptop intro lives in landing.js now (it plays on the landing page, not here). */
 (() => {
   const root = document.documentElement;
+  // Site root (where fx.js lives), so image paths work from /work/ and on github.io/<repo>/
+  const BASE = new URL('.', document.currentScript ? document.currentScript.src : location.href).href;
   root.classList.add('fx');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -47,7 +49,7 @@
     if (reduceMotion) return;
     const fly = (isLily) => {
       const p = isLily ? make('img', 'fx-burst fx-burst--lily') : make('span', 'fx-burst fx-burst--heart', '&#9829;');
-      if (isLily) { p.src = 'img/lily.png'; p.alt = ''; }
+      if (isLily) { p.src = BASE + 'img/lily.png'; p.alt = ''; }
       p.setAttribute('aria-hidden', 'true');
       p.style.left = x + 'px';
       p.style.top = y + 'px';
@@ -85,92 +87,9 @@
     requestAnimationFrame(tick);
   };
 
-  /* ---------- Intro: latte pours, laptop opens, dive into the screen (~2.2s, every page load) ---------- */
-  // Skipped only for visitors who prefer reduced motion.
-  const introDone = (() => {
-    const ready = () => root.classList.add('fx-ready');
-    if (reduceMotion) { ready(); return Promise.resolve(); }
-    // Start at the top so the intro lands on the hero (unless the URL points at a section)
-    if (!window.location.hash) {
-      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-      window.scrollTo(0, 0);
-    }
-
-    const intro = make('div', 'fx-intro', `
-      <div class="fx-intro__fit"><div class="fx-intro__scene" aria-hidden="true">
-        <span class="fx-intro__shadow fx-intro__shadow--laptop"></span>
-        <span class="fx-intro__shadow fx-intro__shadow--cup"></span>
-        <div class="fx-intro__laptop">
-          <div class="fx-intro__lid"><div class="fx-intro__screen"><span class="fx-intro__type"></span><span class="fx-intro__caret"></span></div></div>
-          <div class="fx-intro__base"></div>
-        </div>
-        <div class="fx-intro__cup">
-          <span class="fx-intro__stream"></span>
-          <svg viewBox="0 0 100 100">
-            <defs>
-              <clipPath id="fx-intro-clip"><path d="M18 34h56v24a24 24 0 0 1-24 24h-8a24 24 0 0 1-24-24z"/></clipPath>
-              <linearGradient id="fx-intro-latte" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#f6e2c8"/><stop offset=".2" stop-color="#d2a47b"/><stop offset="1" stop-color="#7a4b33"/>
-              </linearGradient>
-            </defs>
-            <g class="fx-intro__steam" fill="none" stroke="#f2b8c0" stroke-width="2.5" stroke-linecap="round">
-              <path d="M36 28c-4-5 4-8 0-14"/><path d="M46 28c-4-5 4-8 0-14"/><path d="M56 28c-4-5 4-8 0-14"/>
-            </g>
-            <g clip-path="url(#fx-intro-clip)"><rect class="fx-intro__fill" x="14" y="34" width="64" height="52" fill="url(#fx-intro-latte)"/></g>
-            <path class="fx-intro__art" d="M46 52c-4-4-10-1-7 4l7 7 7-7c3-5-3-8-7-4z" fill="#fdf6e8"/>
-            <path d="M18 34h56v24a24 24 0 0 1-24 24h-8a24 24 0 0 1-24-24z" fill="none" stroke="#f2b8c0" stroke-width="3" stroke-linejoin="round"/>
-            <path d="M74 42h6a9 9 0 0 1 0 18h-6" fill="none" stroke="#f2b8c0" stroke-width="3"/>
-            <path d="M8 90h84" stroke="#f2b8c0" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <span class="fx-intro__desk"></span>
-      </div></div>
-      <button type="button" class="fx-intro__skip">Skip intro &rsaquo;</button>`);
-    const fitBox = $('.fx-intro__fit', intro);
-    const scene = $('.fx-intro__scene', intro);
-    const screen = $('.fx-intro__screen', intro);
-    const typed = $('.fx-intro__type', intro);
-    document.body.append(intro);
-    root.classList.add('fx-intro-lock');
-    const fit = () => { fitBox.style.scale = Math.min(1, (window.innerWidth - 32) / 460, (window.innerHeight - 120) / 260).toFixed(3); };
-    fit();
-    intro.classList.add('fx-intro--play');
-
-    return new Promise((resolve) => {
-      const timers = [];
-      const at = (ms, fn) => timers.push(setTimeout(fn, ms));
-      let finished = false;
-      const finish = (fast) => {
-        if (finished) return;
-        finished = true;
-        timers.forEach(clearTimeout);
-        intro.classList.add('fx-intro--out');
-        if (fast) intro.classList.add('fx-intro--fast');
-        root.classList.remove('fx-intro-lock');
-        ready();
-        resolve();
-        setTimeout(() => intro.remove(), fast ? 250 : 400);
-      };
-      // Typing on the laptop screen
-      const word = 'lattes.n.laptops';
-      [...word].forEach((_, i) => at(960 + i * 22, () => { typed.textContent = word.slice(0, i + 1); }));
-      // Dive into the screen until it covers the viewport (its background matches the hero)
-      at(1400, () => {
-        const s = screen.getBoundingClientRect();
-        const box = scene.getBoundingClientRect();
-        const k = parseFloat(fitBox.style.scale) || 1;
-        scene.style.transformOrigin = `${((s.left + s.width / 2 - box.left) / k).toFixed(1)}px ${((s.top + s.height / 2 - box.top) / k).toFixed(1)}px`;
-        const zoom = Math.max(window.innerWidth / s.width, window.innerHeight / s.height) * 1.25;
-        scene.animate([{ transform: 'scale(1)' }, { transform: `scale(${zoom.toFixed(2)})` }],
-          { duration: 560, easing: 'cubic-bezier(.7,0,.84,0)', fill: 'forwards' });
-      });
-      at(1800, () => finish(false));
-      $('.fx-intro__skip', intro).addEventListener('click', (e) => { e.stopPropagation(); finish(true); });
-      intro.addEventListener('click', () => finish(true));
-      window.addEventListener('keydown', (e) => { if (e.key === 'Escape') finish(true); });
-      window.addEventListener('resize', fit);
-    });
-  })();
+  /* ---------- Hero entrance: the intro now plays on the landing page, so the portfolio animates straight in ---------- */
+  root.classList.add('fx-ready');
+  const introDone = Promise.resolve();
 
   /* ---------- 1. Latte cup scroll progress (click = back to top) ---------- */
   const cup = make('button', 'fx-cup', `
@@ -458,7 +377,8 @@
     const figs = $$('.phone', phones);
     figs.forEach((fig) => {
       const id = (fig.dataset.href || '').match(/reel\/([^/?]+)/);
-      const text = id && REEL_BADGES[id[1]] ? REEL_BADGES[id[1]]
+      const text = fig.dataset.badge ? fig.dataset.badge // set from content/portfolio.json
+        : id && REEL_BADGES[id[1]] ? REEL_BADGES[id[1]]
         : fig.dataset.href ? 'Watch on Instagram ↗' : 'Coming soon';
       const badge = make('span', 'fx-badge');
       badge.textContent = text;
@@ -879,7 +799,7 @@
     const CHARMS = [
       { sel: '.hero', label: 'Top', icon: svg('<path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17" fill="none" stroke="currentColor" stroke-width="2"/>') },
       { sel: '#about', label: 'About', icon: svg('<path d="M12 21s-8-5.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.5-8 11-8 11z"/>') },
-      { sel: '#services', label: 'Services', icon: '<img src="img/lily.png" alt="">' },
+      { sel: '#services', label: 'Services', icon: `<img src="${BASE}img/lily.png" alt="">` },
       { sel: '#work', label: 'My Work', icon: svg('<path d="M8 5v14l11-7z"/>') },
       { sel: '#testimonials', label: 'Testimonials', icon: svg('<path d="M5 18h4l2-4V7H5v7h3zm9 0h4l2-4V7h-6v7h3z"/>') },
       { sel: '#collaborate', label: 'Collaborate', icon: svg('<circle cx="8" cy="8" r="4.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M11.5 11.5l9 9M17 17l2.5-2.5M14.5 14.5l2.5-2.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>') },
@@ -980,8 +900,8 @@
     const cta = $('.nav__cta', navLinks);
     const insta = $('.hero__social a[href*="instagram"]');
     const board = make('div', 'fx-board', `
-      <img class="fx-board__lily fx-board__lily--l" src="img/lily.png" alt="" aria-hidden="true">
-      <img class="fx-board__lily fx-board__lily--r" src="img/lily.png" alt="" aria-hidden="true">
+      <img class="fx-board__lily fx-board__lily--l" src="${BASE}img/lily.png" alt="" aria-hidden="true">
+      <img class="fx-board__lily fx-board__lily--r" src="${BASE}img/lily.png" alt="" aria-hidden="true">
       <button type="button" class="fx-board__close" aria-label="Close menu">&#10005;</button>
       <p class="fx-board__title" aria-hidden="true">Avni's Menu</p>
       <ol class="fx-board__list">

@@ -653,7 +653,9 @@ html.fx .nav__links a.fx-active:not(.nav__cta) { color: var(--pink); }
 /* =====================================================================
    Phones: café menu board (replaces the dropdown menu)
    ===================================================================== */
-html.fx-board-lock, html.fx-board-lock body { overflow: hidden; }
+/* Lock only <html>: overflow on <body> too would make body its own scroll box, and the sticky navbar
+   would jump back to the top of the page (off-screen when scrolled), leaving a see-through gap */
+html.fx-board-lock { overflow: hidden; overscroll-behavior: none; }
 html.fx-board-lock .fx-cup, html.fx-board-lock .fx-rail { visibility: hidden; }
 
 /* Hamburger morphs into a steaming cup while the board is open */

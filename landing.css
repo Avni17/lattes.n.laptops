@@ -1,0 +1,303 @@
+/* landing.css: "Latte or Laptop?" landing page. Uses the tokens from styles.css and the intro styles from fx.css. */
+
+body.lp {
+  min-height: 100vh; min-height: 100svh;
+  color: var(--cream);
+  background: var(--brown) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='6' height='6'><rect width='6' height='6' fill='%233b2a29'/><path d='M0 0h1v1H0z' fill='%23473332'/></svg>");
+}
+
+/* ---------- Café tabletop decoration ---------- */
+.lp-table { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+/* Lace doily: radial spokes + rings, softly faded at the edge */
+.lp-doily {
+  position: absolute; left: 50%; top: 56%; width: min(1150px, 150vw); aspect-ratio: 1; translate: -50% -50%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, transparent 0 22%, rgba(253,246,232,.07) 22.3% 22.8%, transparent 23% 34%,
+      rgba(253,246,232,.06) 34.3% 34.8%, transparent 35% 47%, rgba(253,246,232,.08) 47.3% 48%, transparent 48.3%),
+    repeating-conic-gradient(rgba(253,246,232,.045) 0 2.5deg, transparent 2.5deg 7.5deg),
+    radial-gradient(rgba(253,246,232,.09) 1.6px, transparent 2px) 0 0 / 18px 18px;
+  -webkit-mask: radial-gradient(circle, #000 0 60%, transparent 70%);
+          mask: radial-gradient(circle, #000 0 60%, transparent 70%);
+  animation: lp-spin 140s linear infinite;
+}
+@keyframes lp-spin { to { rotate: 360deg; } }
+/* Coffee-cup rings left on the table */
+.lp-ring {
+  position: absolute; width: 230px; aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle, transparent 57%, rgba(201,152,110,.22) 60%, rgba(201,152,110,.07) 64%, transparent 67%);
+  -webkit-mask: conic-gradient(from var(--gap, 40deg), transparent 0 50deg, #000 70deg 360deg);
+          mask: conic-gradient(from var(--gap, 40deg), transparent 0 50deg, #000 70deg 360deg);
+}
+.lp-ring--a { left: -40px; top: 8%; --gap: 120deg; }
+.lp-ring--b { right: -60px; bottom: 6%; width: 280px; --gap: 300deg; }
+.lp-ring--c { right: 18%; top: -70px; width: 170px; --gap: 200deg; opacity: .7; }
+/* Coffee beans */
+.lp-bean {
+  position: absolute; left: var(--x); top: var(--y); width: 18px; height: 12px; rotate: var(--r);
+  border-radius: 50%; background: radial-gradient(circle at 35% 30%, #7b5038, #3a231c 70%);
+  box-shadow: 0 3px 4px rgba(0,0,0,.35);
+}
+.lp-bean::after {
+  content: ""; position: absolute; left: 14%; right: 14%; top: 45%; height: 2px; border-radius: 2px;
+  background: rgba(20,10,8,.55); rotate: -6deg;
+}
+.lp-lily { position: absolute; }
+.lp-lily--a { --r: -20deg; width: 150px; left: -36px; top: 30%; animation: lily-float 7s ease-in-out infinite; }
+.lp-lily--b { --r: 30deg; width: 130px; right: -30px; top: 6%; opacity: .9; animation: lily-float 8.5s ease-in-out -3s infinite; }
+/* Soft pink light that follows the mouse */
+.lp-glow {
+  position: absolute; inset: 0;
+  background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 35%), rgba(242,184,192,.10), transparent 65%);
+}
+
+/* ---------- Layout ---------- */
+.lp-main {
+  position: relative; z-index: 1; min-height: 100vh; min-height: 100svh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: clamp(1.5rem, 4vw, 3rem) 1.25rem 1.25rem;
+}
+.lp-head { text-align: center; }
+.lp-handle { margin: 0; font-size: .75rem; letter-spacing: .26em; text-transform: uppercase; color: var(--pink); opacity: .85; }
+.lp-name { margin: .1rem 0 .2rem; font-size: clamp(3.2rem, 7vw, 5rem); line-height: 1.05; color: var(--pink); }
+.lp-q { margin: 0; font-size: clamp(1.5rem, 3.6vw, 2.5rem); line-height: 1.2; }
+.lp-q em { font-style: normal; font-size: 1.35em; color: var(--cream); margin: 0 .15em; vertical-align: -.08em; }
+.lp-sub { margin: .3rem 0 0; font-size: .85rem; opacity: .75; }
+
+.lp-cards {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 390px)); gap: clamp(1.5rem, 4.5vw, 4rem);
+  margin-top: clamp(1.8rem, 4vw, 2.8rem); perspective: 1200px;
+}
+
+/* ---------- The two cards ---------- */
+.lp-card {
+  --rot: -2.2deg; --lift: 0px; --rx: 0deg; --ry: 0deg;
+  position: relative; display: flex; flex-direction: column; text-decoration: none; color: var(--brown);
+  padding: 1.6rem 1.7rem 1.8rem; border-radius: 4px;
+  background: var(--cream);
+  box-shadow: 0 18px 38px rgba(0,0,0,.38), 0 2px 0 rgba(0,0,0,.08);
+  transform: translateY(var(--lift)) rotate(var(--rot)) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform .45s cubic-bezier(.3,1.3,.5,1), box-shadow .45s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.lp-card--work {
+  --rot: 2deg;
+  background-color: var(--pink);
+  background-image: radial-gradient(rgba(59,42,41,.16) 1.8px, transparent 2.2px);
+  background-size: 22px 22px;
+}
+/* Scalloped lace edges top and bottom (same trick as the About card) */
+.lp-card::before, .lp-card::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 9px;
+  background: radial-gradient(circle at 7px 0, transparent 5.5px, var(--edge, var(--cream)) 6px) 0 0 / 14px 9px repeat-x;
+}
+.lp-card::before { top: -9px; transform: scaleY(-1); }
+.lp-card::after  { bottom: -9px; }
+.lp-card--work { --edge: var(--pink); }
+.lp-card:focus-visible { outline: 3px dashed var(--pink); outline-offset: 10px; }
+@media (hover: hover) {
+  .lp-card:hover { --lift: -10px; --rot: 0deg; box-shadow: 0 32px 60px rgba(0,0,0,.45), 0 2px 0 rgba(0,0,0,.08); }
+}
+.lp-card.is-awake { --lift: -6px; --rot: 0deg; }
+
+/* Washi tape */
+.lp-tape {
+  position: absolute; top: -16px; left: 50%; width: 112px; height: 30px; translate: -50% 0; rotate: -4deg; z-index: 3;
+  background: repeating-linear-gradient(45deg, rgba(242,184,192,.9) 0 8px, rgba(253,246,232,.9) 8px 16px);
+  box-shadow: 0 2px 4px rgba(0,0,0,.18);
+  clip-path: polygon(0 8%, 4% 0, 8% 10%, 12% 0, 100% 0, 96% 90%, 100% 100%, 92% 92%, 88% 100%, 0 100%, 4% 50%);
+}
+.lp-card--work .lp-tape { rotate: 5deg; background: repeating-linear-gradient(-45deg, rgba(74,47,44,.85) 0 8px, rgba(253,246,232,.9) 8px 16px); }
+
+/* Pinned sticky note (text comes from the admin) */
+.lp-note {
+  position: absolute; top: 18px; right: -22px; z-index: 4; max-width: 170px;
+  padding: .55rem .85rem .6rem; rotate: 7deg;
+  font-family: var(--script); font-size: 1.45rem; line-height: 1.05; color: var(--brown-2);
+  background: #fff4cf; box-shadow: 0 8px 14px rgba(0,0,0,.25);
+  transition: rotate .4s cubic-bezier(.3,1.5,.5,1);
+}
+.lp-note::before {
+  content: ""; position: absolute; top: -7px; left: 50%; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffd3da, #d98a98 70%); box-shadow: 0 2px 3px rgba(0,0,0,.35);
+}
+.lp-card--work .lp-note { right: auto; left: -24px; rotate: -6deg; }
+@media (hover: hover) { .lp-card:hover .lp-note { rotate: 2deg; } .lp-card--work:hover .lp-note { rotate: -1deg; } }
+
+/* ---------- Card art ---------- */
+.lp-art { position: relative; height: 220px; display: grid; place-items: end center; margin-bottom: 1.1rem; }
+
+/* Shop: latte cup with product snapshots peeking out behind it */
+.lp-cup { position: relative; z-index: 2; width: 132px; height: 132px; margin-bottom: 4px; transition: rotate .5s cubic-bezier(.3,1.5,.5,1); }
+.lp-cup svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.lp-steam path { animation: fx-steam 2.4s ease-in-out infinite; }
+.lp-steam path:nth-child(2) { animation-delay: .6s; }
+.lp-steam path:nth-child(3) { animation-delay: 1.2s; }
+.lp-art-heart { transform-box: fill-box; transform-origin: center; }
+.lp-fan { position: absolute; left: 50%; bottom: 70px; width: 0; height: 0; z-index: 1; }
+.lp-snap {
+  --x: 0px; --y: 0px; --a: 0deg;
+  position: absolute; left: -38px; bottom: 0; width: 76px; aspect-ratio: 4 / 5; padding: 5px 5px 15px;
+  background: #fff; box-shadow: 0 6px 14px rgba(0,0,0,.25);
+  transform: translate(var(--x), var(--y)) rotate(var(--a));
+  transition: transform .55s cubic-bezier(.3,1.4,.5,1);
+}
+.lp-snap:nth-child(1) { --x: -26px; --y: -8px; --a: -14deg; }
+.lp-snap:nth-child(2) { --x: 0px;   --y: -26px; --a: 2deg; }
+.lp-snap:nth-child(3) { --x: 26px;  --y: -6px; --a: 13deg; }
+.lp-snap__img {
+  display: grid; place-items: center; width: 100%; height: 100%; overflow: hidden; font-size: 1.7rem;
+  background: linear-gradient(135deg, #f6e2d3, #e9c4bd);
+}
+.lp-snap__img img { width: 100%; height: 100%; object-fit: cover; }
+@media (hover: hover) {
+  .lp-card--shop:hover .lp-snap:nth-child(1) { --x: -92px; --y: -18px; --a: -16deg; }
+  .lp-card--shop:hover .lp-snap:nth-child(2) { --x: 0px;   --y: -64px; --a: -2deg; }
+  .lp-card--shop:hover .lp-snap:nth-child(3) { --x: 92px;  --y: -16px; --a: 15deg; }
+  .lp-card--shop:hover .lp-cup { rotate: -6deg; }
+  .lp-card--shop:hover .lp-steam path { animation-duration: 1.3s; }
+  .lp-card--shop:hover .lp-art-heart { animation: lp-heartbeat 1s ease-in-out infinite; }
+}
+.lp-card--shop.is-awake .lp-snap:nth-child(1) { --x: -78px; --y: -14px; --a: -16deg; }
+.lp-card--shop.is-awake .lp-snap:nth-child(2) { --x: 0px;   --y: -52px; --a: -2deg; }
+.lp-card--shop.is-awake .lp-snap:nth-child(3) { --x: 78px;  --y: -12px; --a: 15deg; }
+.lp-card--shop.is-awake .lp-art-heart { animation: lp-heartbeat 1s ease-in-out infinite; }
+@keyframes lp-heartbeat { 30% { scale: 1.25; } 60% { scale: .95; } }
+
+/* Work: laptop with a little stats ticker on the screen */
+.lp-laptop { position: relative; width: 236px; perspective: 700px; margin-bottom: 6px; }
+.lp-laptop::after {
+  content: ""; position: absolute; left: -6%; right: -6%; bottom: -10px; height: 14px; border-radius: 50%;
+  background: radial-gradient(rgba(0,0,0,.35), transparent 70%);
+}
+.lp-lid {
+  width: 90%; aspect-ratio: 270 / 172; margin: 0 auto; padding: 3.3%;
+  background: #2a1c1b; border-radius: 10px 10px 3px 3px; box-shadow: inset 0 0 0 2px #4a2f2c;
+  transform-origin: 50% 100%; transform: rotateX(6deg);
+  transition: transform .6s cubic-bezier(.3,1.3,.5,1);
+}
+.lp-screen {
+  height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: center; padding: 0 6px;
+  font-family: var(--mono); font-size: 12.5px; letter-spacing: .04em; color: var(--pink); text-align: center; line-height: 1.3;
+  background-color: #3b2a29;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='6' height='6'><path d='M0 0h1v1H0z' fill='%23473332'/></svg>");
+  box-shadow: inset 0 0 26px rgba(242,184,192,.2);
+  transition: box-shadow .4s;
+}
+.lp-caret { display: inline-block; width: 7px; height: 14px; margin-left: 2px; background: var(--pink); animation: fx-blink .8s steps(1) infinite; flex: none; }
+.lp-base {
+  position: relative; height: 11px; margin-top: -1px;
+  background: linear-gradient(#efdccd, #c9a98a); clip-path: polygon(3% 0, 97% 0, 100% 100%, 0 100%); border-radius: 0 0 10px 10px;
+}
+.lp-base::after { content: ""; position: absolute; left: 50%; top: 0; width: 44px; margin-left: -22px; height: 4px; background: rgba(59,42,41,.25); border-radius: 0 0 6px 6px; }
+@media (hover: hover) {
+  .lp-card--work:hover .lp-lid { transform: rotateX(-6deg) translateY(-4px); }
+  .lp-card--work:hover .lp-screen { box-shadow: inset 0 0 44px rgba(242,184,192,.45); }
+}
+.lp-card--work.is-awake .lp-lid { transform: rotateX(-6deg) translateY(-4px); }
+.lp-card--work.is-awake .lp-screen { box-shadow: inset 0 0 44px rgba(242,184,192,.45); }
+
+/* ---------- Card copy ---------- */
+.lp-copy { position: relative; }
+.lp-for { margin: 0; font-family: var(--script); font-size: 1.7rem; line-height: 1; color: #d98a98; }
+.lp-card--work .lp-for { color: var(--brown-2); }
+.lp-title { margin: .25rem 0 .45rem; font-family: var(--serif); text-transform: uppercase; letter-spacing: .04em; font-size: clamp(1.7rem, 2.8vw, 2.3rem); color: var(--brown-2); }
+.lp-desc { margin: 0 0 .7rem; font-size: .88rem; line-height: 1.55; }
+.lp-meta {
+  margin: 0; padding-top: .6rem; border-top: 1px dashed rgba(59,42,41,.35);
+  font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; opacity: .75;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.lp-cta {
+  display: inline-flex; align-items: center; gap: .5rem; align-self: flex-start; margin-top: 1.1rem;
+  padding: .7rem 1.25rem; border-radius: 999px; background: var(--brown); color: var(--cream);
+  font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  transition: background .25s, color .25s;
+}
+.lp-cta b { display: inline-block; transition: translate .3s cubic-bezier(.3,1.6,.5,1); }
+@media (hover: hover) {
+  .lp-card:hover .lp-cta { background: var(--brown-2); color: var(--pink); }
+  .lp-card:hover .lp-cta b { translate: 5px 0; }
+}
+
+.lp-foot { margin-top: clamp(2rem, 5vw, 3rem); display: flex; gap: .7rem; flex-wrap: wrap; justify-content: center; font-size: .75rem; letter-spacing: .1em; opacity: .75; }
+.lp-foot a { color: var(--pink); text-decoration: none; }
+.lp-foot a:hover { text-decoration: underline; }
+
+/* ---------- Entrance (after the intro, or straight away) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .lp-ready .lp-name { animation: fx-write 1.3s cubic-bezier(.6,.1,.3,1) .05s backwards; }
+  .lp-ready .lp-q { animation: lp-rise .6s ease-out .35s backwards; }
+  .lp-ready .lp-sub { animation: lp-rise .6s ease-out .55s backwards; }
+  .lp-ready .lp-note { animation: lp-pin .55s cubic-bezier(.3,1.5,.5,1) .7s backwards; }
+  .lp-ready .lp-card--work .lp-note { animation-delay: .85s; }
+  .lp-ready .lp-snap { animation: lp-peek .55s cubic-bezier(.3,1.5,.5,1) backwards; animation-delay: calc(var(--k) * 90ms + .5s); }
+  .lp-ready .lp-foot { animation: lp-rise .6s ease-out .9s backwards; }
+}
+@keyframes lp-rise { from { opacity: 0; translate: 0 14px; } }
+@keyframes lp-pin  { from { opacity: 0; scale: 1.4; rotate: 20deg; } }
+@keyframes lp-peek { from { opacity: 0; translate: 0 40px; } }
+
+/* ---------- Intro: same latte + laptop scene, but it splits into the two cards ---------- */
+.lp .fx-intro { background: none; }
+.lp .fx-intro::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--brown) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='6' height='6'><rect width='6' height='6' fill='%233b2a29'/><path d='M0 0h1v1H0z' fill='%23473332'/></svg>");
+  transition: opacity .55s ease;
+}
+.lp .fx-intro.lp-split { pointer-events: none; }
+.lp .fx-intro.lp-split::before { opacity: 0; }
+.lp-split .fx-intro__desk, .lp-split .fx-intro__shadow, .lp-split .fx-intro__skip, .lp-split .fx-intro__stream { opacity: 0; transition: opacity .3s; }
+.lp-split .fx-intro__cup, .lp-split .fx-intro__laptop { will-change: transform; }
+/* Cards only fade (no slide) so the flying cup and laptop land exactly on their twins; the heading writes in after */
+html.lp-intro .lp-card, html.lp-intro .lp-handle { opacity: 0; }
+html.lp-intro.lp-splitting .lp-card, html.lp-intro.lp-splitting .lp-handle { opacity: 1; transition: opacity .6s ease; }
+html.lp-intro .lp-name, html.lp-intro .lp-q, html.lp-intro .lp-sub, html.lp-intro .lp-foot { opacity: 0; }
+html.lp-intro .lp-cup, html.lp-intro .lp-laptop, html.lp-intro .lp-snap, html.lp-intro .lp-note { visibility: hidden; }
+
+/* ---------- Leaving: pour into the shop / dive into the laptop screen ---------- */
+.lp-leave { position: fixed; inset: 0; z-index: 9999; pointer-events: none; }
+.lp-leave i { position: absolute; inset: 0; }
+.lp-leave--pour i:first-child { background: #c9915f; }
+.lp-leave--pour i:last-child { background: var(--cream); }
+.lp-leave--dive i {
+  background: var(--brown) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='6' height='6'><rect width='6' height='6' fill='%233b2a29'/><path d='M0 0h1v1H0z' fill='%23473332'/></svg>");
+}
+
+/* ---------- Phones: cards stack, art on the left, copy on the right ---------- */
+@media (max-width: 760px) {
+  .lp-main { justify-content: flex-start; padding-top: 2rem; }
+  .lp-name { font-size: 3.1rem; }
+  .lp-q { font-size: 1.45rem; }
+  .lp-cards { grid-template-columns: 1fr; width: 100%; max-width: 460px; gap: 2.2rem; margin-top: 1.8rem; }
+  .lp-card { display: grid; grid-template-columns: 40% 1fr; gap: .9rem; align-items: center; padding: 1.3rem 1.1rem 1.3rem .9rem; }
+  .lp-card--work { grid-template-columns: 1fr 40%; padding: 1.3rem .9rem 1.3rem 1.1rem; }
+  .lp-card--work .lp-art { order: 2; }
+  .lp-art { height: 150px; margin: 0; }
+  .lp-cup { width: 92px; height: 92px; }
+  .lp-fan { bottom: 52px; }
+  .lp-snap { width: 54px; left: -27px; padding: 4px 4px 11px; }
+  .lp-snap:nth-child(1) { --x: -18px; --y: -6px; }
+  .lp-snap:nth-child(2) { --y: -18px; }
+  .lp-snap:nth-child(3) { --x: 18px; --y: -4px; }
+  .lp-card--shop.is-awake .lp-snap:nth-child(1) { --x: -40px; --y: -10px; }
+  .lp-card--shop.is-awake .lp-snap:nth-child(2) { --y: -36px; }
+  .lp-card--shop.is-awake .lp-snap:nth-child(3) { --x: 40px; --y: -8px; }
+  .lp-snap__img { font-size: 1.2rem; }
+  .lp-laptop { width: 100%; max-width: 150px; }
+  .lp-screen { font-size: 9px; }
+  .lp-caret { width: 5px; height: 10px; }
+  .lp-for { font-size: 1.35rem; }
+  .lp-title { font-size: 1.35rem; margin: .15rem 0 .3rem; }
+  .lp-desc { font-size: .76rem; line-height: 1.45; margin-bottom: .5rem; }
+  .lp-meta { font-size: .6rem; padding-top: .45rem; }
+  .lp-cta { margin-top: .7rem; padding: .55rem .95rem; font-size: .68rem; }
+  .lp-note { font-size: 1.15rem; top: -20px; right: 8px; max-width: 150px; padding: .4rem .7rem .45rem; }
+  .lp-card--work .lp-note { left: 8px; }
+  .lp-tape { width: 84px; height: 24px; top: -13px; }
+  .lp-card--shop .lp-tape { left: 26%; }
+  .lp-card--work .lp-tape { left: 74%; }
+  .lp-lily--a { width: 90px; left: -26px; top: auto; bottom: 8%; }
+  .lp-lily--b { width: 80px; right: -18px; top: 2%; }
+  .lp-ring--a { width: 160px; } .lp-ring--b { width: 190px; }
+}

@@ -465,3 +465,9 @@ html, body { overflow-x: clip; max-width: 100%; }
 .form__alt { margin: -.4rem 0 0; font-size: .8rem; text-align: center; opacity: .75; }
 .form__alt a, .form__status a { color: var(--pink); text-decoration: underline; }
 .form button:disabled { opacity: .7; cursor: progress; transform: none; }
+
+/* Footer: small links to the shop and the landing page */
+.footer p:not(.script) { font-size: .8rem; margin: 0; opacity: .8; }
+.footer .footer__links { margin-top: .5rem; letter-spacing: .12em; text-transform: uppercase; font-size: .72rem; }
+.footer__links a { color: var(--pink); text-decoration: none; }
+.footer__links a:hover { text-decoration: underline; }
