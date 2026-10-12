@@ -528,3 +528,8 @@ html.fx-espresso .sp-special__label { background-color: #4a2f2c; }
 
 /* Gradient (shimmer) text only paints inside its box: give the script tails of "y" and "p" room */
 .sp-hero__title { line-height: 1.15; padding: 0 .12em .22em; margin: .1rem 0 .4rem; }
+@media (max-width: 480px) {
+  .sp-search { padding: .35rem .4rem; gap: .45rem; }
+  .sp-search__icon { width: 36px; height: 36px; font-size: .95rem; }
+  .sp-search input::placeholder { font-size: 15px; }
+}

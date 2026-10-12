@@ -363,6 +363,11 @@
   hint.hidden = true;
   hint.setAttribute('aria-live', 'polite');
   $('.sp-search').after(hint);
+  // Shorter placeholder on phones so the whole hint fits in the box
+  const phoneQ = window.matchMedia('(max-width: 480px)');
+  const setPlaceholder = () => { searchInput.placeholder = phoneQ.matches ? 'Search, e.g. "serum"' : 'Search my picks... try "serum"'; };
+  setPlaceholder();
+  phoneQ.addEventListener('change', setPlaceholder);
   const clear = make('button', 'sp-search__clear', '&times;');
   clear.type = 'button';
   clear.setAttribute('aria-label', 'Clear search');
