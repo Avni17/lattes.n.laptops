@@ -1,0 +1,287 @@
+# Sveltia CMS config: the private editor at /admin
+# Saving in the editor commits to the GitHub repo; GitHub Pages republishes the site in about 1-2 minutes.
+# Only GitHub accounts with write access to the repo can sign in and save.
+
+backend:
+  name: github
+  repo: Avni17/lattes.n.laptops
+  branch: main # [EDIT] the branch GitHub Pages publishes from
+
+site_url: https://avni17.github.io/lattes.n.laptops/ # [EDIT] if you move to a custom domain
+display_url: https://avni17.github.io/lattes.n.laptops/
+logo_url: ../img/favicon.svg
+
+# Uploaded photos go here (and are resized + converted to WebP so the site stays fast)
+media_folder: img/uploads
+public_folder: /img/uploads
+media_libraries:
+  default:
+    config:
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 1600
+          height: 1600
+
+collections:
+  # ------------------------------------------------------------------ SHOP
+  - name: shop
+    label: Shop my picks
+    description: Categories, products, prices and coupon codes on the Shop page.
+    icon: shopping_bag
+    files:
+      - name: shop
+        label: Shop page, categories & products
+        file: content/shop.json
+        format: json
+        fields:
+          - name: page
+            label: Page text
+            widget: object
+            collapsed: true
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: subtitle, label: Subtitle, widget: text }
+              - { name: note, label: Note from me (yellow sticky note in the hero), widget: text }
+              - { name: avatar, label: Photo in the hero, widget: image, required: false }
+              - { name: landing_note, label: Sticky note on the landing page's Shop card (leave empty to hide it), widget: string, required: false }
+              - { name: disclosure, label: Affiliate disclosure (keep this, it's required in India), widget: text }
+
+          - name: categories
+            label: Categories
+            label_singular: Category
+            widget: list
+            collapsed: true
+            summary: "{{fields.emoji}} {{fields.name}}"
+            hint: Drag to reorder. The order here is the order of the tabs.
+            fields:
+              - { name: name, label: Category name, widget: string }
+              - { name: emoji, label: Emoji, widget: string, required: false, hint: "One emoji for the tab, e.g. 🧴 💄 👗 💼 💸" }
+              - { name: blurb, label: One-line description, widget: string, required: false }
+              - name: products
+                label: Products
+                label_singular: Product
+                widget: list
+                collapsed: true
+                summary: "{{fields.name}} · {{fields.brand}}"
+                hint: Drag to reorder. "Avni's order" sorting follows this order.
+                fields:
+                  - { name: name, label: Product name, widget: string }
+                  - { name: brand, label: Brand, widget: string, required: false }
+                  - { name: image, label: Photo, widget: image, required: false, hint: "Upload a photo or paste an image link. Square photos look best." }
+                  - { name: price, label: Price (₹), widget: number, value_type: int, min: 0, required: false }
+                  - { name: mrp, label: Original price / MRP (₹), widget: number, value_type: int, min: 0, required: false, hint: "Optional. If higher than the price, the card shows the % off." }
+                  - name: link
+                    label: Buy link (your affiliate link)
+                    widget: string
+                    pattern: ['^https?://', 'Paste the full link, starting with https://']
+                  - { name: note, label: Why I love it, widget: text, required: false }
+                  - name: coupon
+                    label: Coupon
+                    widget: object
+                    collapsed: true
+                    required: false
+                    summary: "{{fields.code}} {{fields.discount}}"
+                    fields:
+                      - { name: code, label: Code, widget: string, required: false, hint: "Leave empty if there's no coupon" }
+                      - { name: discount, label: What it gives, widget: string, required: false, hint: "e.g. 15% off, Flat ₹200 off" }
+                      - { name: expires, label: Expires on, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD", required: false, hint: "Optional. After this date the coupon hides itself." }
+                      - { name: terms, label: Small print, widget: string, required: false, hint: "e.g. First order only" }
+                  - name: badge
+                    label: Badge
+                    widget: select
+                    default: none
+                    required: false
+                    options:
+                      - { label: None, value: none }
+                      - { label: New, value: new }
+                      - { label: "Avni's fav", value: fav }
+                      - { label: Bestseller, value: bestseller }
+                      - { label: Limited, value: limited }
+                      - { label: Sold out, value: sold-out }
+                  - { name: featured, label: "Today's special (the big card at the top)", widget: boolean, default: false, required: false }
+                  - { name: reel, label: My reel about it (Instagram link), widget: string, required: false }
+                  - { name: added, label: Date added, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD", required: false, hint: "Products added in the last 14 days get a New badge automatically." }
+                  - { name: hidden, label: Hide from the shop (draft), widget: boolean, default: false, required: false }
+
+  # ------------------------------------------------------------- PORTFOLIO
+  - name: portfolio
+    label: Portfolio (work with me)
+    description: Text, numbers, reels, case studies, brands and testimonials on the portfolio page.
+    icon: work
+    files:
+      - name: portfolio
+        label: Portfolio page
+        file: content/portfolio.json
+        format: json
+        fields:
+          - name: landing
+            label: Landing page (Work card)
+            widget: object
+            collapsed: true
+            fields:
+              - { name: note, label: Sticky note on the Work card (leave empty to hide it), widget: string, required: false }
+              - name: screen
+                label: Lines typed on the laptop screen
+                widget: list
+                field: { name: line, label: Line, widget: string }
+
+          - name: hero
+            label: Top section
+            widget: object
+            collapsed: true
+            fields:
+              - { name: image, label: Main photo, widget: image }
+              - { name: eyebrow, label: Small line above the title, widget: string }
+              - { name: tagline, label: Tagline, widget: text }
+              - { name: niches, label: Niches line, widget: string }
+              - { name: instagram, label: Instagram link, widget: string }
+              - { name: extra_note, label: Extra pill (e.g. YouTube launching soon), widget: string, required: false }
+
+          - name: about
+            label: About me
+            widget: object
+            collapsed: true
+            fields:
+              - name: photos
+                label: The three small photos
+                widget: list
+                max: 3
+                field: { name: photo, label: Photo, widget: image }
+              - name: paragraphs
+                label: Paragraphs
+                widget: list
+                field: { name: text, label: Paragraph, widget: text }
+              - name: facts
+                label: Quick facts card
+                widget: list
+                summary: "{{fields.label}}"
+                fields:
+                  - { name: label, label: Label, widget: string }
+                  - { name: value, label: Value, widget: string }
+              - name: stats
+                label: Big numbers (count up on screen)
+                widget: list
+                summary: "{{fields.value}}{{fields.suffix}} {{fields.label}}"
+                fields: &stat
+                  - { name: value, label: Number, widget: number, value_type: float, hint: "e.g. 3.8" }
+                  - { name: decimals, label: Decimals to show, widget: number, value_type: int, default: 0, min: 0, max: 2, hint: "1 shows 3.8, 0 shows 65" }
+                  - { name: suffix, label: After the number, widget: string, required: false, hint: "e.g. +, M+, %, K, ' mo'" }
+                  - { name: label, label: Label, widget: string }
+
+          - name: audience
+            label: Audience
+            widget: object
+            collapsed: true
+            fields:
+              - name: facts
+                label: Audience facts
+                widget: list
+                summary: "{{fields.value}} {{fields.label}}"
+                fields:
+                  - { name: value, label: Value, widget: string, hint: "e.g. 390K or 37.6%" }
+                  - { name: label, label: Label, widget: string }
+              - name: countries
+                label: Countries (pie chart)
+                widget: list
+                summary: "{{fields.name}} {{fields.pct}}%"
+                hint: Percentages should add up to 100.
+                fields:
+                  - { name: name, label: Country, widget: string }
+                  - { name: pct, label: Percent, widget: number, value_type: float, min: 0, max: 100 }
+
+          - name: niches
+            label: What I create (chips)
+            widget: list
+            field: { name: niche, label: Niche, widget: string }
+
+          - name: services
+            label: Services list
+            widget: list
+            field: { name: service, label: Service, widget: string }
+
+          - name: services_photos
+            label: Services photos
+            widget: list
+            max: 4
+            field: { name: photo, label: Photo, widget: image }
+
+          - name: reels
+            label: Featured reels
+            label_singular: Reel
+            widget: list
+            collapsed: true
+            summary: "{{fields.title}}"
+            fields:
+              - { name: title, label: Title on the cover, widget: string }
+              - { name: cover, label: Cover image (9:16), widget: image, required: false }
+              - { name: alt, label: Cover description (for screen readers), widget: string, required: false }
+              - { name: link, label: Instagram reel link, widget: string, required: false }
+              - { name: badge, label: Hover badge (e.g. Lotus WhiteGlow · 482K views), widget: string, required: false }
+              - { name: preview, label: Silent preview video (optional, keep it small), widget: file, required: false }
+              - { name: video, label: Full video with sound (optional), widget: file, required: false }
+
+          - name: cases
+            label: Case studies
+            label_singular: Case study
+            widget: list
+            collapsed: true
+            summary: "{{fields.brand}}: {{fields.title}}"
+            fields:
+              - { name: brand, label: Brand · campaign, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: goal, label: Campaign goal, widget: text, required: false }
+              - { name: concept, label: Concept, widget: text, required: false }
+              - { name: role, label: My role, widget: string, required: false }
+              - { name: deliverables, label: Deliverables, widget: string, required: false }
+              - name: results
+                label: Results
+                widget: list
+                summary: "{{fields.value}} {{fields.label}}"
+                fields:
+                  - { name: value, label: Number, widget: string, hint: "e.g. 482K or 8.4%" }
+                  - { name: label, label: Label, widget: string }
+
+          - name: collabs
+            label: Brand collaborations
+            label_singular: Brand
+            widget: list
+            collapsed: true
+            summary: "{{fields.name}}"
+            fields: &brand
+              - { name: name, label: Brand name, widget: string }
+              - { name: logo, label: Logo (optional; without one the name is shown), widget: image, required: false }
+              - { name: dark, label: Logo is light-coloured (use a dark tile), widget: boolean, default: false, required: false }
+
+          - name: featured_brands
+            label: Brands I've featured & styled
+            label_singular: Brand
+            widget: list
+            collapsed: true
+            summary: "{{fields.name}}"
+            fields: *brand
+
+          - name: performance
+            label: Content that performs (numbers)
+            widget: list
+            summary: "{{fields.value}}{{fields.suffix}} {{fields.label}}"
+            fields: *stat
+
+          - name: testimonials
+            label: Testimonials
+            label_singular: Testimonial
+            widget: list
+            collapsed: true
+            summary: "{{fields.author}}"
+            fields:
+              - { name: quote, label: Quote, widget: text }
+              - { name: author, label: "Name, role, brand", widget: string }
+
+          - name: contact
+            label: Contact
+            widget: object
+            collapsed: true
+            fields:
+              - { name: email, label: Email (footer + "email me directly" link), widget: string }
