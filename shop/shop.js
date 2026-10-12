@@ -336,7 +336,7 @@
 
   const setCat = (slug, push = true) => {
     state.cat = slug;
-    if (state.q) { state.q = ''; searchInput.value = ''; }
+    if (state.q) { state.q = ''; searchInput.value = ''; hint.hidden = true; }
     markTab();
     renderGrid();
     if (push) history.replaceState(null, '', slug === 'all' ? location.pathname : '#c-' + slug);
@@ -345,6 +345,12 @@
     const t = e.target.closest('.sp-tab');
     if (t) setCat(t.dataset.cat);
   });
+  // Typing filters the menu quietly (no jumping); a hint under the box offers to take you to the results
+  const hint = make('p', 'sp-search-hint');
+  hint.hidden = true;
+  hint.setAttribute('aria-live', 'polite');
+  $('.sp-search').after(hint);
+  const toResults = () => $('#picks').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
   let qTimer;
   searchInput.addEventListener('input', () => {
     clearTimeout(qTimer);
@@ -352,8 +358,17 @@
       state.q = searchInput.value.trim().toLowerCase();
       if (state.q && state.cat !== 'all') { state.cat = 'all'; markTab(); }
       renderGrid();
-      if (state.q) $('#picks').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      const n = visible().length;
+      hint.hidden = !state.q;
+      if (state.q) {
+        hint.innerHTML = `<span>${n ? `${n} pick${n === 1 ? '' : 's'} found` : 'No picks match yet'}</span>${n ? '<button type="button">Show &darr;</button>' : ''}`;
+        const b = $('button', hint);
+        if (b) b.addEventListener('click', toResults);
+      }
     }, 220);
+  });
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); searchInput.blur(); toResults(); }
   });
   window.addEventListener('keydown', (e) => {
     if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); searchInput.focus(); }

@@ -189,6 +189,55 @@
     introDone.then(() => setTimeout(typeLine, 1200));
   }
 
+  /* ---------- Café-at-night background: bokeh lights, falling petals, ribbon text ---------- */
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const bokeh = $('.lp-bokeh');
+  if (bokeh) {
+    const LIGHTS = [['rgba(247,180,193,.95)', 'rgba(247,180,193,.4)'], ['rgba(240,200,150,.9)', 'rgba(240,200,150,.35)'], ['rgba(255,240,225,.85)', 'rgba(255,240,225,.3)']];
+    const n = window.innerWidth < 760 ? 11 : 18;
+    for (let i = 0; i < n; i++) {
+      const [c, c2] = LIGHTS[i % LIGHTS.length];
+      const orb = make('span', 'lp-orb');
+      const big = Math.random() < 0.3;
+      orb.style.cssText = [
+        `--x:${rnd(-5, 95).toFixed(1)}%`, `--y:${rnd(-5, 90).toFixed(1)}%`,
+        `--s:${(big ? rnd(140, 260) : rnd(30, 110)).toFixed(0)}px`,
+        `--c:${c}`, `--c2:${c2}`, `--o:${(big ? rnd(0.12, 0.22) : rnd(0.25, 0.55)).toFixed(2)}`,
+        `--b:${(big ? rnd(6, 14) : rnd(1, 5)).toFixed(1)}px`,
+        `--dx:${rnd(-60, 60).toFixed(0)}px`, `--dy:${rnd(-50, 50).toFixed(0)}px`,
+        `--d:${rnd(14, 28).toFixed(1)}s`, `--delay:${rnd(-20, 0).toFixed(1)}s`,
+      ].join(';');
+      bokeh.append(orb);
+    }
+  }
+  const RIBBON = ['lattes', '☕', 'laptops', '♡', 'shop my picks', '✦', 'work with me', '★'];
+  $$('.lp-ribbon__track').forEach((track, k) => {
+    const words = k ? [...RIBBON].reverse() : RIBBON;
+    const run = Array(4).fill(words.join('  ')).join('  ·  ');
+    track.innerHTML = `<span>${run}  ·  </span><span>${run}  ·  </span>`; // two copies = seamless loop
+  });
+  const petals = $('.lp-petals');
+  if (petals && !reduceMotion) {
+    const drop = () => {
+      if (!document.hidden && petals.childElementCount < (window.innerWidth < 760 ? 7 : 12)) {
+        const p = make('span', 'lp-petal');
+        p.style.left = rnd(0, 100).toFixed(1) + '%';
+        p.style.setProperty('--w', rnd(9, 17).toFixed(0) + 'px');
+        petals.append(p);
+        const sway = rnd(40, 140) * (Math.random() < 0.5 ? -1 : 1);
+        const fall = window.innerHeight + 60;
+        p.animate([
+          { translate: '0 0', rotate: '0deg', opacity: 0 },
+          { opacity: 0.85, offset: 0.08 },
+          { translate: `${sway.toFixed(0)}px ${(fall * 0.5).toFixed(0)}px`, rotate: `${rnd(120, 260).toFixed(0)}deg`, offset: 0.5 },
+          { translate: `${(-sway * 0.4).toFixed(0)}px ${fall}px`, rotate: `${rnd(300, 520).toFixed(0)}deg`, opacity: 0.7 },
+        ], { duration: rnd(9000, 15000), easing: 'linear' }).onfinish = () => p.remove();
+      }
+      setTimeout(drop, rnd(700, 1500));
+    };
+    introDone.then(() => setTimeout(drop, 300));
+  }
+
   /* ---------- 3. Tilt, glow, and phone "wake up" turns ---------- */
   const cards = [shopCard, workCard].filter(Boolean);
   if (!reduceMotion && finePointer) {

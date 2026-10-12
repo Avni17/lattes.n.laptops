@@ -25,12 +25,12 @@
 </head>
 <body class="lp">
 
-  <!-- Café tabletop: lace doily, coffee rings, beans, lilies (decoration only) -->
+  <!-- Café at night: fairy-light bokeh, falling petals, ribbons, beans, lilies (decoration only) -->
   <div class="lp-table" aria-hidden="true">
-    <span class="lp-doily"></span>
-    <span class="lp-ring lp-ring--a"></span>
-    <span class="lp-ring lp-ring--b"></span>
-    <span class="lp-ring lp-ring--c"></span>
+    <span class="lp-vignette"></span>
+    <div class="lp-bokeh"></div>
+    <div class="lp-ribbon lp-ribbon--a"><div class="lp-ribbon__track"></div></div>
+    <div class="lp-ribbon lp-ribbon--b"><div class="lp-ribbon__track"></div></div>
     <i class="lp-bean" style="--x:8%;--y:22%;--r:30deg"></i>
     <i class="lp-bean" style="--x:11%;--y:26%;--r:-40deg"></i>
     <i class="lp-bean" style="--x:88%;--y:70%;--r:70deg"></i>
@@ -39,6 +39,7 @@
     <i class="lp-bean" style="--x:14%;--y:82%;--r:15deg"></i>
     <img class="lily lp-lily lp-lily--a" src="img/lily.png" alt="">
     <img class="lily lp-lily lp-lily--b" src="img/lily.png" alt="">
+    <div class="lp-petals"></div>
     <span class="lp-glow"></span>
   </div>
 
@@ -46,13 +47,14 @@
     <header class="lp-head">
       <p class="lp-handle">@lattes.n.laptops</p>
       <h1 class="script lp-name">Avni Arora</h1>
-      <p class="lp-q"><span class="serif">Latte</span> <em class="script">or</em> <span class="serif pink">Laptop?</span></p>
+      <p class="lp-q"><span class="serif">Latte</span> <em class="script">or</em> <span class="serif pink lp-q__laptop">Laptop?<svg class="lp-swash" viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 13C40 4 80 18 120 9S180 6 197 11" pathLength="1"/></svg></span></p>
       <p class="lp-sub">pick your cup &#9749;</p>
     </header>
 
     <div class="lp-cards">
       <!-- SHOP: for followers -->
       <a class="lp-card lp-card--shop" href="shop/" data-go="pour">
+        <span class="lp-sheen" aria-hidden="true"></span>
         <span class="lp-tape" aria-hidden="true"></span>
         <span class="lp-note" data-landing-note="shop">new picks this week &#10024;</span>
         <div class="lp-art" aria-hidden="true">
@@ -91,6 +93,7 @@
 
       <!-- WORK: for brands -->
       <a class="lp-card lp-card--work" href="work/" data-go="dive">
+        <span class="lp-sheen" aria-hidden="true"></span>
         <span class="lp-tape" aria-hidden="true"></span>
         <span class="lp-note" data-landing-note="work">now booking festive collabs &#10024;</span>
         <div class="lp-art" aria-hidden="true">

@@ -10,7 +10,7 @@ body.sp { background: var(--cream); }
 .sp-hero {
   position: relative; overflow: hidden;
   display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(2rem, 5vw, 4rem); align-items: center;
-  color: var(--cream);
+  color: #fdf6e8; /* fixed: --cream turns dark in espresso mode */
   background: var(--brown) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='6' height='6'><rect width='6' height='6' fill='%233b2a29'/><path d='M0 0h1v1H0z' fill='%23473332'/></svg>");
 }
 .sp-hero__text { position: relative; z-index: 1; max-width: 600px; justify-self: end; }
@@ -286,12 +286,14 @@ html.fx-espresso .sp-sort select option { background: #2b1d1c; }
 .sp-actions { display: flex; align-items: center; gap: .45rem; flex-wrap: wrap; margin-top: .8rem; }
 .sp-buy {
   flex: 1 1 auto; display: inline-flex; align-items: center; justify-content: center; gap: .35rem;
-  padding: .65rem 1rem; border-radius: 999px; background: var(--brown); color: var(--cream); text-decoration: none;
+  padding: .65rem 1rem; border-radius: 999px; background: #3b2a29; color: #fdf6e8; text-decoration: none;
   font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
   transition: background .2s, color .2s;
 }
 .sp-buy b { transition: translate .3s cubic-bezier(.3,1.6,.5,1); }
-.sp-buy:hover { background: var(--pink); color: var(--brown); }
+.sp-buy:hover { background: var(--pink); color: #3b2a29; }
+html.fx-espresso .sp-spec .sp-buy:not(.is-off) { background: var(--pink); color: #3b2a29; }
+html.fx-espresso .sp-spec .sp-buy:not(.is-off):hover { background: #fdf6e8; }
 .sp-buy:hover b { translate: 2px -2px; }
 .sp-buy.is-off { background: #d9cfc8; color: #6b5a57; cursor: not-allowed; }
 .sp-card .sp-buy { background: #3b2a29; color: #fdf6e8; }
@@ -347,3 +349,76 @@ html.fx-espresso .sp-disclosure p { border-color: rgba(242,184,192,.3); }
   .sp-lily--b { width: 74px; top: 12px; right: -14px; }
   .sp-toast { bottom: 16px; font-size: .74rem; }
 }
+
+/* =====================================================================
+   A little shine: brighter, glossier pinks and richer browns (not overdone)
+   ===================================================================== */
+body.sp {
+  --sp-pink: #f7b4c1;
+  --sp-pink-hi: #ffd6de;
+  --sp-pink-deep: #ea8fa2;
+  --sp-gloss: linear-gradient(180deg, rgba(255,255,255,.38), rgba(255,255,255,0) 58%);
+}
+/* Shimmering titles */
+.sp-hero__title, .sp-hero__stats b {
+  background: linear-gradient(100deg, #f4b3c0 0%, #ffe4ea 22%, #f2a2b3 45%, #ffd2da 70%, #f4b3c0 100%) 0 0 / 220% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: sp-shimmer 7s linear infinite;
+}
+.sp-hero__title { padding: 0 .1em; filter: drop-shadow(0 2px 10px rgba(242,184,192,.25)); }
+@keyframes sp-shimmer { to { background-position: -220% 0; } }
+/* Warmer, deeper hero brown with a soft glow behind the text */
+.sp-hero {
+  background:
+    radial-gradient(70% 90% at 30% 40%, rgba(242,184,192,.12), transparent 70%),
+    radial-gradient(60% 80% at 85% 60%, rgba(232,195,158,.10), transparent 70%),
+    #3b2a29 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='6' height='6'><rect width='6' height='6' fill='%233b2a29'/><path d='M0 0h1v1H0z' fill='%23473332'/></svg>");
+}
+.sp-hero .eyebrow { color: var(--sp-pink-hi); }
+/* Glossy pills and buttons */
+.sp-buy, .sp-card .sp-buy, .sp-surprise, .sp-special__label {
+  background-image: var(--sp-gloss);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 6px 14px rgba(59,42,41,.22);
+}
+.sp-buy:hover, .sp-card .sp-buy:hover, .sp-surprise:hover {
+  background-color: var(--sp-pink); color: #3b2a29;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 8px 20px rgba(234,143,162,.45);
+}
+html.fx-espresso .sp-spec .sp-buy:not(.is-off) { background-color: var(--sp-pink); box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 8px 22px rgba(234,143,162,.4); }
+.sp-tabs__foam {
+  background: linear-gradient(180deg, var(--sp-pink-hi), var(--sp-pink) 55%, var(--sp-pink-deep));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 5px 14px rgba(234,143,162,.5);
+}
+.sp-count, .sp-ticket code, .sp-coupon code, .sp-badge--new {
+  background: linear-gradient(180deg, var(--sp-pink-hi), var(--sp-pink));
+}
+.sp-badge--fav, .sp-coupon__off, .sp-tag i { background: linear-gradient(180deg, #f3a6b6, var(--sp-pink-deep)); }
+.sp-coupon { border-color: var(--sp-pink-deep); background-color: #fff1f4; }
+.sp-coupons { background-color: var(--sp-pink); }
+.sp-coupons.pink-dots {
+  background-image:
+    radial-gradient(rgba(59,42,41,.85) 2.5px, transparent 3px),
+    linear-gradient(160deg, rgba(255,255,255,.22), rgba(255,255,255,0) 50%, rgba(234,143,162,.25));
+  background-size: 28px 28px, 100% 100%;
+}
+.sp-heart[aria-pressed="true"] { color: var(--sp-pink-deep); text-shadow: 0 0 10px rgba(247,180,193,.8); }
+/* Today's special label: a glowing chalkboard pill */
+.sp-special__label { background-color: #3b2a29; color: var(--sp-pink-hi); box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 4px 0 #22151a, 0 10px 24px rgba(234,143,162,.25); }
+html.fx-espresso .sp-special__label { background-color: #4a2f2c; }
+/* Cards catch the light on hover */
+.sp-card:hover { box-shadow: 0 22px 40px rgba(59,42,41,.28), 0 0 0 1px rgba(247,180,193,.5), 0 0 28px rgba(247,180,193,.35); }
+
+/* Search: live result hint under the box (no jumping while you type) */
+.sp-search-hint {
+  display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; min-height: 2rem; margin: .7rem 0 0 .4rem;
+  font-size: .78rem; color: #fdf6e8;
+}
+.sp-search-hint[hidden] { display: none; }
+.sp-search-hint button {
+  cursor: pointer; padding: .35rem .85rem; border-radius: 999px; border: 0;
+  background: var(--sp-pink) var(--sp-gloss); color: #3b2a29;
+  font: inherit; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(234,143,162,.4);
+}
+.sp-search-hint button:hover { background-color: #fdf6e8; }
+@media (max-width: 860px) { .sp-search-hint { justify-content: center; margin-left: 0; } }
