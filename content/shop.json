@@ -326,12 +326,7 @@
           "mrp": 800,
           "link": "https://www.wishlink.com/share/6va2xe",
           "note": "",
-          "coupon": {
-            "code": "TESTBLUSH",
-            "discount": "Flat ₹100 off",
-            "expires": "",
-            "terms": "TEST coupon, not real"
-          },
+          "coupon": null,
           "badge": "none",
           "featured": false,
           "reel": "https://www.instagram.com/reel/DbWEtrXzpv5/",
