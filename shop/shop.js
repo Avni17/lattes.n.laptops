@@ -148,7 +148,7 @@
         };
       });
       return cat;
-    });
+    }).filter((c) => c.products.length); // e.g. "New from Wishlink" while every import is still hidden
     PRODUCTS = CATS.flatMap((c) => c.products);
   };
 
@@ -164,11 +164,11 @@
       ${p.price ? `<span class="sp-tag"><b>${rupees(p.price)}</b>${p.off ? `<s>${rupees(p.mrp)}</s><i>-${p.off}%</i>` : ''}</span>` : ''}
     </div>`;
   const couponBtn = (p) => (p.coupon && !p.soldOut ? `
-    <button type="button" class="sp-coupon${p.coupon.urgent ? ' is-urgent' : ''}" data-code="${esc(p.coupon.code)}" aria-label="Copy coupon ${esc(p.coupon.code)}">
+    <button type="button" class="sp-coupon${p.coupon.urgent ? ' is-urgent' : ''}" data-code="${esc(p.coupon.code)}" aria-label="Copy coupon ${esc(p.coupon.code)}"
+      title="${esc([p.coupon.discount, p.coupon.code, p.coupon.label, p.coupon.terms].filter(Boolean).join(' · '))}">
       <span class="sp-coupon__off">${esc(p.coupon.discount || 'Coupon')}</span>
       <code>${esc(p.coupon.code)}</code>
-      <span class="sp-coupon__meta"><span class="sp-coupon__hint">tap to copy</span> &middot; ${esc(p.coupon.label)}</span>
-      ${p.coupon.terms ? `<span class="sp-coupon__terms">${esc(p.coupon.terms)}</span>` : ''}
+      <span class="sp-coupon__meta"><span class="sp-coupon__hint">tap to copy</span> &middot; ${esc(p.coupon.label)}${p.coupon.terms ? ` &middot; <span class="sp-coupon__terms">${esc(p.coupon.terms)}</span>` : ''}</span>
     </button>` : '');
   const actions = (p) => `
     <div class="sp-actions">
@@ -186,7 +186,7 @@
       ${photo(p)}
       <div class="sp-body">
         <p class="sp-brand">${esc(p.brand || p.cat.name)}</p>
-        <h3 class="sp-name">${esc(p.name)}</h3>
+        <h3 class="sp-name" title="${esc(p.name)}">${esc(p.name)}</h3>
         ${p.note ? `<p class="sp-note">&ldquo;${esc(p.note)}&rdquo;</p>` : ''}
         ${couponBtn(p)}
         ${actions(p)}
@@ -231,7 +231,7 @@
         <div class="polaroid sp-spec__frame">${photo(p, 'sp-photo--big')}</div>
         <div class="sp-spec__body">
           <p class="sp-brand">${esc(p.brand || p.cat.name)} &middot; ${esc(p.cat.emoji)} ${esc(p.cat.name)}</p>
-          <h3 class="sp-spec__name">${esc(p.name)}</h3>
+          <h3 class="sp-spec__name" title="${esc(p.name)}">${esc(p.name)}</h3>
           ${p.note ? `<p class="sp-spec__note">${esc(p.note)}</p>` : ''}
           ${couponBtn(p)}
           ${actions(p)}

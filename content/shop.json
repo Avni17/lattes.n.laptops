@@ -14,147 +14,160 @@
       "blurb": "The routine that got me the 'what's your skincare?' DMs.",
       "products": [
         {
-          "name": "WhiteGlow 2-step: facial foam + gel creme",
-          "brand": "Lotus Herbals",
-          "image": "/img/covers/reel4.jpg",
-          "price": 499,
-          "mrp": 650,
-          "link": "https://www.lotusherbals.com/",
-          "note": "My 2-step glow on lazy mornings. The gel creme sinks in, no stickiness.",
+          "name": "WishCare Daily Fluid Tinted Sunscreen SPF50PA++++ Broad Spectrum Protection for All Skin Types- L101",
+          "brand": "WishCare",
+          "image": "/img/uploads/wishlink/wishcare-daily-fluid-tinted-sunscreen-spf50pa-broa-b4667a04.jpg",
+          "price": 479,
+          "mrp": 599,
+          "link": "https://www.wishlink.com/share/6jncc7",
+          "note": "",
           "coupon": {
-            "code": "AVNIGLOW",
-            "discount": "15% off",
-            "expires": "2026-10-15",
-            "terms": "On orders above ₹399"
-          },
-          "badge": "fav",
-          "featured": true,
-          "reel": "https://www.instagram.com/reel/Dd1JlD7KV6T/",
-          "added": "2026-10-08",
-          "hidden": false
-        },
-        {
-          "name": "10% Niacinamide face serum",
-          "brand": "Minimalist",
-          "image": "",
-          "price": 599,
-          "mrp": 0,
-          "link": "https://beminimalist.co/",
-          "note": "Two drops at night. My pores have honestly never looked smaller.",
-          "coupon": {
-            "code": "",
-            "discount": "",
-            "expires": "",
-            "terms": ""
-          },
-          "badge": "bestseller",
-          "featured": false,
-          "reel": "",
-          "added": "2026-09-10",
-          "hidden": false
-        },
-        {
-          "name": "Sunscreen aqua gel SPF 50",
-          "brand": "The Derma Co",
-          "image": "",
-          "price": 449,
-          "mrp": 549,
-          "link": "https://thedermaco.com/",
-          "note": "No white cast, no grease, sits perfectly under makeup.",
-          "coupon": {
-            "code": "AVNI10",
+            "code": "TESTGLOW10",
             "discount": "10% off",
-            "expires": "2026-10-31",
-            "terms": ""
+            "expires": "2026-10-15",
+            "terms": "TEST coupon, not real"
           },
           "badge": "none",
           "featured": false,
-          "reel": "",
-          "added": "2026-10-02",
-          "hidden": false
-        }
-      ]
-    },
-    {
-      "name": "Makeup",
-      "emoji": "💄",
-      "blurb": "5-minute face, office to coffee date.",
-      "products": [
-        {
-          "name": "Lip & cheek tint, shade Rosewood",
-          "brand": "Savana",
-          "image": "",
-          "price": 349,
-          "mrp": 399,
-          "link": "https://www.myntra.com/",
-          "note": "One swipe on lips, two dabs on cheeks. That's the whole look.",
-          "coupon": {
-            "code": "AVNI20",
-            "discount": "20% off",
-            "expires": "",
-            "terms": "First order only"
-          },
-          "badge": "new",
-          "featured": false,
-          "reel": "",
-          "added": "2026-10-10",
-          "hidden": false
+          "reel": "https://www.instagram.com/reel/DbWEtrXzpv5/",
+          "added": "2026-07-29",
+          "hidden": false,
+          "wishlink_id": "55180841"
         },
         {
-          "name": "Brow gel, clear",
-          "brand": "Myntra Beauty",
-          "image": "",
-          "price": 299,
-          "mrp": 0,
-          "link": "https://www.myntra.com/",
-          "note": "Laminated brows for under ₹300. Holds all day.",
-          "coupon": {
-            "code": "OLDCODE",
-            "discount": "₹50 off",
-            "expires": "2026-10-01",
-            "terms": ""
-          },
-          "badge": "none",
-          "featured": false,
-          "reel": "",
-          "added": "2026-08-20",
-          "hidden": false
-        }
-      ]
-    },
-    {
-      "name": "Fashion",
-      "emoji": "👗",
-      "blurb": "Real-life outfits I actually re-wear.",
-      "products": [
-        {
-          "name": "Mirror-work lehenga set (self-assembled look)",
-          "brand": "Wishlink finds",
-          "image": "/img/covers/reel1.jpg",
-          "price": 2499,
-          "mrp": 3999,
-          "link": "https://www.wishlink.com/",
-          "note": "My whole Navratri look under ₹2500. Every piece is linked here.",
+          "name": "Strawberry Dew Melt-in-a-Flash Cleansing Balm, With Fruit Enzymes & Vitamins",
+          "brand": "Dot & Key",
+          "image": "/img/uploads/wishlink/strawberry-dew-melt-in-a-flash-cleansing-balm-with-0db6c6bf.jpg",
+          "price": 429,
+          "mrp": 499,
+          "link": "https://www.wishlink.com/share/ntf72b",
+          "note": "",
           "coupon": {
             "code": "",
             "discount": "",
             "expires": "",
             "terms": ""
           },
-          "badge": "fav",
+          "badge": "none",
           "featured": false,
-          "reel": "https://www.instagram.com/reel/DeEVNDdIEDq/",
-          "added": "2026-09-28",
-          "hidden": false
+          "reel": "https://www.instagram.com/reel/DbWEtrXzpv5/",
+          "added": "2026-07-29",
+          "hidden": false,
+          "wishlink_id": "55180840"
         },
         {
-          "name": "Oversized linen shirt, ivory",
-          "brand": "Westside",
-          "image": "",
-          "price": 1299,
+          "name": "Minimalist Nonapeptide+AHA BHA 06% Underarm Roll On with Mandelic Acid - 40 ml",
+          "brand": "Minimalist",
+          "image": "/img/uploads/wishlink/minimalist-nonapeptide-aha-bha-06-underarm-roll-on-0bb4cdd1.jpg",
+          "price": 379,
+          "mrp": 399,
+          "link": "https://www.wishlink.com/share/ntefht",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "",
+          "added": "2026-07-24",
+          "hidden": false,
+          "wishlink_id": "54595464"
+        },
+        {
+          "name": "Minimalist Broad Spectrum SPF50 PA++++ Sunscreen with Niacinamide & Vitamin B5 - 100 g",
+          "brand": "Minimalist",
+          "image": "/img/uploads/wishlink/minimalist-broad-spectrum-spf50-pa-sunscreen-with-68e837a4.jpg",
+          "price": 664,
+          "mrp": 699,
+          "link": "https://www.wishlink.com/share/66u5dn",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "",
+          "added": "2026-07-24",
+          "hidden": false,
+          "wishlink_id": "54595465"
+        },
+        {
+          "name": "Minimalist 8% L-Ascorbic Acid Lip Treatment Balm with Vitamin E-12gm",
+          "brand": "Minimalist",
+          "image": "/img/uploads/wishlink/minimalist-8-l-ascorbic-acid-lip-treatment-balm-wi-72d9cef9.jpg",
+          "price": 379,
+          "mrp": 399,
+          "link": "https://www.wishlink.com/share/nf8e23",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "",
+          "added": "2026-07-24",
+          "hidden": false,
+          "wishlink_id": "54595466"
+        },
+        {
+          "name": "THE ORDINARY Hyaluronic Acid 2% + B5 - 30ml",
+          "brand": "The Ordinary",
+          "image": "/img/uploads/wishlink/the-ordinary-hyaluronic-acid-2-b5-30ml-d14c95ed.jpg",
+          "price": 1000,
           "mrp": 0,
-          "link": "https://www.westside.com/",
-          "note": "Jeans, skirts, over a slip dress. The most-worn thing in my wardrobe.",
+          "link": "https://www.wishlink.com/share/6ryb4c",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "",
+          "added": "2026-07-24",
+          "hidden": false,
+          "wishlink_id": "54595467"
+        },
+        {
+          "name": "The Derma co. 1% Hyaluronic Moisturizing Body Sunscreen Lotion -200 ml",
+          "brand": "The Derma Co",
+          "image": "/img/uploads/wishlink/the-derma-co-1-hyaluronic-moisturizing-body-sunscr-e21fc86d.jpg",
+          "price": 489,
+          "mrp": 699,
+          "link": "https://www.wishlink.com/share/nknbku",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "",
+          "added": "2026-07-24",
+          "hidden": false,
+          "wishlink_id": "54595468"
+        },
+        {
+          "name": "Cetaphil DAM Ultra Hydrating Lotion Long Lasting Moisturizer for Face & Body - 100 g",
+          "brand": "Cetaphil",
+          "image": "/img/uploads/wishlink/cetaphil-dam-ultra-hydrating-lotion-long-lasting-m-cbf0b753.jpg",
+          "price": 703,
+          "mrp": 765,
+          "link": "https://www.wishlink.com/share/6cj3fj",
+          "note": "",
           "coupon": {
             "code": "",
             "discount": "",
@@ -164,51 +177,18 @@
           "badge": "sold-out",
           "featured": false,
           "reel": "",
-          "added": "2026-07-14",
-          "hidden": false
-        }
-      ]
-    },
-    {
-      "name": "Office wear",
-      "emoji": "💼",
-      "blurb": "Corporate-chic, without the corporate price.",
-      "products": [
+          "added": "2026-07-24",
+          "hidden": false,
+          "wishlink_id": "54595469"
+        },
         {
-          "name": "Lace trim top, 3 ways to style",
-          "brand": "Atelier Rebel",
-          "image": "/img/covers/reel6.jpg",
-          "price": 899,
-          "mrp": 1499,
-          "link": "https://www.myntra.com/",
-          "note": "Blazer on, it's a meeting. Blazer off, it's brunch.",
-          "coupon": {
-            "code": "LACEAVNI",
-            "discount": "Flat ₹200 off",
-            "expires": "2026-11-15",
-            "terms": ""
-          },
-          "badge": "new",
-          "featured": false,
-          "reel": "https://www.instagram.com/reel/DdoRzj2hnwi/",
-          "added": "2026-10-06",
-          "hidden": false
-        }
-      ]
-    },
-    {
-      "name": "Under ₹499",
-      "emoji": "💸",
-      "blurb": "Small price, big 'where is that from?'",
-      "products": [
-        {
-          "name": "Pearl claw clip set",
-          "brand": "Myntra",
-          "image": "",
-          "price": 249,
-          "mrp": 499,
-          "link": "https://www.myntra.com/",
-          "note": "Instant 'put together' hair in 10 seconds.",
+          "name": "Vaseline Cocoa Glow Serum In Lotion with 100% Pure Cocoa & Shea Butter - 600 ml",
+          "brand": "Vaseline",
+          "image": "/img/uploads/wishlink/vaseline-cocoa-glow-serum-in-lotion-with-100-pure-5b6c2745.jpg",
+          "price": 363,
+          "mrp": 825,
+          "link": "https://www.wishlink.com/share/6m72yq",
+          "note": "",
           "coupon": {
             "code": "",
             "discount": "",
@@ -218,10 +198,541 @@
           "badge": "none",
           "featured": false,
           "reel": "",
-          "added": "2026-10-11",
-          "hidden": false
+          "added": "2026-07-24",
+          "hidden": false,
+          "wishlink_id": "54595470"
+        },
+        {
+          "name": "De-Tan Removal Cream",
+          "brand": "Raaga Professional",
+          "image": "/img/uploads/wishlink/de-tan-removal-cream-d52eb380.jpg",
+          "price": 408,
+          "mrp": 480,
+          "link": "https://www.wishlink.com/share/68sawr",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "",
+          "added": "2026-07-24",
+          "hidden": false,
+          "wishlink_id": "54595471"
+        },
+        {
+          "name": "Korean Wonder Ceramide Mochi Toner-Hydrates, Softens, Nourishes Dry & Combination Skin",
+          "brand": "TONYMOLY",
+          "image": "/img/uploads/wishlink/korean-wonder-ceramide-mochi-toner-hydrates-soften-937482b3.jpg",
+          "price": 1125,
+          "mrp": 1500,
+          "link": "https://www.wishlink.com/share/64r3sf",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "",
+          "added": "2026-07-24",
+          "hidden": false,
+          "wishlink_id": "54598531"
         }
       ]
+    },
+    {
+      "name": "Makeup",
+      "emoji": "💄",
+      "blurb": "5-minute face, office to coffee date.",
+      "products": [
+        {
+          "name": "LOreal Paris Infallible Full Wear Concealer, Maximum Coverage, Sweat Proof & Heat Proof - Amber 312",
+          "brand": "L'Oréal Paris",
+          "image": "/img/uploads/wishlink/loreal-paris-infallible-full-wear-concealer-maximu-0408b95d.jpg",
+          "price": 764,
+          "mrp": 899,
+          "link": "https://www.wishlink.com/share/6c8zgs",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DbWEtrXzpv5/",
+          "added": "2026-07-29",
+          "hidden": false,
+          "wishlink_id": "55180845"
+        },
+        {
+          "name": "Hydrating Foundation",
+          "brand": "Kay Beauty",
+          "image": "/img/uploads/wishlink/hydrating-foundation-38be430d.jpg",
+          "price": 878,
+          "mrp": 1350,
+          "link": "https://www.wishlink.com/share/nk4qyy",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DbWEtrXzpv5/",
+          "added": "2026-07-29",
+          "hidden": false,
+          "wishlink_id": "55180844"
+        },
+        {
+          "name": "Maybelline Serum Matte Lipstick - 8Hr hydration, One-Swipe Bold Color",
+          "brand": "Maybelline",
+          "image": "/img/uploads/wishlink/maybelline-serum-matte-lipstick-8hr-hydration-one-52da3372.jpg",
+          "price": 599,
+          "mrp": 0,
+          "link": "https://www.wishlink.com/share/6rzfda",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DbWEtrXzpv5/",
+          "added": "2026-07-29",
+          "hidden": false,
+          "wishlink_id": "55180843"
+        },
+        {
+          "name": "Maybelline nude lipstick",
+          "brand": "Maybelline",
+          "image": "",
+          "price": 0,
+          "mrp": 0,
+          "link": "https://www.wishlink.com/share/nf9psw",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DbWEtrXzpv5/",
+          "added": "2026-07-29",
+          "hidden": false,
+          "wishlink_id": "55180842"
+        },
+        {
+          "name": "Sheer For It Blush Tint",
+          "brand": "e.l.f.",
+          "image": "/img/uploads/wishlink/sheer-for-it-blush-tint-0fac5c40.jpg",
+          "price": 560,
+          "mrp": 800,
+          "link": "https://www.wishlink.com/share/6va2xe",
+          "note": "",
+          "coupon": {
+            "code": "TESTBLUSH",
+            "discount": "Flat ₹100 off",
+            "expires": "",
+            "terms": "TEST coupon, not real"
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DbWEtrXzpv5/",
+          "added": "2026-07-29",
+          "hidden": false,
+          "wishlink_id": "55180839"
+        },
+        {
+          "name": "Power Grip Primer",
+          "brand": "e.l.f.",
+          "image": "/img/uploads/wishlink/power-grip-primer-13fac45a.jpg",
+          "price": 910,
+          "mrp": 1300,
+          "link": "https://www.wishlink.com/share/nqhzt9",
+          "note": "",
+          "coupon": {
+            "code": "TESTOLD",
+            "discount": "Expired, should be hidden",
+            "expires": "2026-10-01",
+            "terms": "TEST coupon, not real"
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DbWEtrXzpv5/",
+          "added": "2026-07-29",
+          "hidden": false,
+          "wishlink_id": "55180838"
+        }
+      ]
+    },
+    {
+      "name": "Fashion",
+      "emoji": "👗",
+      "blurb": "Real-life outfits I actually re-wear.",
+      "products": [
+        {
+          "name": "Niraha Silk Embroidered Sequinned Saree Blouse",
+          "brand": "Niraha",
+          "image": "/img/uploads/wishlink/niraha-silk-embroidered-sequinned-saree-blouse-9ca73ac3.jpg",
+          "price": 2072,
+          "mrp": 5500,
+          "link": "https://www.wishlink.com/share/62sbth",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "sold-out",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DeEVNDdIEDq/",
+          "added": "2026-10-04",
+          "hidden": false,
+          "wishlink_id": "63763157"
+        },
+        {
+          "name": "W Women Embellished Sequins Flared Maxi Skirt",
+          "brand": "W",
+          "image": "/img/uploads/wishlink/w-women-embellished-sequins-flared-maxi-skirt-7d8e1d2c.jpg",
+          "price": 4999,
+          "mrp": 0,
+          "link": "https://www.wishlink.com/share/nuzeep",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DeEVNDdIEDq/",
+          "added": "2026-10-04",
+          "hidden": false,
+          "wishlink_id": "63763156"
+        },
+        {
+          "name": "VASTRABELLA Ethnic Motifs Woven Design Dupatta with Mirror Work",
+          "brand": "Vastrabella",
+          "image": "/img/uploads/wishlink/vastrabella-ethnic-motifs-woven-design-dupatta-wit-020d03d3.jpg",
+          "price": 1499,
+          "mrp": 2999,
+          "link": "https://www.wishlink.com/share/643end",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DeEVNDdIEDq/",
+          "added": "2026-10-04",
+          "hidden": false,
+          "wishlink_id": "63763155"
+        },
+        {
+          "name": "ATELIER REBEL Halter Neck Applique Bodycon Mini Dress",
+          "brand": "Atelier Rebel",
+          "image": "/img/uploads/wishlink/atelier-rebel-halter-neck-applique-bodycon-mini-dr-cc532a81.jpg",
+          "price": 2649,
+          "mrp": 5299,
+          "link": "https://www.wishlink.com/share/nfehrm",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/Dc0v6v6KsKq/",
+          "added": "2026-09-03",
+          "hidden": false,
+          "wishlink_id": "59735066"
+        },
+        {
+          "name": "ATELIER REBEL Floral Print Halter Neck A-Line Mini Dress",
+          "brand": "Atelier Rebel",
+          "image": "/img/uploads/wishlink/atelier-rebel-floral-print-halter-neck-a-line-mini-18a5916c.jpg",
+          "price": 2399,
+          "mrp": 4799,
+          "link": "https://www.wishlink.com/share/nx7wmf",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DctNdJ_IJGr/",
+          "added": "2026-08-31",
+          "hidden": false,
+          "wishlink_id": "59367864"
+        },
+        {
+          "name": "White Lace-Design Cotton T-Shirt",
+          "brand": "Westside",
+          "image": "/img/uploads/wishlink/white-lace-design-cotton-t-shirt-4736eefc.jpg",
+          "price": 199,
+          "mrp": 999,
+          "link": "https://www.wishlink.com/share/nfacjx",
+          "note": "",
+          "coupon": {
+            "code": "TESTWS3",
+            "discount": "Buy 2, get 1 free",
+            "expires": "2026-12-31",
+            "terms": "TEST coupon, not real"
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DcnkHoGIWfO/",
+          "added": "2026-08-29",
+          "hidden": false,
+          "wishlink_id": "59091434"
+        },
+        {
+          "name": "bebe A-Line Flared Maxi Skirt",
+          "brand": "bebe",
+          "image": "/img/uploads/wishlink/bebe-a-line-flared-maxi-skirt-c0c3153d.jpg",
+          "price": 1291,
+          "mrp": 3799,
+          "link": "https://www.wishlink.com/share/6jrfhf",
+          "note": "",
+          "coupon": {
+            "code": "TESTSKIRT20",
+            "discount": "20% off",
+            "expires": "2026-10-14",
+            "terms": "TEST coupon, not real"
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DcnkHoGIWfO/",
+          "added": "2026-08-29",
+          "hidden": false,
+          "wishlink_id": "59091433"
+        },
+        {
+          "name": "PERINI Women Pink Printed Corset Top with Draped Skirt Co-Ord Set",
+          "brand": "Perini",
+          "image": "/img/uploads/wishlink/perini-women-pink-printed-corset-top-with-draped-s-426f978c.jpg",
+          "price": 3825,
+          "mrp": 8500,
+          "link": "https://www.wishlink.com/share/ne5s8d",
+          "note": "",
+          "coupon": {
+            "code": "TESTPERINI15",
+            "discount": "15% off",
+            "expires": "2026-11-30",
+            "terms": "On your first Myntra order. TEST coupon, not real"
+          },
+          "badge": "none",
+          "featured": true,
+          "reel": "https://www.instagram.com/reel/Db8vk2uIDT0/",
+          "added": "2026-08-12",
+          "hidden": false,
+          "wishlink_id": "57073920"
+        },
+        {
+          "name": "Dark Brown Text-Printed Cotton T-Shirt",
+          "brand": "Westside",
+          "image": "/img/uploads/wishlink/dark-brown-text-printed-cotton-t-shirt-d6026945.jpg",
+          "price": 399,
+          "mrp": 0,
+          "link": "https://www.wishlink.com/share/nzt539",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DYyjAZrCCoP/",
+          "added": "2026-05-26",
+          "hidden": false,
+          "wishlink_id": "47778293"
+        },
+        {
+          "name": "Girls Brown Striped Cotton-Blend T-Shirt",
+          "brand": "Westside",
+          "image": "/img/uploads/wishlink/girls-brown-striped-cotton-blend-t-shirt-35a0d552.jpg",
+          "price": 499,
+          "mrp": 0,
+          "link": "https://www.wishlink.com/share/nvdfkr",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DYyjAZrCCoP/",
+          "added": "2026-05-26",
+          "hidden": false,
+          "wishlink_id": "47778292"
+        },
+        {
+          "name": "Tie Up A-Line Dress",
+          "brand": "Savana",
+          "image": "/img/uploads/wishlink/tie-up-a-line-dress-6add3a61.jpg",
+          "price": 1990,
+          "mrp": 0,
+          "link": "https://www.wishlink.com/share/nxrg72",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "",
+          "added": "2026-06-24",
+          "hidden": false,
+          "wishlink_id": "51093784"
+        },
+        {
+          "name": "Olive Textured Halter-Neck Top",
+          "brand": "Westside",
+          "image": "/img/uploads/wishlink/olive-textured-halter-neck-top-124c7d77.jpg",
+          "price": 999,
+          "mrp": 0,
+          "link": "https://www.wishlink.com/share/nsnfcz",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DYyjAZrCCoP/",
+          "added": "2026-05-26",
+          "hidden": false,
+          "wishlink_id": "47778291"
+        },
+        {
+          "name": "Girls Black Bow Detail Ribbed Top",
+          "brand": "Westside",
+          "image": "/img/uploads/wishlink/girls-black-bow-detail-ribbed-top-6c060f7a.jpg",
+          "price": 599,
+          "mrp": 0,
+          "link": "https://www.wishlink.com/share/nbqp28",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DYyjAZrCCoP/",
+          "added": "2026-05-26",
+          "hidden": false,
+          "wishlink_id": "47778290"
+        },
+        {
+          "name": "Brown Ribbed-Textured Tank Top",
+          "brand": "Westside",
+          "image": "/img/uploads/wishlink/brown-ribbed-textured-tank-top-5b40f7e9.jpg",
+          "price": 799,
+          "mrp": 0,
+          "link": "https://www.wishlink.com/share/n952sg",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "https://www.instagram.com/reel/DYyjAZrCCoP/",
+          "added": "2026-05-26",
+          "hidden": false,
+          "wishlink_id": "47778289"
+        },
+        {
+          "name": "Anouk Mirage Cotton Printed Top with Shorts",
+          "brand": "Anouk Mirage",
+          "image": "/img/uploads/wishlink/anouk-mirage-cotton-printed-top-with-shorts-53bf2016.jpg",
+          "price": 767,
+          "mrp": 2999,
+          "link": "https://www.wishlink.com/share/nvtna8",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "",
+          "added": "2026-10-13",
+          "hidden": false,
+          "wishlink_id": "46145804"
+        },
+        {
+          "name": "Trendyol Embellished Strapless Sheath Dress",
+          "brand": "Myntra",
+          "image": "/img/uploads/wishlink/trendyol-embellished-strapless-sheath-dress-f47a8f7a.jpg",
+          "price": 5399,
+          "mrp": 0,
+          "link": "https://www.wishlink.com/share/nsk6jz",
+          "note": "",
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
+          "badge": "none",
+          "featured": false,
+          "reel": "",
+          "added": "2026-10-13",
+          "hidden": false,
+          "wishlink_id": "34946907"
+        }
+      ]
+    },
+    {
+      "name": "Office wear",
+      "emoji": "💼",
+      "blurb": "Corporate-chic, without the corporate price.",
+      "products": []
+    },
+    {
+      "name": "Under ₹499",
+      "emoji": "💸",
+      "blurb": "Small price, big 'where is that from?'",
+      "products": []
     }
   ]
 }
