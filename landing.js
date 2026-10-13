@@ -150,7 +150,7 @@
     const coupons = products.filter((p) => p.coupon && p.coupon.code && (!p.coupon.expires || String(p.coupon.expires).slice(0, 10) >= today));
     const meta = $('[data-landing-meta="shop"]');
     if (meta && products.length) {
-      meta.textContent = `${products.length} picks · ${coupons.length} live coupon${coupons.length === 1 ? '' : 's'} · ${cats.slice(0, 3).map((c) => c.name).join(' · ')}`;
+      meta.textContent = `${products.length} picks · ${coupons.length} live coupon${coupons.length === 1 ? '' : 's'} · ${cats.filter((c) => (c.products || []).some((p) => p && p.name && !p.hidden)).slice(0, 3).map((c) => c.name).join(' · ')}`;
     }
     // Product photos for the snapshots behind the cup (featured first)
     const withImg = [...products.filter((p) => p.featured), ...products.filter((p) => !p.featured)].filter((p) => p.image);

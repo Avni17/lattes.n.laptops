@@ -40,12 +40,11 @@ collections:
           - name: page
             label: Page text
             widget: object
+            required: false # can be emptied in the editor; the page then leaves it out
             collapsed: true
             fields:
-              - { name: title, label: Title, widget: string }
-              - { name: subtitle, label: Subtitle, widget: text }
-              - { name: note, label: Note from me (yellow sticky note in the hero), widget: text }
-              - { name: avatar, label: Photo in the hero, widget: image, required: false }
+              - { name: title, label: Title, widget: string, required: false, hint: "Leave empty for: Shop my picks" }
+              - { name: note, label: Note from me (yellow sticky note in the hero), widget: text, required: false, hint: "Leave empty to hide the note" }
               - { name: landing_note, label: Sticky note on the landing page's Shop card (leave empty to hide it), widget: string, required: false }
               - { name: disclosure, label: Affiliate disclosure (keep this, it's required in India), widget: text }
 
@@ -53,6 +52,7 @@ collections:
             label: Categories
             label_singular: Category
             widget: list
+            required: false # can be emptied in the editor; the page then leaves it out
             collapsed: true
             summary: "{{fields.emoji}} {{fields.name}}"
             hint: Drag to reorder. The order here is the order of the tabs.
@@ -64,6 +64,7 @@ collections:
                 label: Products
                 label_singular: Product
                 widget: list
+                required: false # can be emptied in the editor; the page then leaves it out
                 collapsed: true
                 summary: "{{fields.name}} · {{fields.brand}}"
                 hint: Drag to reorder. "Avni's order" sorting follows this order.
@@ -121,17 +122,20 @@ collections:
           - name: landing
             label: Landing page (Work card)
             widget: object
+            required: false # can be emptied in the editor; the page then leaves it out
             collapsed: true
             fields:
               - { name: note, label: Sticky note on the Work card (leave empty to hide it), widget: string, required: false }
               - name: screen
                 label: Lines typed on the laptop screen
                 widget: list
+                required: false # can be emptied in the editor; the page then leaves it out
                 field: { name: line, label: Line, widget: string }
 
           - name: hero
             label: Top section
             widget: object
+            required: false # can be emptied in the editor; the page then leaves it out
             collapsed: true
             fields:
               - { name: image, label: Main photo, widget: image }
@@ -144,20 +148,24 @@ collections:
           - name: about
             label: About me
             widget: object
+            required: false # can be emptied in the editor; the page then leaves it out
             collapsed: true
             fields:
               - name: photos
                 label: The three small photos
                 widget: list
+                required: false # can be emptied in the editor; the page then leaves it out
                 max: 3
                 field: { name: photo, label: Photo, widget: image }
               - name: paragraphs
                 label: Paragraphs
                 widget: list
+                required: false # can be emptied in the editor; the page then leaves it out
                 field: { name: text, label: Paragraph, widget: text }
               - name: facts
                 label: Quick facts card
                 widget: list
+                required: false # can be emptied in the editor; the page then leaves it out
                 summary: "{{fields.label}}"
                 fields:
                   - { name: label, label: Label, widget: string }
@@ -165,6 +173,7 @@ collections:
               - name: stats
                 label: Big numbers (count up on screen)
                 widget: list
+                required: false # can be emptied in the editor; the page then leaves it out
                 summary: "{{fields.value}}{{fields.suffix}} {{fields.label}}"
                 fields: &stat
                   - { name: value, label: Number, widget: number, value_type: float, hint: "e.g. 3.8" }
@@ -175,11 +184,13 @@ collections:
           - name: audience
             label: Audience
             widget: object
+            required: false # can be emptied in the editor; the page then leaves it out
             collapsed: true
             fields:
               - name: facts
                 label: Audience facts
                 widget: list
+                required: false # can be emptied in the editor; the page then leaves it out
                 summary: "{{fields.value}} {{fields.label}}"
                 fields:
                   - { name: value, label: Value, widget: string, hint: "e.g. 390K or 37.6%" }
@@ -187,6 +198,7 @@ collections:
               - name: countries
                 label: Countries (pie chart)
                 widget: list
+                required: false # can be emptied in the editor; the page then leaves it out
                 summary: "{{fields.name}} {{fields.pct}}%"
                 hint: Percentages should add up to 100.
                 fields:
@@ -196,16 +208,19 @@ collections:
           - name: niches
             label: What I create (chips)
             widget: list
+            required: false # can be emptied in the editor; the page then leaves it out
             field: { name: niche, label: Niche, widget: string }
 
           - name: services
             label: Services list
             widget: list
+            required: false # can be emptied in the editor; the page then leaves it out
             field: { name: service, label: Service, widget: string }
 
           - name: services_photos
             label: Services photos
             widget: list
+            required: false # can be emptied in the editor; the page then leaves it out
             max: 4
             field: { name: photo, label: Photo, widget: image }
 
@@ -213,6 +228,7 @@ collections:
             label: Featured reels
             label_singular: Reel
             widget: list
+            required: false # can be emptied in the editor; the page then leaves it out
             collapsed: true
             summary: "{{fields.title}}"
             fields:
@@ -228,11 +244,12 @@ collections:
             label: Case studies
             label_singular: Case study
             widget: list
+            required: false # can be emptied in the editor; the page then leaves it out
             collapsed: true
             summary: "{{fields.brand}}: {{fields.title}}"
             fields:
               - { name: brand, label: Brand · campaign, widget: string }
-              - { name: title, label: Title, widget: string }
+              - { name: title, label: Title, widget: string, required: false, hint: "Leave empty for: Shop my picks" }
               - { name: goal, label: Campaign goal, widget: text, required: false }
               - { name: concept, label: Concept, widget: text, required: false }
               - { name: role, label: My role, widget: string, required: false }
@@ -240,6 +257,7 @@ collections:
               - name: results
                 label: Results
                 widget: list
+                required: false # can be emptied in the editor; the page then leaves it out
                 summary: "{{fields.value}} {{fields.label}}"
                 fields:
                   - { name: value, label: Number, widget: string, hint: "e.g. 482K or 8.4%" }
@@ -249,6 +267,7 @@ collections:
             label: Brand collaborations
             label_singular: Brand
             widget: list
+            required: false # can be emptied in the editor; the page then leaves it out
             collapsed: true
             summary: "{{fields.name}}"
             fields: &brand
@@ -260,6 +279,7 @@ collections:
             label: Brands I've featured & styled
             label_singular: Brand
             widget: list
+            required: false # can be emptied in the editor; the page then leaves it out
             collapsed: true
             summary: "{{fields.name}}"
             fields: *brand
@@ -267,6 +287,7 @@ collections:
           - name: performance
             label: Content that performs (numbers)
             widget: list
+            required: false # can be emptied in the editor; the page then leaves it out
             summary: "{{fields.value}}{{fields.suffix}} {{fields.label}}"
             fields: *stat
 
@@ -274,6 +295,7 @@ collections:
             label: Testimonials
             label_singular: Testimonial
             widget: list
+            required: false # can be emptied in the editor; the page then leaves it out
             collapsed: true
             summary: "{{fields.author}}"
             fields:
@@ -283,6 +305,7 @@ collections:
           - name: contact
             label: Contact
             widget: object
+            required: false # can be emptied in the editor; the page then leaves it out
             collapsed: true
             fields:
               - { name: email, label: Email (footer + "email me directly" link), widget: string }

@@ -16,6 +16,9 @@
 
   const set = (sel, html) => { const n = $(sel); if (n && html != null) n.innerHTML = html; };
   const text = (sel, v) => { const n = $(sel); if (n && v) n.textContent = v; };
+  // A list emptied in /admin removes that block from the page (instead of falling back to the built-in text)
+  const hide = (...sels) => sels.forEach((sel) => document.querySelectorAll(sel).forEach((n) => { n.style.display = 'none'; }));
+  const isHidden = (sel) => { const n = $(sel); return !n || n.style.display === 'none'; };
 
   const sections = {
     hero(d) {
@@ -33,6 +36,7 @@
     about(d) {
       if (!d) return;
       const photos = list(d.photos);
+      if (!photos.length) hide('.about__strip');
       document.querySelectorAll('.about__strip .ph').forEach((ph, i) => {
         if (!photos[i]) return;
         ph.innerHTML = `<span>Photo</span><img src="${esc(asset(photos[i]))}" alt="" loading="lazy" draggable="false" onerror="this.remove()">`;
@@ -44,8 +48,10 @@
         body.insertAdjacentHTML('beforeend', paras.map((p) => `<p>${esc(p)}</p>`).join(''));
       }
       const facts = list(d.facts);
+      if (!facts.length) hide('.about .card dl');
       if (facts.length) set('.about .card dl', facts.map((f) => `<dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd>`).join(''));
       const stats = list(d.stats);
+      if (!stats.length) hide('.about .stats');
       if (stats.length) {
         set('.about .stats', stats.map((s) =>
           `<li><b data-count="${num(s.value)}" data-decimals="${num(s.decimals)}" data-suffix="${esc(s.suffix || '')}">0</b><span>${esc(s.label)}</span></li>`).join(''));
@@ -54,8 +60,10 @@
     audience(d) {
       if (!d) return;
       const facts = list(d.facts);
+      if (!facts.length) hide('.audience .facts');
       if (facts.length) set('.audience .facts', facts.map((f) => `<li><b>${esc(f.value)}</b><span>${esc(f.label)}</span></li>`).join(''));
       const countries = list(d.countries).filter((c) => num(c.pct) > 0);
+      if (!countries.length) hide('.donut');
       if (!countries.length) return;
       const svg = $('.donut__svg');
       let offset = 0;
@@ -71,19 +79,22 @@
     },
     niches(d) {
       const items = list(d);
+      if (!items.length) hide('section.niches');
       if (items.length) set('.niches .chips', items.map((n) => `<li>${esc(n)}</li>`).join(''));
     },
     services(d) {
       const items = list(d);
+      if (!items.length) hide('.services__list');
       if (items.length) set('.services__list', items.map((n) => `<li>${esc(n)}</li>`).join(''));
     },
     services_photos(d) {
       const items = list(d);
+      if (!items.length) hide('.services__tiles');
       if (items.length) set('.services__tiles', items.map((p) => `<img class="ph ph--sq" src="${esc(asset(p))}" alt="" loading="lazy">`).join(''));
     },
     reels(d) {
       const items = list(d);
-      if (!items.length) return;
+      if (!items.length) { hide('#phones'); return; }
       set('#phones', items.map((r) => {
         const attrs = [
           r.link ? `data-href="${esc(r.link)}"` : '',
@@ -100,7 +111,7 @@
     },
     cases(d) {
       const items = list(d);
-      if (!items.length) return;
+      if (!items.length) { hide('.cases'); return; }
       const row = (label, v) => (v ? `<dt>${label}</dt><dd>${esc(v)}</dd>` : '');
       set('.cases', items.map((c) => `
         <article class="case">
@@ -110,10 +121,11 @@
           <p class="case__result">${list(c.results).map((r) => `<b>${esc(r.value)}</b> ${esc(r.label)}`).join(' <span>&middot;</span> ')}</p>
         </article>`).join(''));
     },
-    collabs(d) { brands('.brands--wide', d); },
-    featured_brands(d) { brands('.brands:not(.brands--wide)', d); },
+    collabs(d) { if (!brands('.brands--wide', d)) hide('.brands--wide'); },
+    featured_brands(d) { if (!brands('.brands:not(.brands--wide)', d)) hide('.brands:not(.brands--wide)', '.brands__sub'); },
     performance(d) {
       const items = list(d);
+      if (!items.length) hide('section.perf');
       if (items.length) {
         set('.perf .pills', items.map((s) =>
           `<li><b data-count="${num(s.value)}" data-decimals="${num(s.decimals)}" data-suffix="${esc(s.suffix || '')}">0</b><span>${esc(s.label)}</span></li>`).join(''));
@@ -121,6 +133,7 @@
     },
     testimonials(d) {
       const items = list(d);
+      if (!items.length) hide('section.testimonials');
       if (items.length) {
         set('.quotes', items.map((t) => `<blockquote><p>${esc(t.quote)}</p><footer>${esc(t.author)}</footer></blockquote>`).join(''));
       }
@@ -138,17 +151,31 @@
 
   function brands(sel, d) {
     const items = list(d);
-    if (!items.length) return;
+    if (!items.length) return false;
     set(sel, items.map((b) => (b.logo
       ? `<li class="logo${b.dark ? ' logo--dark' : ''}"><img src="${esc(asset(b.logo))}" alt="${esc(b.name)}"></li>`
       : `<li>${esc(b.name)}</li>`)).join(''));
+    return true;
   }
+
+  // Whole sections go when everything inside them was removed; so do menu links pointing at them
+  const tidy = () => {
+    if (isHidden('.audience .facts') && isHidden('.donut')) hide('section.audience');
+    if (isHidden('.services__list') && isHidden('.services__tiles')) hide('section.services');
+    if (isHidden('#phones') && isHidden('.cases')) hide('section.work');
+    if (isHidden('.brands--wide') && isHidden('.brands:not(.brands--wide)')) hide('section.collabs');
+    document.querySelectorAll('section[id]').forEach((sec) => {
+      if (sec.style.display === 'none') hide(`a[href="#${sec.id}"]`);
+    });
+  };
 
   const render = (data) => {
     Object.keys(sections).forEach((key) => {
-      if (!(key in data)) return;
+      // A missing list counts as emptied (the editor may drop it); missing text blocks keep the built-in copy
+      if (!(key in data) && ['hero', 'about', 'audience', 'contact'].includes(key)) return;
       try { sections[key](data[key]); } catch (e) { console.warn('[portfolio] could not render', key, e); }
     });
+    tidy();
   };
 
   const load = (src) => new Promise((done) => {

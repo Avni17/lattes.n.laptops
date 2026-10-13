@@ -188,13 +188,14 @@
         <p class="sp-brand">${esc(p.brand || p.cat.name)}</p>
         <h3 class="sp-name" title="${esc(p.name)}">${esc(p.name)}</h3>
         ${p.note ? `<p class="sp-note">&ldquo;${esc(p.note)}&rdquo;</p>` : ''}
-        ${couponBtn(p)}
         ${actions(p)}
       </div>
     </article>`;
 
   /* ---------- Sections ---------- */
   const renderPage = (page) => {
+    const note = $('[data-page="note"]');
+    if (note) note.hidden = !String(page.note || '').trim(); // emptied in /admin: no note
     $$('[data-page]').forEach((n) => {
       const v = page[n.dataset.page];
       if (!v) return;
@@ -330,7 +331,6 @@
     return [...list].sort(by).sort((a, b) => a.soldOut - b.soldOut); // sold out always last
   };
 
-  let rise;
   const renderGrid = () => {
     const list = visible();
     grid.innerHTML = list.map(card).join('');
@@ -339,12 +339,6 @@
     blurb.textContent = state.q ? 'Searching the whole shelf' : cat ? cat.blurb || `${cat.emoji} ${cat.name}` : state.cat === 'saved' ? 'Your saved picks, kept on this device ♡' : 'Everything on my shelf right now.';
     results.textContent = state.q ? `${list.length} pick${list.length === 1 ? '' : 's'} for "${state.q}"` : '';
     $('.sp-empty__text').textContent = state.cat === 'saved' && !state.q ? 'Tap the ♡ on any product to save it here.' : 'Try another category, or clear the search.';
-    if (rise) rise.disconnect();
-    if (reduceMotion) return;
-    rise = new IntersectionObserver((entries) => entries.forEach((e) => {
-      if (e.isIntersecting) { e.target.classList.add('in'); rise.unobserve(e.target); }
-    }), { threshold: 0.12 });
-    $$('.sp-card', grid).forEach((c) => { c.classList.add('sp-rise'); rise.observe(c); });
   };
 
   const setCat = (slug, push = true) => {
@@ -418,7 +412,6 @@
     let el = document.getElementById('p-' + slug);
     if (!el) { setCat('all'); el = document.getElementById('p-' + slug); }
     if (!el) return;
-    el.classList.add('in');
     el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
     el.classList.remove('sp-pulse');
     void el.offsetWidth;

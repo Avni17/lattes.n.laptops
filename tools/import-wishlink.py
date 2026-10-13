@@ -481,8 +481,16 @@ def blank_product(today):
 def merge(shop, scraped, args):
     today = datetime.date.today().isoformat()
     by_id, by_link = {}, {}
-    for cat in shop.get('categories', []):
-        for p in cat.get('products', []):
+    # Anything emptied or switched off in /admin may come back as null: normalise first
+    if not isinstance(shop.get('categories'), list):
+        shop['categories'] = []
+    shop['categories'] = [c for c in shop['categories'] if isinstance(c, dict)]
+    for cat in shop['categories']:
+        if not isinstance(cat.get('products'), list):
+            cat['products'] = []
+        cat['products'] = [p for p in cat['products'] if isinstance(p, dict)]
+    for cat in shop['categories']:
+        for p in cat['products']:
             if p.get('wishlink_id'):
                 by_id[p['wishlink_id']] = p
             if p.get('link'):
@@ -492,7 +500,7 @@ def merge(shop, scraped, args):
     seen = set()
 
     def category(name):
-        cat = next((c for c in shop['categories'] if c.get('name', '').lower() == name.lower()), None)
+        cat = next((c for c in shop['categories'] if str(c.get('name') or '').lower() == name.lower()), None)
         if cat is None:
             emoji, blurb = CATEGORY_LOOK.get(name, CATEGORY_LOOK[NEW_CATEGORY])
             cat = {'name': name, 'emoji': emoji, 'blurb': blurb, 'products': []}
@@ -529,7 +537,9 @@ def merge(shop, scraped, args):
         for f in ('name', 'brand', 'reel'):
             if s[f] and not p.get(f):
                 p[f] = s[f]
-        coupon = p.setdefault('coupon', {'code': '', 'discount': '', 'expires': '', 'terms': ''})
+        if not isinstance(p.get('coupon'), dict):  # coupon switched off in /admin
+            p['coupon'] = {'code': '', 'discount': '', 'expires': '', 'terms': ''}
+        coupon = p['coupon']
         if s.get('coupon_code') and not coupon.get('code'):  # never replaces a code you typed
             coupon.update(code=s['coupon_code'], discount=coupon.get('discount') or s.get('coupon_text', ''))
         if s['sold_out'] and p.get('badge') != 'sold-out':
@@ -540,7 +550,7 @@ def merge(shop, scraped, args):
             report['updated'].append(p['name'])
 
     for cat in shop['categories']:
-        for p in cat.get('products', []):
+        for p in cat['products']:
             # A saved file is only part of the store, so "missing" only means something on a full run
             if p.get('wishlink_id') and p['wishlink_id'] not in seen and not p.get('hidden') and not args.file:
                 report['missing'].append(p['name'])
