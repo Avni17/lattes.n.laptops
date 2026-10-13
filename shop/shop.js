@@ -148,7 +148,7 @@
         };
       });
       return cat;
-    });
+    }).filter((c) => c.products.length); // e.g. "New from Wishlink" while every import is still hidden
     PRODUCTS = CATS.flatMap((c) => c.products);
   };
 

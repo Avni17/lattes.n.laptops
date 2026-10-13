@@ -105,6 +105,7 @@ collections:
                   - { name: reel, label: My reel about it (Instagram link), widget: string, required: false }
                   - { name: added, label: Date added, widget: datetime, time_format: false, date_format: "YYYY-MM-DD", format: "YYYY-MM-DD", required: false, hint: "Products added in the last 14 days get a New badge automatically." }
                   - { name: hidden, label: Hide from the shop (draft), widget: boolean, default: false, required: false }
+                  - { name: wishlink_id, label: Wishlink ID, widget: string, required: false, hint: "Filled in by the Wishlink import script. Leave as is." }
 
   # ------------------------------------------------------------- PORTFOLIO
   - name: portfolio
