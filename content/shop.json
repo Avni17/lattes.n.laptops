@@ -19,7 +19,12 @@
           "mrp": 599,
           "link": "https://www.wishlink.com/share/6jncc7",
           "note": "",
-          "coupon": null,
+          "coupon": {
+            "code": "",
+            "discount": "",
+            "expires": "",
+            "terms": ""
+          },
           "badge": "none",
           "featured": false,
           "reel": "https://www.instagram.com/reel/DbWEtrXzpv5/",
