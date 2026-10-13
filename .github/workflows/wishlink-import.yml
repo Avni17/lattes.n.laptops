@@ -1,0 +1,56 @@
+# "Sync from Wishlink": runs tools/import-wishlink.py on GitHub's servers and commits the result.
+# Started by hand only (the button on /admin, or Actions -> Sync from Wishlink -> Run workflow).
+name: Sync from Wishlink
+
+on:
+  workflow_dispatch:
+    inputs:
+      draft:
+        description: Add new products hidden, to check them in /admin first
+        type: boolean
+        default: false
+
+permissions:
+  contents: write # to commit content/shop.json and the photos
+
+concurrency:
+  group: wishlink-import # two clicks never run at the same time
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Import products and photos
+        run: |
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          python3 tools/import-wishlink.py ${{ inputs.draft && '--draft' || '' }} | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Save changes
+        run: |
+          git add content/shop.json img/uploads/wishlink
+          if git diff --cached --quiet; then
+            echo "Nothing new on Wishlink." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git config user.name "Wishlink sync"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Sync products from Wishlink"
+          git push
+          echo "Shop updated. The site refreshes in 1-2 minutes." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep what Wishlink sent (for fixing the script if it breaks)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wishlink-debug
+          path: tools/wishlink-debug.json
+          if-no-files-found: ignore
+          retention-days: 7

@@ -11,5 +11,24 @@
   <!-- Sveltia CMS: private editor for content/shop.json and content/portfolio.json (settings in config.yml).
        Sign in with a GitHub account that has write access to the repo. -->
   <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+
+  <!-- "Sync from Wishlink": opens the GitHub Action that runs tools/import-wishlink.py.
+       There, click "Run workflow" (needs a GitHub login with write access to the repo). -->
+  <a class="wl-sync" href="https://github.com/Avni17/lattes.n.laptops/actions/workflows/wishlink-import.yml"
+     target="_blank" rel="noopener" title="Import new products, prices and photos from your Wishlink store">
+    &#128717;&#65039; Sync from Wishlink
+  </a>
+  <style>
+    .wl-sync {
+      position: fixed; left: 16px; bottom: 16px; z-index: 2147483647;
+      padding: 9px 16px; border-radius: 999px;
+      background: linear-gradient(135deg, #e89aab, #c9677f); color: #fff;
+      font: 600 13px/1.2 system-ui, sans-serif; text-decoration: none;
+      box-shadow: 0 6px 18px rgba(122, 54, 72, .35);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .wl-sync:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(122, 54, 72, .45); }
+    .wl-sync:focus-visible { outline: 3px solid #fdf6e8; outline-offset: 2px; }
+  </style>
 </body>
 </html>

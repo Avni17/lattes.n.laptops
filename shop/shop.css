@@ -521,8 +521,8 @@ html.fx-espresso .sp-special__label { background-color: #4a2f2c; }
   .sp-hero__stats b { font-size: 1.8rem; }
   .sp-hero__stats span { font-size: .56rem; letter-spacing: .1em; }
   .sp-sort { font-size: 0; } /* hide the "Sort" word, keep the select */
-  .sp-ticket { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); }
   .sp-ticket__off { font-size: 1.45rem; }
+  .sp-ticket code { font-size: .82rem; }
   .sp-name { font-size: 1.22rem; }
 }
 
@@ -533,3 +533,48 @@ html.fx-espresso .sp-special__label { background-color: #4a2f2c; }
   .sp-search__icon { width: 36px; height: 36px; font-size: .95rem; }
   .sp-search input::placeholder { font-size: 15px; }
 }
+
+/* =====================================================================
+   Even cards, one-line coupon codes
+   ===================================================================== */
+/* Cards keep their own height: rows no longer stretch every card to the tallest one,
+   which left big white gaps inside the shorter cards. The content below has fixed
+   heights, so cards in a row still line up. */
+.sp-grid { align-items: start; }
+.sp-name {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  min-height: 2.3em; /* always two lines tall, so buttons line up across a row */
+}
+.sp-note { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.sp-spec__name { /* long store titles: three lines at most */
+  overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* Card coupon chip: always two rows. Row 1: offer + code on one line. Row 2: hint, expiry, small print */
+/* The code column takes the room it needs first; a long offer pill gets "..." instead (full text on hover) */
+.sp-coupon { grid-template-columns: minmax(0, 1fr) minmax(0, max-content); gap: .3rem .55rem; padding: .55rem .8rem; }
+.sp-coupon__off { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.sp-coupon code {
+  justify-self: end; max-width: 100%; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; word-break: normal; letter-spacing: .05em; font-size: .84rem;
+}
+.sp-coupon__meta { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp-coupon__terms { font-size: inherit; opacity: .75; margin: 0; }
+
+/* Coupon counter tickets: the code side grows to fit its code (up to ~55%), so a code is never
+   split; the punched holes sit on the dashed line wherever it ends up. */
+.sp-ticket {
+  grid-template-columns: minmax(0, 1fr) fit-content(55%);
+  background: #fdf6e8;
+}
+.sp-ticket__right { position: relative; min-width: 0; padding: .8rem .75rem; }
+.sp-ticket__right::before, .sp-ticket__right::after {
+  content: ""; position: absolute; left: -10px; width: 18px; height: 18px; border-radius: 50%; background: var(--sp-pink, var(--pink));
+}
+.sp-ticket__right::before { top: -9px; }
+.sp-ticket__right::after { bottom: -9px; }
+.sp-ticket code {
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; word-break: normal; letter-spacing: .05em;
+}
+.sp-ticket__exp { white-space: nowrap; }
